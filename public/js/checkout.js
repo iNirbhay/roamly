@@ -33,9 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const checkOutInput = document.getElementById("checkOutInput");
     const adultsCountInput = document.getElementById("adultsCountInput");
     const childrenCountInput = document.getElementById("childrenCountInput");
+    const infantsCountInput = document.getElementById("infantsCountInput");
     const guestFullName = document.getElementById("guestFullName");
     const guestEmail = document.getElementById("guestEmail");
     const guestPhone = document.getElementById("guestPhone");
+
+    // Room allocation elements
+    const summaryRoomsDisplay = document.getElementById("summaryRoomsDisplay");
+    const allocatedRoomsCountText = document.getElementById("allocatedRoomsCountText");
+    const allocatedRoomsBadge = document.getElementById("allocatedRoomsBadge");
+    const roomAllocationReason = document.getElementById("roomAllocationReason");
 
     // Error messages
     const nameError = document.getElementById("nameError");
@@ -118,8 +125,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // -------------------------------------------------------------
-    // 1. DYNAMIC PRICING CALCULATION
+    // 1. INTELLIGENT ROOM ALLOCATION & DYNAMIC PRICING
     // -------------------------------------------------------------
+    function calculateAllocatedRooms(adults = 1, children = 0, infants = 0) {
+        const a = Math.max(1, parseInt(adults, 10) || 1);
+        const c = Math.max(0, parseInt(children, 10) || 0);
+        const inf = Math.max(0, parseInt(infants, 10) || 0);
+        const roomsByAdults = Math.ceil(a / 2);
+        const roomsByInfants = Math.ceil(inf / 2);
+        const roomsByTotal = Math.ceil((a + c) / 3);
+        return Math.max(1, roomsByAdults, roomsByInfants, roomsByTotal);
+    }
+
     function calculatePricing() {
         const checkInDate = new Date(checkInInput.value || todayStr);
         let checkOutDate = new Date(checkOutInput.value || checkInInput.value);
@@ -134,10 +151,36 @@ document.addEventListener("DOMContentLoaded", () => {
         const nights = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
         const adults = parseInt(adultsCountInput.value, 10) || 1;
         const children = parseInt(childrenCountInput.value, 10) || 0;
-        const totalGuests = adults + children;
+        const infants = infantsCountInput ? (parseInt(infantsCountInput.value, 10) || 0) : 0;
+        const totalGuests = adults + children + infants;
+        const allocatedRooms = calculateAllocatedRooms(adults, children, infants);
 
-        // Base total
-        const baseTotal = nightlyRate * nights;
+        // Base total taking allocated rooms into account (nightlyRate * nights * rooms)
+        const baseTotal = nightlyRate * nights * allocatedRooms;
+
+        // Update Room Allocation UI
+        if (allocatedRoomsCountText) {
+            allocatedRoomsCountText.textContent = `${allocatedRooms} Room${allocatedRooms > 1 ? 's' : ''}`;
+        }
+        if (allocatedRoomsBadge) {
+            allocatedRoomsBadge.textContent = `${allocatedRooms} Room${allocatedRooms > 1 ? 's' : ''}`;
+        }
+        if (summaryRoomsDisplay) {
+            summaryRoomsDisplay.textContent = allocatedRooms;
+        }
+        if (roomAllocationReason) {
+            if (allocatedRooms === 1) {
+                roomAllocationReason.textContent = "Max 2 adults per room • Standard accommodation allocated";
+            } else if (adults > 2 && adults % 2 !== 0) {
+                roomAllocationReason.textContent = `${allocatedRooms} rooms allocated for ${adults} adults (maximum 2 adults per room)`;
+            } else if (adults >= 4) {
+                roomAllocationReason.textContent = `${allocatedRooms} rooms allocated for ${adults} adults (2 adults per room)`;
+            } else if (infants > 2) {
+                roomAllocationReason.textContent = `${allocatedRooms} rooms allocated to comfortably host infants and family`;
+            } else {
+                roomAllocationReason.textContent = `${allocatedRooms} rooms allocated for optimal guest comfort`;
+            }
+        }
 
         // Add-ons total
         let addOnsTotal = 0;
@@ -189,6 +232,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentPricing = {
             nights,
+            rooms: allocatedRooms,
+            adults,
+            children,
+            infants,
             baseRate: nightlyRate,
             baseTotal,
             addOnsTotal,
@@ -217,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Attach reactive price calculation listeners
-    [checkInInput, checkOutInput, adultsCountInput, childrenCountInput].forEach(elem => {
+    [checkInInput, checkOutInput, adultsCountInput, childrenCountInput, infantsCountInput].forEach(elem => {
         if (elem) elem.addEventListener("change", calculatePricing);
     });
 
@@ -482,6 +529,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Client fallback booking ID
                 const fallbackBookingId = `ROAM-${Math.floor(100000 + Math.random() * 900000)}`;
 
+                const aVal = parseInt(adultsCountInput.value, 10) || 1;
+                const cVal = parseInt(childrenCountInput.value, 10) || 0;
+                const iVal = infantsCountInput ? (parseInt(infantsCountInput.value, 10) || 0) : 0;
+                const roomsCount = currentPricing.rooms || calculateAllocatedRooms(aVal, cVal, iVal);
+
                 const payload = {
                     listingId,
                     guestDetails: {
@@ -492,15 +544,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     checkIn: checkInInput.value,
                     checkOut: checkOutInput.value,
                     nights: currentPricing.nights,
+                    rooms: roomsCount,
                     guests: {
-                        adults: parseInt(adultsCountInput.value, 10) || 1,
-                        children: parseInt(childrenCountInput.value, 10) || 0,
-                        infants: 0,
-                        total: (parseInt(adultsCountInput.value, 10) || 1) + (parseInt(childrenCountInput.value, 10) || 0)
+                        adults: aVal,
+                        children: cVal,
+                        infants: iVal,
+                        total: aVal + cVal + iVal
                     },
                     addOns: currentPricing.selectedAddonsList,
                     pricing: {
                         baseRate: currentPricing.baseRate,
+                        rooms: roomsCount,
                         baseTotal: currentPricing.baseTotal,
                         addOnsTotal: currentPricing.addOnsTotal,
                         serviceFee: currentPricing.serviceFee,
@@ -511,7 +565,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         method: paymentMethodLabel,
                         status: "PAID • DEMO",
                         transactionId: `TXN-DEMO-${Date.now()}`
-                    }
+                    },
+                    status: "CONFIRMED"
                 };
 
                 let assignedBookingId = fallbackBookingId;
@@ -560,10 +615,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             checkIn: payload.checkIn,
                             checkOut: payload.checkOut,
                             nights: payload.nights,
+                            rooms: roomsCount,
                             guests: payload.guests,
                             addOns: payload.addOns,
                             pricing: payload.pricing,
                             payment: payload.payment,
+                            status: "CONFIRMED",
+                            bookingStatus: "confirmed",
                             createdAt: new Date().toISOString()
                         };
                         existingBookings.unshift(clientBookingRecord);
@@ -594,7 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     confirmDates.textContent = `${dIn} &rarr; ${dOut}`;
                 }
                 if (confirmNights) {
-                    confirmNights.textContent = `${payload.nights} nights • ${payload.guests.total} guests`;
+                    confirmNights.textContent = `${payload.nights} night(s) • ${payload.guests.total} guest(s) • ${roomsCount} room(s)`;
                 }
                 if (confirmTotalPaid) {
                     confirmTotalPaid.textContent = `₹ ${payload.pricing.totalAmount.toLocaleString("en-IN")}`;
@@ -609,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         checkOut: payload.checkOut,
                         nights: payload.nights,
                         guests: payload.guests.total,
+                        rooms: roomsCount,
                         total: payload.pricing.totalAmount,
                         base: payload.pricing.baseTotal,
                         taxes: payload.pricing.taxes,

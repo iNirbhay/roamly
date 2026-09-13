@@ -157,9 +157,20 @@
                 <div class="text-white-50 small mt-1">Official Curated Travel Reservation Voucher</div>
             </div>
             <div class="text-end">
-                <div class="voucher-stamp-pill mb-1">
-                    <i class="fa-solid fa-check-circle me-1"></i> PAID &bull; CONFIRMED
-                </div>
+                <% const rawVoucherStatus = (booking.status || booking.bookingStatus || "CONFIRMED").toUpperCase(); %>
+                <% if (rawVoucherStatus === "CANCELLED") { %>
+                    <div class="voucher-stamp-pill mb-1" style="background: rgba(220, 53, 69, 0.2); border-color: #dc3545; color: #dc3545;">
+                        <i class="fa-solid fa-ban me-1"></i> CANCELLED BY HOST
+                    </div>
+                <% } else if (rawVoucherStatus === "PENDING") { %>
+                    <div class="voucher-stamp-pill mb-1" style="background: rgba(217, 130, 43, 0.2); border-color: #d9822b; color: #d9822b;">
+                        <i class="fa-solid fa-clock me-1"></i> PENDING CONFIRMATION
+                    </div>
+                <% } else { %>
+                    <div class="voucher-stamp-pill mb-1">
+                        <i class="fa-solid fa-check-circle me-1"></i> PAID &bull; CONFIRMED
+                    </div>
+                <% } %>
                 <div class="text-white-50 small">Demo Sandbox Gateway</div>
             </div>
         </header>
@@ -179,7 +190,7 @@
                 </div>
                 <div class="col-sm-4">
                     <span class="text-muted small d-block text-uppercase fw-bold">Payment Status</span>
-                    <span class="badge bg-success text-white">PAID IN FULL (DEMO)</span>
+                    <span class="badge <%= rawVoucherStatus === 'CANCELLED' ? 'bg-danger' : 'bg-success' %> text-white"><%= rawVoucherStatus === 'CANCELLED' ? 'CANCELLED / REFUNDED (DEMO)' : 'PAID IN FULL (DEMO)' %></span>
                 </div>
             </div>
 
@@ -212,9 +223,9 @@
                         <span class="text-muted small d-block">Until 11:00 AM</span>
                     </div>
                     <div class="col-sm-4">
-                        <span class="text-muted small d-block">Length &amp; Guests</span>
+                        <span class="text-muted small d-block">Length &amp; Accommodation</span>
                         <strong class="text-navy">
-                            <%= booking.nights || 1 %> Night<%= (booking.nights || 1) > 1 ? 's' : '' %>
+                            <%= booking.nights || 1 %> Night<%= (booking.nights || 1) > 1 ? 's' : '' %> &bull; <%= booking.rooms || (booking.pricing && booking.pricing.rooms) || 1 %> Room<%= (booking.rooms || (booking.pricing && booking.pricing.rooms) || 1) > 1 ? 's' : '' %>
                         </strong>
                         <span class="text-muted small d-block">
                             <%= booking.guests ? (booking.guests.total || 1) : 1 %> Traveler<%= (booking.guests && booking.guests.total > 1) ? 's' : '' %>

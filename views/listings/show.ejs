@@ -373,7 +373,7 @@
                             </div>
                         </div>
                         <div class="booking-input-guests" id="showGuestsTrigger" role="button" tabindex="0">
-                            <span class="field-label">GUESTS</span>
+                            <span class="field-label">GUESTS &bull; <span id="showRoomsAllocatedLabel" class="text-forest fw-bold">1 ROOM</span></span>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="field-value" id="showGuestsValue">2 guests</span>
                                 <i class="fa-solid fa-chevron-down text-muted small"></i>
@@ -724,23 +724,28 @@
                 const diffTime = Math.abs(showEndDate - showStartDate);
                 const nights = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
 
+                const roomsByAdults = Math.ceil((showAdults || 1) / 2);
+                const roomsByInfants = Math.ceil((showInfants || 0) / 2);
+                const roomsByTotal = Math.ceil(((showAdults || 1) + (showChildren || 0)) / 3);
+                const allocatedRooms = Math.max(1, roomsByAdults, roomsByInfants, roomsByTotal);
+
                 if (showCheckInValue) showCheckInValue.textContent = formatFieldDate(showStartDate);
                 if (showCheckOutValue) showCheckOutValue.textContent = formatFieldDate(showEndDate);
                 if (showCalSummaryPill) showCalSummaryPill.textContent = `${formatShortDate(showStartDate)} – ${formatShortDate(showEndDate)} (${nights} night${nights > 1 ? 's' : ''})`;
 
-                // Recalculate transparent pricing
-                const baseTotal = nightlyPrice * nights;
+                // Recalculate transparent pricing with allocated rooms
+                const baseTotal = nightlyPrice * nights * allocatedRooms;
                 const preservationFee = Math.round(baseTotal * 0.05);
                 const grandTotal = baseTotal + preservationFee;
 
                 if (displayNightsCount) displayNightsCount.textContent = nights;
-                if (breakdownNightsFormula) breakdownNightsFormula.innerHTML = `₹ ${nightlyPrice.toLocaleString("en-IN")} &times; <span id="displayNightsCount">${nights}</span> night${nights > 1 ? 's' : ''}`;
+                if (breakdownNightsFormula) breakdownNightsFormula.innerHTML = `₹ ${nightlyPrice.toLocaleString("en-IN")} &times; <span id="displayNightsCount">${nights}</span> night${nights > 1 ? 's' : ''}${allocatedRooms > 1 ? ` &times; ${allocatedRooms} rooms` : ''}`;
                 if (breakdownBaseTotal) breakdownBaseTotal.textContent = `₹ ${baseTotal.toLocaleString("en-IN")}`;
                 if (breakdownPreservationFee) breakdownPreservationFee.textContent = `₹ ${preservationFee.toLocaleString("en-IN")}`;
                 if (breakdownGrandTotal) breakdownGrandTotal.textContent = `₹ ${grandTotal.toLocaleString("en-IN")}`;
 
                 // Update Modal Summary
-                if (modalSummaryDates) modalSummaryDates.textContent = `${formatShortDate(showStartDate)} – ${formatShortDate(showEndDate)} (${nights} night${nights > 1 ? 's' : ''})`;
+                if (modalSummaryDates) modalSummaryDates.textContent = `${formatShortDate(showStartDate)} – ${formatShortDate(showEndDate)} (${nights} night${nights > 1 ? 's' : ''}, ${allocatedRooms} room${allocatedRooms > 1 ? 's' : ''})`;
                 if (modalSummaryTotal) modalSummaryTotal.textContent = `₹ ${grandTotal.toLocaleString("en-IN")}`;
             } else if (showStartDate) {
                 if (showCheckInValue) showCheckInValue.textContent = formatFieldDate(showStartDate);
@@ -927,13 +932,26 @@
             if (showBtnInfantDec) showBtnInfantDec.disabled = showInfants <= 0;
 
             const totalTravelers = showAdults + showChildren;
+            const roomsByAdults = Math.ceil((showAdults || 1) / 2);
+            const roomsByInfants = Math.ceil((showInfants || 0) / 2);
+            const roomsByTotal = Math.ceil(((showAdults || 1) + (showChildren || 0)) / 3);
+            const allocatedRooms = Math.max(1, roomsByAdults, roomsByInfants, roomsByTotal);
+
+            const showRoomsAllocatedLabel = document.getElementById("showRoomsAllocatedLabel");
+            if (showRoomsAllocatedLabel) {
+                showRoomsAllocatedLabel.textContent = `${allocatedRooms} ROOM${allocatedRooms > 1 ? 'S' : ''}`;
+            }
+
             let text = `${totalTravelers} guest${totalTravelers > 1 ? 's' : ''}`;
             if (showInfants > 0) {
                 text += `, ${showInfants} infant${showInfants > 1 ? 's' : ''}`;
             }
+            text += ` • ${allocatedRooms} room${allocatedRooms > 1 ? 's' : ''}`;
 
             if (showGuestsValue) showGuestsValue.textContent = text;
             if (modalSummaryGuests) modalSummaryGuests.textContent = text;
+
+            updateShowPricingAndDates();
         };
 
         if (showBtnAdultDec) {
@@ -1006,7 +1024,11 @@
                 const checkOutStr = eDate.toISOString().split("T")[0];
                 const nights = Math.max(1, Math.round((eDate - sDate) / (1000 * 60 * 60 * 24)));
                 const totalGuests = (showAdults || 1) + (showChildren || 0) + (showInfants || 0);
-                const checkoutUrl = `/listings/<%= listing._id %>/checkout?checkIn=${checkInStr}&checkOut=${checkOutStr}&nights=${nights}&guests=${totalGuests}&adults=${showAdults || 1}&children=${showChildren || 0}&infants=${showInfants || 0}`;
+                const roomsByAdults = Math.ceil((showAdults || 1) / 2);
+                const roomsByInfants = Math.ceil((showInfants || 0) / 2);
+                const roomsByTotal = Math.ceil(((showAdults || 1) + (showChildren || 0)) / 3);
+                const allocatedRooms = Math.max(1, roomsByAdults, roomsByInfants, roomsByTotal);
+                const checkoutUrl = `/listings/<%= listing._id %>/checkout?checkIn=${checkInStr}&checkOut=${checkOutStr}&nights=${nights}&guests=${totalGuests}&adults=${showAdults || 1}&children=${showChildren || 0}&infants=${showInfants || 0}&rooms=${allocatedRooms}`;
                 window.location.href = checkoutUrl;
             });
         }

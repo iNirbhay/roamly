@@ -20,6 +20,10 @@ router.get("/properties/:id/bookings", isListingOwner, wrapAsync(hostController.
 router.post("/bookings/:id/status", wrapAsync(hostController.updateBookingStatus));
 router.patch("/bookings/:id/status", wrapAsync(hostController.updateBookingStatus));
 
+// Host deletes / declines booking request
+router.delete("/bookings/:id", wrapAsync(hostController.deleteBookingRequest));
+router.post("/bookings/:id/delete", wrapAsync(hostController.deleteBookingRequest));
+
 // Host gets detailed booking view
 router.get("/bookings/:id/details", wrapAsync(hostController.getBookingDetails));
 

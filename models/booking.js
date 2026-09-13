@@ -72,6 +72,11 @@ const bookingSchema = new Schema({
         infants: { type: Number, default: 0 },
         total: { type: Number, default: 1 }
     },
+    rooms: {
+        type: Number,
+        default: 1,
+        min: 1
+    },
     addOns: [
         {
             name: String,
@@ -96,6 +101,7 @@ const bookingSchema = new Schema({
     },
     pricing: {
         baseRate: { type: Number, default: 0 },
+        rooms: { type: Number, default: 1 },
         baseTotal: { type: Number, default: 0 },
         addOnsTotal: { type: Number, default: 0 },
         serviceFee: { type: Number, default: 0 },
@@ -153,6 +159,10 @@ bookingSchema.pre("validate", function () {
     if (!this.hostId && this.owner) this.hostId = this.owner;
     if (!this.owner && this.hostId) this.owner = this.hostId;
 
+    // Sync rooms
+    if (!this.rooms && this.pricing?.rooms) this.rooms = this.pricing.rooms;
+    if (this.rooms && this.pricing && !this.pricing.rooms) this.pricing.rooms = this.rooms;
+
     // Sync amounts
     if (this.pricing && this.pricing.totalAmount) {
         if (!this.totalAmount) this.totalAmount = this.pricing.totalAmount;
@@ -166,11 +176,15 @@ bookingSchema.pre("validate", function () {
         if (!this.pricing.taxes && this.taxes) this.pricing.taxes = this.taxes;
     }
 
-    // Sync statuses
-    if (this.bookingStatus) {
-        this.status = this.bookingStatus.toUpperCase();
-    } else if (this.status) {
+    // Sync statuses properly based on modification
+    if (this.isModified("status")) {
+        this.bookingStatus = (this.status || "").toLowerCase();
+    } else if (this.isModified("bookingStatus")) {
+        this.status = (this.bookingStatus || "").toUpperCase();
+    } else if (this.status && !this.bookingStatus) {
         this.bookingStatus = this.status.toLowerCase();
+    } else if (this.bookingStatus && !this.status) {
+        this.status = this.bookingStatus.toUpperCase();
     }
 
     // Sync payment

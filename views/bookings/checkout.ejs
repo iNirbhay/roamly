@@ -76,8 +76,8 @@
                     </div>
 
                     <!-- GUEST COUNTERS -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-sm-6">
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-4">
                             <div class="form-floating-custom">
                                 <label for="adultsCountInput">Adults (Age 13+)</label>
                                 <div class="input-wrapper">
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-floating-custom">
                                 <label for="childrenCountInput">Children (Age 2–12)</label>
                                 <div class="input-wrapper">
@@ -103,6 +103,33 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                            <div class="form-floating-custom">
+                                <label for="infantsCountInput">Infants (Under 2)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-baby input-leading-icon"></i>
+                                    <select id="infantsCountInput" class="form-control-custom">
+                                        <% for (let i = 0; i <= 5; i++) { %>
+                                            <option value="<%= i %>" <%= (queryData.infants || 0) === i ? 'selected' : '' %>><%= i %> Infant<%= i !== 1 ? 's' : '' %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROOM ALLOCATION BANNER -->
+                    <div class="room-allocation-banner p-3 rounded-3 mb-4 d-flex align-items-center justify-content-between" style="background-color: var(--roamly-cream); border: 1px solid var(--roamly-border);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: rgba(36, 82, 53, 0.12); color: var(--roamly-forest);">
+                                <i class="fa-solid fa-door-open fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-navy d-block">Allocated Accommodation: <span id="allocatedRoomsCountText" class="text-forest"><%= queryData.rooms || 1 %> Room<%= (queryData.rooms || 1) > 1 ? 's' : '' %></span></span>
+                                <small class="text-muted" id="roomAllocationReason">Max 2 adults per room &bull; Automatically optimized for your group size</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-forest text-white rounded-pill px-3 py-2 fw-bold" id="allocatedRoomsBadge"><%= queryData.rooms || 1 %> Room<%= (queryData.rooms || 1) > 1 ? 's' : '' %></span>
                     </div>
 
                     <!-- CONTACT INFORMATION -->
@@ -503,7 +530,7 @@
                             <div class="col-sm-6 border-top pt-2">
                                 <span class="text-muted small d-block">Dates &amp; Duration</span>
                                 <strong class="text-navy" id="confirmDates">Check-in to Check-out</strong>
-                                <span class="text-muted small d-block" id="confirmNights">3 nights &bull; 2 guests</span>
+                                <span class="text-muted small d-block" id="confirmNights">3 nights &bull; 2 guests &bull; 1 room</span>
                             </div>
                             <div class="col-sm-6 border-top pt-2">
                                 <span class="text-muted small d-block">Total Paid (Demo)</span>
@@ -557,7 +584,7 @@
                 <!-- PRICE CALCULATION BREAKDOWN -->
                 <div class="summary-pricing-body">
                     <div class="price-item-row">
-                        <span>₹ <%= (listing.price || 0).toLocaleString("en-IN") %> &times; <span id="summaryNightsDisplay">3</span> nights</span>
+                        <span>₹ <%= (listing.price || 0).toLocaleString("en-IN") %> &times; <span id="summaryNightsDisplay">3</span> night(s) &times; <span id="summaryRoomsDisplay">1</span> room(s)</span>
                         <strong id="summaryBasePrice">₹ 0</strong>
                     </div>
 

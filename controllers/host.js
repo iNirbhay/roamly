@@ -279,6 +279,7 @@ module.exports.updateBookingStatus = async (req, res) => {
         }
 
         booking.status = status;
+        booking.bookingStatus = status.toLowerCase();
         await booking.save();
 
         if (req.xhr || req.headers.accept?.includes("json")) {
@@ -286,6 +287,7 @@ module.exports.updateBookingStatus = async (req, res) => {
                 success: true,
                 message: `Booking ${booking.bookingId} marked as ${status}.`,
                 status: booking.status,
+                bookingStatus: booking.bookingStatus,
                 booking
             });
         }
@@ -298,6 +300,55 @@ module.exports.updateBookingStatus = async (req, res) => {
             return res.status(500).json({ success: false, message: err.message });
         }
         req.flash("error", "Failed to update booking status: " + err.message);
+        res.redirect("back");
+    }
+};
+
+module.exports.deleteBookingRequest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const booking = await Booking.findById(id).populate("listing");
+        if (!booking) {
+            if (req.xhr || req.headers.accept?.includes("json")) {
+                return res.status(404).json({ success: false, message: "Booking not found." });
+            }
+            req.flash("error", "Booking not found.");
+            return res.redirect("back");
+        }
+
+        const isUserAdmin = req.user.role === "admin" || (req.user.username && req.user.username.toLowerCase() === "admin");
+        const isOwner = booking.listing && booking.listing.owner && booking.listing.owner.equals(req.user._id);
+
+        if (!isUserAdmin && !isOwner) {
+            if (req.xhr || req.headers.accept?.includes("json")) {
+                return res.status(403).json({ success: false, message: "Access denied. You do not own this property." });
+            }
+            req.flash("error", "Access denied: You do not own this property.");
+            return res.redirect("/host/dashboard");
+        }
+
+        // Host deleting/rejecting request sets it to CANCELLED so traveler sees it in My Bookings
+        booking.status = "CANCELLED";
+        booking.bookingStatus = "cancelled";
+        await booking.save();
+
+        if (req.xhr || req.headers.accept?.includes("json")) {
+            return res.json({
+                success: true,
+                message: `Booking request ${booking.bookingId} cancelled by host.`,
+                status: "CANCELLED",
+                booking
+            });
+        }
+
+        req.flash("success", `Booking request ${booking.bookingId} deleted / cancelled.`);
+        res.redirect("back");
+    } catch (err) {
+        console.error("Error deleting booking request:", err);
+        if (req.xhr || req.headers.accept?.includes("json")) {
+            return res.status(500).json({ success: false, message: err.message });
+        }
+        req.flash("error", "Failed to delete booking request: " + err.message);
         res.redirect("back");
     }
 };

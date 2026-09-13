@@ -233,11 +233,11 @@ document.addEventListener("DOMContentLoaded", () => {
             let actionButtons = "";
             if (status === "PENDING") {
                 actionButtons = `
-                    <button type="button" class="btn btn-sm btn-success rounded-pill px-3 me-1 status-action-btn" data-id="${b._id}" data-action="CONFIRMED">
-                        <i class="fa-solid fa-check me-1"></i> Confirm
+                    <button type="button" class="btn btn-sm btn-success rounded-pill px-3 me-1 status-action-btn" data-id="${b._id}" data-action="CONFIRMED" title="Confirm Booking / Issue Ticket">
+                        <i class="fa-solid fa-check me-1"></i> Confirm Ticket
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Cancel Booking">
-                        <i class="fa-solid fa-xmark"></i>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Delete / Decline Request">
+                        <i class="fa-solid fa-trash-can me-1"></i> Delete Request
                     </button>
                 `;
             } else if (status === "CONFIRMED") {
@@ -245,15 +245,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-2 me-1 status-action-btn" data-id="${b._id}" data-action="COMPLETED" title="Mark Stay as Completed">
                         <i class="fa-solid fa-check-double me-1"></i> Complete
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Cancel Booking">
-                        <i class="fa-solid fa-ban"></i>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Cancel Booking / Void Ticket">
+                        <i class="fa-solid fa-ban me-1"></i> Cancel Ticket
                     </button>
                 `;
             } else if (status === "CANCELLED") {
-                actionButtons = `<span class="text-muted small">Cancelled</span>`;
+                actionButtons = `<span class="badge bg-danger-subtle text-danger border border-danger-subtle" style="font-size: 0.72rem;"><i class="fa-solid fa-circle-xmark me-1"></i> Cancelled by Host</span>`;
             } else if (status === "COMPLETED") {
                 actionButtons = `<span class="text-forest small fw-semibold"><i class="fa-solid fa-circle-check me-1"></i> Completed</span>`;
             }
+
+            const allocatedRooms = b.rooms || (b.pricing && b.pricing.rooms) || 1;
 
             return `
                 <tr id="booking-row-${b._id}">
@@ -270,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td class="small">
                         <strong>${checkInStr}</strong> &rarr; <br>
                         <strong>${checkOutStr}</strong>
-                        <div class="text-muted" style="font-size: 0.74rem;">${b.nights || 1} nights</div>
+                        <div class="text-muted" style="font-size: 0.74rem;">${b.nights || 1} night(s) &bull; <strong>${allocatedRooms} room(s)</strong></div>
                     </td>
                     <td class="small fw-semibold">
                         ${guestsCount} guest${guestsCount > 1 ? 's' : ''}
@@ -454,10 +456,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (b.status === "PENDING") {
             modalBtns = `
                 <button type="button" class="btn btn-success rounded-pill px-3 status-action-btn" data-id="${b._id}" data-action="CONFIRMED" data-bs-dismiss="modal">
-                    <i class="fa-solid fa-check me-1"></i> Confirm Booking
+                    <i class="fa-solid fa-check me-1"></i> Confirm Ticket
                 </button>
                 <button type="button" class="btn btn-outline-danger rounded-pill px-3 ms-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" data-bs-dismiss="modal">
-                    <i class="fa-solid fa-xmark me-1"></i> Reject / Cancel
+                    <i class="fa-solid fa-trash-can me-1"></i> Delete Request
                 </button>
             `;
         } else if (b.status === "CONFIRMED") {
@@ -466,7 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <i class="fa-solid fa-check-double me-1"></i> Mark as Completed Stay
                 </button>
                 <button type="button" class="btn btn-outline-danger rounded-pill px-3 ms-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" data-bs-dismiss="modal">
-                    <i class="fa-solid fa-ban me-1"></i> Cancel Reservation
+                    <i class="fa-solid fa-ban me-1"></i> Cancel Ticket
                 </button>
             `;
         }

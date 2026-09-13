@@ -17,14 +17,24 @@ module.exports.renderCheckout = async (req, res) => {
     const dayAfter3 = new Date(tomorrow);
     dayAfter3.setDate(dayAfter3.getDate() + 3);
 
+    const adults = parseInt(req.query.adults, 10) || 2;
+    const children = parseInt(req.query.children, 10) || 0;
+    const infants = parseInt(req.query.infants, 10) || 0;
+    const roomsByAdults = Math.ceil(adults / 2);
+    const roomsByInfants = Math.ceil(infants / 2);
+    const roomsByTotal = Math.ceil((adults + children) / 3);
+    const calculatedRooms = Math.max(1, roomsByAdults, roomsByInfants, roomsByTotal);
+    const rooms = parseInt(req.query.rooms, 10) || calculatedRooms;
+
     const queryData = {
         checkIn: req.query.checkIn || tomorrow.toISOString().split("T")[0],
         checkOut: req.query.checkOut || dayAfter3.toISOString().split("T")[0],
         nights: parseInt(req.query.nights, 10) || 3,
-        guests: parseInt(req.query.guests, 10) || 2,
-        adults: parseInt(req.query.adults, 10) || 2,
-        children: parseInt(req.query.children, 10) || 0,
-        infants: parseInt(req.query.infants, 10) || 0
+        guests: parseInt(req.query.guests, 10) || (adults + children + infants),
+        adults,
+        children,
+        infants,
+        rooms
     };
 
     res.render("bookings/checkout.ejs", {
@@ -42,6 +52,7 @@ module.exports.createBookingApi = async (req, res) => {
             checkOut,
             nights,
             guests,
+            rooms: reqRooms,
             addOns,
             pricing,
             payment
@@ -70,6 +81,10 @@ module.exports.createBookingApi = async (req, res) => {
         }
 
         const bookingId = generateBookingId();
+        const adultsCount = Number(guests?.adults) || 1;
+        const childrenCount = Number(guests?.children) || 0;
+        const infantsCount = Number(guests?.infants) || 0;
+        const allocatedRooms = Number(reqRooms) || Number(pricing?.rooms) || Math.max(1, Math.ceil(adultsCount / 2), Math.ceil(infantsCount / 2), Math.ceil((adultsCount + childrenCount) / 3));
 
         const newBooking = new Booking({
             bookingId,
@@ -88,11 +103,12 @@ module.exports.createBookingApi = async (req, res) => {
             checkOut: new Date(checkOut),
             nights: Number(nights) || 1,
             guests: {
-                adults: Number(guests?.adults) || 1,
-                children: Number(guests?.children) || 0,
-                infants: Number(guests?.infants) || 0,
-                total: Number(guests?.total) || 1
+                adults: adultsCount,
+                children: childrenCount,
+                infants: infantsCount,
+                total: Number(guests?.total) || (adultsCount + childrenCount + infantsCount)
             },
+            rooms: allocatedRooms,
             addOns: Array.isArray(addOns) ? addOns : [],
             price: Number(pricing.baseTotal) || 0,
             taxes: Number(pricing.taxes) || 0,
@@ -100,6 +116,7 @@ module.exports.createBookingApi = async (req, res) => {
             totalAmount: Number(pricing.totalAmount) || 0,
             pricing: {
                 baseRate: Number(pricing.baseRate) || listing.price || 0,
+                rooms: allocatedRooms,
                 baseTotal: Number(pricing.baseTotal) || 0,
                 addOnsTotal: Number(pricing.addOnsTotal) || 0,
                 serviceFee: Number(pricing.serviceFee) || 0,
