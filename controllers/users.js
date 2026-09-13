@@ -1,6 +1,10 @@
 const User = require("../models/users");
 
 module.exports.renderSignupForm = (req, res) => {
+    if (req.isAuthenticated()) {
+        const target = (req.user && (req.user.role === "host" || req.user.role === "admin")) ? "/host/dashboard" : "/listings";
+        return res.redirect(target);
+    }
     res.render("users/signup.ejs");
 };
 
@@ -36,6 +40,10 @@ module.exports.signup = async (req, res, next) => {
 };
 
 module.exports.renderLoginForm = (req, res) => {
+    if (req.isAuthenticated()) {
+        const target = (req.user && (req.user.role === "host" || req.user.role === "admin")) ? "/host/dashboard" : "/listings";
+        return res.redirect(target);
+    }
     res.render("users/login.ejs");
 };
 
@@ -52,7 +60,10 @@ module.exports.login = async (req, res) => {
     }
     req.flash("success", "Welcome Back!");
     const defaultTarget = (req.user && (req.user.role === "host" || req.user.role === "admin")) ? "/host/dashboard" : "/listings";
-    const redirectUrl = res.locals.redirectUrl || req.session.redirectUrl || defaultTarget;
+    let redirectUrl = res.locals.redirectUrl || req.session.redirectUrl || defaultTarget;
+    if (!redirectUrl || redirectUrl === "/login" || redirectUrl === "/signup") {
+        redirectUrl = defaultTarget;
+    }
     delete req.session.redirectUrl;
     res.redirect(redirectUrl);
 };
