@@ -26,6 +26,10 @@ router.get("/api/bookings/:bookingId", isLoggedIn, wrapAsync(bookings.getBooking
 // REST: Update booking status - requires authentication
 router.patch("/api/bookings/:id/status", isLoggedIn, express.json(), wrapAsync(bookings.updateBookingStatusApi));
 
+// Traveler cancels booking - requires authentication
+router.post("/bookings/:id/cancel", isLoggedIn, express.urlencoded({ extended: true }), express.json(), wrapAsync(bookings.cancelBookingByUser));
+router.post("/api/bookings/:id/cancel", isLoggedIn, express.json(), wrapAsync(bookings.cancelBookingByUser));
+
 // Printable/downloadable travel voucher
 router.get("/bookings/:bookingId/voucher", wrapAsync(bookings.downloadVoucher));
 

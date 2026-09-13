@@ -156,11 +156,11 @@
                 </div>
                 <div class="text-white-50 small mt-1">Official Curated Travel Reservation Voucher</div>
             </div>
-            <div class="text-end">
                 <% const rawVoucherStatus = (booking.status || booking.bookingStatus || "CONFIRMED").toUpperCase(); %>
                 <% if (rawVoucherStatus === "CANCELLED") { %>
+                    <% const isTravelerCancel = (booking.cancellation && booking.cancellation.cancelledBy === "traveler") || booking.cancelledBy === "traveler"; %>
                     <div class="voucher-stamp-pill mb-1" style="background: rgba(220, 53, 69, 0.2); border-color: #dc3545; color: #dc3545;">
-                        <i class="fa-solid fa-ban me-1"></i> CANCELLED BY HOST
+                        <i class="fa-solid <%= isTravelerCancel ? 'fa-user-xmark' : 'fa-ban' %> me-1"></i> <%= isTravelerCancel ? 'CANCELLED BY TRAVELER' : 'CANCELLED BY HOST' %>
                     </div>
                 <% } else if (rawVoucherStatus === "PENDING") { %>
                     <div class="voucher-stamp-pill mb-1" style="background: rgba(217, 130, 43, 0.2); border-color: #d9822b; color: #d9822b;">
@@ -255,7 +255,7 @@
 
                 <div class="col-sm-6">
                     <div class="voucher-section-title">
-                        <i class="fa-solid fa-receipt"></i> Payment Receipt (Demo)
+                        <i class="fa-solid fa-receipt"></i> Payment Receipt &amp; Refund (Demo)
                     </div>
                     <div class="p-3 rounded-3 border bg-light">
                         <div class="d-flex justify-content-between text-muted small mb-1">
@@ -268,8 +268,26 @@
                         </div>
                         <div class="d-flex justify-content-between text-navy fw-bold border-top pt-2 mt-2">
                             <span>Total Amount Paid:</span>
-                            <span class="text-forest fs-6">₹ <%= booking.pricing ? (booking.pricing.totalAmount || 0).toLocaleString("en-IN") : "0" %></span>
+                            <span class="text-forest fs-6">₹ <%= booking.pricing ? (booking.pricing.totalAmount || 0).toLocaleString("en-IN") : (booking.totalAmount || 0).toLocaleString("en-IN") %></span>
                         </div>
+                        <% if (rawVoucherStatus === "CANCELLED") { %>
+                            <%
+                                const totalAmt = Number(booking.pricing?.totalAmount || booking.totalAmount || 0);
+                                const isTravelerCancel = (booking.cancellation && booking.cancellation.cancelledBy === "traveler") || booking.cancelledBy === "traveler";
+                                const fee = (booking.cancellation && booking.cancellation.cancellationFee !== undefined) ? booking.cancellation.cancellationFee : (isTravelerCancel ? Math.round(totalAmt * 0.15) : 0);
+                                const refund = (booking.cancellation && booking.cancellation.refundAmount !== undefined) ? booking.cancellation.refundAmount : Math.max(0, totalAmt - fee);
+                            %>
+                            <% if (fee > 0) { %>
+                                <div class="d-flex justify-content-between text-danger small pt-1">
+                                    <span><i class="fa-solid fa-minus me-1"></i> Cancellation Charge (15%):</span>
+                                    <strong>- ₹ <%= fee.toLocaleString("en-IN") %></strong>
+                                </div>
+                            <% } %>
+                            <div class="d-flex justify-content-between text-forest fw-bold border-top pt-1 mt-1">
+                                <span><i class="fa-solid fa-circle-check me-1"></i> Net Refund Processed:</span>
+                                <span>₹ <%= refund.toLocaleString("en-IN") %></span>
+                            </div>
+                        <% } %>
                     </div>
                 </div>
             </div>

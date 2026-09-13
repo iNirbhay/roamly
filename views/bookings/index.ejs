@@ -112,10 +112,10 @@
             <div>
                 <h2 class="bookings-section-title">
                     <i class="fa-solid fa-ban text-danger"></i>
-                    Cancelled by Host
+                    Cancelled Reservations
                     <span class="badge bg-danger text-white rounded-pill fs-6 px-3 py-1 ms-2" id="cancelledHeaderBadge">0</span>
                 </h2>
-                <p class="text-muted small mb-0">Reservations cancelled or declined by sanctuary hosts</p>
+                <p class="text-muted small mb-0">Reservations cancelled by you or declined by sanctuary hosts</p>
             </div>
         </div>
 
@@ -126,7 +126,7 @@
         <div id="emptyCancelledNotice" class="empty-section-card d-none">
             <i class="fa-solid fa-calendar-check fs-2 text-muted mb-2 d-block"></i>
             <h5 class="fw-bold text-navy mb-1">No Cancelled Bookings</h5>
-            <p class="text-muted small mb-0">None of your reservations have been cancelled or declined.</p>
+            <p class="text-muted small mb-0">None of your reservations have been cancelled.</p>
         </div>
     </section>
 
@@ -164,12 +164,100 @@
             <div class="modal-body p-4" id="modalBookingBody">
                 <!-- Populated dynamically via JS -->
             </div>
-            <div class="modal-footer border-top px-4 py-3 bg-light">
-                <a href="#" id="modalPrintVoucherLink" target="_blank" class="roamly-btn-primary">
-                    <i class="fa-solid fa-print me-2"></i> Print Official Voucher
-                </a>
-                <button type="button" class="roamly-btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer border-top px-4 py-3 bg-light d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-danger d-none" id="modalCancelStayBtn">
+                    <i class="fa-solid fa-ban me-1"></i> Cancel Reservation
+                </button>
+                <div class="d-flex gap-2 ms-auto">
+                    <a href="#" id="modalPrintVoucherLink" target="_blank" class="roamly-btn-primary">
+                        <i class="fa-solid fa-print me-2"></i> Print Official Voucher
+                    </a>
+                    <button type="button" class="roamly-btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- CANCELLATION CONFIRMATION MODAL -->
+<div class="modal fade" id="cancelBookingConfirmModal" tabindex="-1" aria-labelledby="cancelBookingConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom px-4 py-3 bg-danger-subtle">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger text-white rounded-pill px-2 py-1">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </span>
+                    <h5 class="modal-title font-serif text-navy fw-bold mb-0" id="cancelBookingConfirmModalLabel">Confirm Cancellation</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <h6 class="fw-bold text-navy mb-1" id="cancelListingTitle">Sanctuary Name</h6>
+                    <div class="text-muted small">
+                        Confirmation Code: <strong class="text-navy font-monospace" id="cancelBookingCode">ROAM-XXXXXX</strong>
+                    </div>
+                </div>
+
+                <div class="p-3 rounded-3 mb-3 bg-light border">
+                    <h6 class="text-uppercase fw-bold text-navy small mb-2">
+                        <i class="fa-solid fa-calculator text-forest me-1"></i> Refund &amp; Charge Calculation
+                    </h6>
+                    <div class="d-flex justify-content-between text-muted small py-1 border-bottom">
+                        <span>Original Paid Amount:</span>
+                        <strong class="text-navy" id="cancelOriginalTotal">₹ 0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between text-danger small py-1 border-bottom">
+                        <span><i class="fa-solid fa-circle-minus me-1"></i> Cancellation Charge (15%):</span>
+                        <strong id="cancelFeeAmount">- ₹ 0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between text-forest fw-bold pt-2 fs-6">
+                        <span><i class="fa-solid fa-circle-check me-1"></i> Net Refund to Process:</span>
+                        <span id="cancelRefundAmount">₹ 0</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning d-flex align-items-start gap-2 py-2 px-3 mb-3" style="font-size: 0.85rem;">
+                    <i class="fa-solid fa-shield-halved text-warning-emphasis fs-5 mt-1"></i>
+                    <div>
+                        <strong>Roamly Cancellation Policy:</strong>
+                        A standard non-refundable 15% sanctuary administrative preservation fee is deducted. The remaining <strong>85% net refund</strong> will be returned to your original payment method immediately.
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label small fw-semibold text-navy mb-1">Reason for cancellation:</label>
+                    <select class="form-select form-select-sm" id="cancelReasonSelect">
+                        <option value="Change of travel plans or dates">Change of travel plans or dates</option>
+                        <option value="Found alternative accommodation">Found alternative accommodation</option>
+                        <option value="Personal or family emergency">Personal or family emergency</option>
+                        <option value="Booked by mistake">Booked by mistake</option>
+                        <option value="Other reason">Other reason</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer border-top px-4 py-3 bg-light d-flex justify-content-between">
+                <button type="button" class="roamly-btn-secondary py-2 px-3" data-bs-dismiss="modal">
+                    Keep My Booking
+                </button>
+                <button type="button" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold" id="confirmCancelSubmitBtn">
+                    <i class="fa-solid fa-ban me-1"></i> Cancel &amp; Confirm Refund
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION FOR CANCELLATION -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+    <div id="cancellationSuccessToast" class="toast align-items-center text-bg-success border-0 rounded-3 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body d-flex align-items-center gap-2 text-white">
+                <i class="fa-solid fa-circle-check fs-5"></i>
+                <span id="toastMessage">Reservation cancelled successfully.</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
@@ -227,236 +315,310 @@ document.addEventListener("DOMContentLoaded", () => {
         if (b && b.bookingId) bookingMap.set(b.bookingId, b);
     });
 
-    const allBookings = Array.from(bookingMap.values());
+    let allBookings = Array.from(bookingMap.values());
 
-    // 2. Classify into Upcoming vs Previous vs Cancelled
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Current active filter state
+    let activeFilter = "all";
 
-    const upcomingBookings = [];
-    const pastBookings = [];
-    const cancelledBookings = [];
+    // 2. Classify, calculate and render
+    function recalculateAndRender() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-    allBookings.forEach(b => {
-        const rawStatus = (b.status || b.bookingStatus || "").toUpperCase();
-        if (rawStatus === "CANCELLED") {
-            cancelledBookings.push(b);
+        const upcomingBookings = [];
+        const pastBookings = [];
+        const cancelledBookings = [];
+
+        allBookings.forEach(b => {
+            const rawStatus = (b.status || b.bookingStatus || "").toUpperCase();
+            if (rawStatus === "CANCELLED") {
+                cancelledBookings.push(b);
+                return;
+            }
+
+            const checkOutDate = b.checkOut ? new Date(b.checkOut) : null;
+            if (!checkOutDate || isNaN(checkOutDate.getTime())) {
+                upcomingBookings.push(b);
+                return;
+            }
+
+            // Include checkout day until 23:59:59 as upcoming/active
+            const eodCheckout = new Date(checkOutDate);
+            eodCheckout.setHours(23, 59, 59, 999);
+
+            if (eodCheckout >= today) {
+                upcomingBookings.push(b);
+            } else {
+                pastBookings.push(b);
+            }
+        });
+
+        // Sort upcoming: soonest check-in first
+        upcomingBookings.sort((a, b) => new Date(a.checkIn || 0) - new Date(b.checkIn || 0));
+
+        // Sort past: most recent past stay first
+        pastBookings.sort((a, b) => new Date(b.checkOut || 0) - new Date(a.checkOut || 0));
+
+        // Sort cancelled: most recent first
+        cancelledBookings.sort((a, b) => new Date(b.cancellation?.cancelledAt || b.updatedAt || b.createdAt || 0) - new Date(a.cancellation?.cancelledAt || a.updatedAt || a.createdAt || 0));
+
+        // Update Counts
+        const countAll = document.getElementById("countAll");
+        const countUpcoming = document.getElementById("countUpcoming");
+        const countPast = document.getElementById("countPast");
+        const countCancelled = document.getElementById("countCancelled");
+        const upcomingHeaderBadge = document.getElementById("upcomingHeaderBadge");
+        const pastHeaderBadge = document.getElementById("pastHeaderBadge");
+        const cancelledHeaderBadge = document.getElementById("cancelledHeaderBadge");
+
+        if (countAll) countAll.textContent = allBookings.length;
+        if (countUpcoming) countUpcoming.textContent = upcomingBookings.length;
+        if (countPast) countPast.textContent = pastBookings.length;
+        if (countCancelled) countCancelled.textContent = cancelledBookings.length;
+        if (upcomingHeaderBadge) upcomingHeaderBadge.textContent = upcomingBookings.length;
+        if (pastHeaderBadge) pastHeaderBadge.textContent = pastBookings.length;
+        if (cancelledHeaderBadge) cancelledHeaderBadge.textContent = cancelledBookings.length;
+
+        // Section Elements
+        const upcomingSection = document.getElementById("upcomingSection");
+        const pastSection = document.getElementById("pastSection");
+        const cancelledSection = document.getElementById("cancelledSection");
+        const upcomingGrid = document.getElementById("upcomingGrid");
+        const pastGrid = document.getElementById("pastGrid");
+        const cancelledGrid = document.getElementById("cancelledGrid");
+        const emptyUpcomingNotice = document.getElementById("emptyUpcomingNotice");
+        const emptyPastNotice = document.getElementById("emptyPastNotice");
+        const emptyCancelledNotice = document.getElementById("emptyCancelledNotice");
+        const globalEmptyState = document.getElementById("globalEmptyState");
+
+        if (allBookings.length === 0) {
+            if (upcomingSection) upcomingSection.classList.add("d-none");
+            if (pastSection) pastSection.classList.add("d-none");
+            if (cancelledSection) cancelledSection.classList.add("d-none");
+            if (globalEmptyState) globalEmptyState.classList.remove("d-none");
             return;
-        }
-
-        const checkOutDate = b.checkOut ? new Date(b.checkOut) : null;
-        if (!checkOutDate || isNaN(checkOutDate.getTime())) {
-            upcomingBookings.push(b);
-            return;
-        }
-
-        // Include checkout day until 23:59:59 as upcoming/active
-        const eodCheckout = new Date(checkOutDate);
-        eodCheckout.setHours(23, 59, 59, 999);
-
-        if (eodCheckout >= today) {
-            upcomingBookings.push(b);
         } else {
-            pastBookings.push(b);
+            if (globalEmptyState) globalEmptyState.classList.add("d-none");
         }
-    });
 
-    // Sort upcoming: soonest check-in first
-    upcomingBookings.sort((a, b) => new Date(a.checkIn || 0) - new Date(b.checkIn || 0));
+        // Helper: generate card HTML
+        function createBookingCardHtml(booking, isPast, globalIndex) {
+            const listing = booking.listing || {};
+            const title = listing.title || "Curated Roamly Sanctuary";
+            const location = listing.location ? (listing.location + (listing.country ? `, ${listing.country}` : '')) : "India";
+            const listingId = listing._id || (typeof listing === "string" ? listing : "");
 
-    // Sort past: most recent past stay first
-    pastBookings.sort((a, b) => new Date(b.checkOut || 0) - new Date(a.checkOut || 0));
+            let img = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80";
+            if (typeof listing.image === "string") img = listing.image;
+            else if (listing.image && listing.image.url) img = listing.image.url;
+            else if (listing.imageUrl) img = listing.imageUrl;
 
-    // Sort cancelled: most recent first
-    cancelledBookings.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+            const checkInDate = booking.checkIn ? new Date(booking.checkIn) : new Date();
+            const checkOutDate = booking.checkOut ? new Date(booking.checkOut) : new Date();
 
-    // Update Counts
-    const countAll = document.getElementById("countAll");
-    const countUpcoming = document.getElementById("countUpcoming");
-    const countPast = document.getElementById("countPast");
-    const countCancelled = document.getElementById("countCancelled");
-    const upcomingHeaderBadge = document.getElementById("upcomingHeaderBadge");
-    const pastHeaderBadge = document.getElementById("pastHeaderBadge");
-    const cancelledHeaderBadge = document.getElementById("cancelledHeaderBadge");
+            const checkInStr = checkInDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+            const checkOutStr = checkOutDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+            const totalPaidNum = Number(booking.pricing?.totalAmount || booking.totalAmount || 0);
+            const totalPaid = totalPaidNum.toLocaleString("en-IN");
+            const nights = booking.nights || 1;
+            const guestsCount = booking.guests ? (booking.guests.total || (booking.guests.adults || 1)) : 1;
+            const roomsAllocated = booking.rooms || (booking.pricing && booking.pricing.rooms) || 1;
+            const paymentMethod = (booking.payment && booking.payment.method) ? booking.payment.method : "Demo Gateway";
+            const bookingCode = booking.bookingId || "ROAM-DEMO";
 
-    if (countAll) countAll.textContent = allBookings.length;
-    if (countUpcoming) countUpcoming.textContent = upcomingBookings.length;
-    if (countPast) countPast.textContent = pastBookings.length;
-    if (countCancelled) countCancelled.textContent = cancelledBookings.length;
-    if (upcomingHeaderBadge) upcomingHeaderBadge.textContent = upcomingBookings.length;
-    if (pastHeaderBadge) pastHeaderBadge.textContent = pastBookings.length;
-    if (cancelledHeaderBadge) cancelledHeaderBadge.textContent = cancelledBookings.length;
+            // Dynamic Status and Timing Indicators
+            const rawStatus = (booking.status || booking.bookingStatus || (isPast ? "COMPLETED" : "CONFIRMED")).toUpperCase();
+            let statusBadge = "";
+            let timingBadge = "";
+            let cancellationNoticeHtml = "";
 
-    // Elements
-    const upcomingSection = document.getElementById("upcomingSection");
-    const pastSection = document.getElementById("pastSection");
-    const cancelledSection = document.getElementById("cancelledSection");
-    const upcomingGrid = document.getElementById("upcomingGrid");
-    const pastGrid = document.getElementById("pastGrid");
-    const cancelledGrid = document.getElementById("cancelledGrid");
-    const emptyUpcomingNotice = document.getElementById("emptyUpcomingNotice");
-    const emptyPastNotice = document.getElementById("emptyPastNotice");
-    const emptyCancelledNotice = document.getElementById("emptyCancelledNotice");
-    const globalEmptyState = document.getElementById("globalEmptyState");
+            if (rawStatus === "CANCELLED") {
+                const cancelledBy = booking.cancellation?.cancelledBy || booking.cancelledBy || "host";
+                const isCancelledByTraveler = cancelledBy === "traveler";
+                const fee = booking.cancellation?.cancellationFee !== undefined ? booking.cancellation.cancellationFee : (isCancelledByTraveler ? Math.round(totalPaidNum * 0.15) : 0);
+                const refund = booking.cancellation?.refundAmount !== undefined ? booking.cancellation.refundAmount : Math.max(0, totalPaidNum - fee);
 
-    if (allBookings.length === 0) {
-        if (upcomingSection) upcomingSection.classList.add("d-none");
-        if (pastSection) pastSection.classList.add("d-none");
-        if (cancelledSection) cancelledSection.classList.add("d-none");
-        if (globalEmptyState) globalEmptyState.classList.remove("d-none");
-        return;
-    }
-
-    // Helper: generate card HTML
-    function createBookingCardHtml(booking, isPast, globalIndex) {
-        const listing = booking.listing || {};
-        const title = listing.title || "Curated Roamly Sanctuary";
-        const location = listing.location ? (listing.location + (listing.country ? `, ${listing.country}` : '')) : "India";
-        const listingId = listing._id || (typeof listing === "string" ? listing : "");
-
-        let img = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80";
-        if (typeof listing.image === "string") img = listing.image;
-        else if (listing.image && listing.image.url) img = listing.image.url;
-        else if (listing.imageUrl) img = listing.imageUrl;
-
-        const checkInDate = booking.checkIn ? new Date(booking.checkIn) : new Date();
-        const checkOutDate = booking.checkOut ? new Date(booking.checkOut) : new Date();
-
-        const checkInStr = checkInDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
-        const checkOutStr = checkOutDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
-        const totalPaid = booking.pricing ? (booking.pricing.totalAmount || 0).toLocaleString("en-IN") : "0";
-        const nights = booking.nights || 1;
-        const guestsCount = booking.guests ? (booking.guests.total || (booking.guests.adults || 1)) : 1;
-        const roomsAllocated = booking.rooms || (booking.pricing && booking.pricing.rooms) || 1;
-        const paymentMethod = (booking.payment && booking.payment.method) ? booking.payment.method : "Demo Gateway";
-        const bookingCode = booking.bookingId || "ROAM-DEMO";
-
-        // Dynamic Status and Timing Indicators
-        const rawStatus = (booking.status || booking.bookingStatus || (isPast ? "COMPLETED" : "CONFIRMED")).toUpperCase();
-        let statusBadge = "";
-        let timingBadge = "";
-
-        if (rawStatus === "CANCELLED") {
-            statusBadge = `
-                <span class="booking-card-status-badge cancelled" style="background: rgba(220, 53, 69, 0.95); color: #ffffff;">
-                    <i class="fa-solid fa-ban me-1"></i> CANCELLED BY HOST
-                </span>
-            `;
-            timingBadge = '<span class="stay-duration-tag tag-past text-danger fw-semibold"><i class="fa-solid fa-circle-xmark me-1"></i> Cancelled by Host</span>';
-        } else if (rawStatus === "PENDING") {
-            statusBadge = `
-                <span class="booking-card-status-badge pending" style="background: rgba(217, 130, 43, 0.95); color: #ffffff;">
-                    <i class="fa-solid fa-clock me-1"></i> PENDING CONFIRMATION
-                </span>
-            `;
-            timingBadge = '<span class="stay-duration-tag tag-upcoming text-warning-emphasis"><i class="fa-solid fa-hourglass-half me-1"></i> Awaiting Host</span>';
-        } else if (rawStatus === "CONFIRMED") {
-            statusBadge = `
-                <span class="booking-card-status-badge upcoming" style="background: rgba(36, 82, 53, 0.95); color: #ffffff;">
-                    <i class="fa-solid fa-circle-check me-1"></i> CONFIRMED
-                </span>
-            `;
-            if (!isPast) {
-                const diffDays = Math.ceil((checkInDate - today) / (1000 * 60 * 60 * 24));
-                if (diffDays <= 0 && checkOutDate >= today) {
-                    timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-bell me-1"></i> Check-in Today</span>';
-                } else if (diffDays === 1) {
-                    timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-clock me-1"></i> Check-in Tomorrow</span>';
-                } else if (diffDays > 1) {
-                    timingBadge = `<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-calendar-day me-1"></i> In ${diffDays} days</span>`;
+                if (isCancelledByTraveler) {
+                    statusBadge = `
+                        <span class="booking-card-status-badge cancelled" style="background: rgba(220, 53, 69, 0.95); color: #ffffff;">
+                            <i class="fa-solid fa-user-xmark me-1"></i> CANCELLED BY YOU
+                        </span>
+                    `;
+                    timingBadge = `<span class="stay-duration-tag tag-past text-danger fw-semibold"><i class="fa-solid fa-rotate-left me-1"></i> Refund: ₹ ${refund.toLocaleString("en-IN")}</span>`;
+                    cancellationNoticeHtml = `
+                        <div class="p-2 rounded-2 mt-2 bg-light border border-danger-subtle text-muted small">
+                            <div class="d-flex justify-content-between text-navy fw-semibold">
+                                <span><i class="fa-solid fa-circle-check text-success me-1"></i> Refund Status:</span>
+                                <span class="text-forest fw-bold">₹ ${refund.toLocaleString("en-IN")} Refunded</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted" style="font-size: 0.78rem;">
+                                <span>15% Cancellation Fee:</span>
+                                <span class="text-danger">- ₹ ${fee.toLocaleString("en-IN")}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    statusBadge = `
+                        <span class="booking-card-status-badge cancelled" style="background: rgba(220, 53, 69, 0.95); color: #ffffff;">
+                            <i class="fa-solid fa-ban me-1"></i> CANCELLED BY HOST
+                        </span>
+                    `;
+                    timingBadge = '<span class="stay-duration-tag tag-past text-danger fw-semibold"><i class="fa-solid fa-circle-xmark me-1"></i> Cancelled by Host</span>';
+                    cancellationNoticeHtml = `
+                        <div class="p-2 rounded-2 mt-2 bg-light border border-danger-subtle text-muted small">
+                            <div class="d-flex justify-content-between text-navy fw-semibold">
+                                <span><i class="fa-solid fa-circle-check text-success me-1"></i> Refund Status:</span>
+                                <span class="text-forest fw-bold">₹ ${totalPaid} (100% Refunded)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else if (rawStatus === "PENDING") {
+                statusBadge = `
+                    <span class="booking-card-status-badge pending" style="background: rgba(217, 130, 43, 0.95); color: #ffffff;">
+                        <i class="fa-solid fa-clock me-1"></i> PENDING CONFIRMATION
+                    </span>
+                `;
+                timingBadge = '<span class="stay-duration-tag tag-upcoming text-warning-emphasis"><i class="fa-solid fa-hourglass-half me-1"></i> Awaiting Host</span>';
+            } else if (rawStatus === "CONFIRMED") {
+                statusBadge = `
+                    <span class="booking-card-status-badge upcoming" style="background: rgba(36, 82, 53, 0.95); color: #ffffff;">
+                        <i class="fa-solid fa-circle-check me-1"></i> CONFIRMED
+                    </span>
+                `;
+                if (!isPast) {
+                    const diffDays = Math.ceil((checkInDate - today) / (1000 * 60 * 60 * 24));
+                    if (diffDays <= 0 && checkOutDate >= today) {
+                        timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-bell me-1"></i> Check-in Today</span>';
+                    } else if (diffDays === 1) {
+                        timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-clock me-1"></i> Check-in Tomorrow</span>';
+                    } else if (diffDays > 1) {
+                        timingBadge = `<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-calendar-day me-1"></i> In ${diffDays} days</span>`;
+                    }
+                } else {
+                    timingBadge = '<span class="stay-duration-tag tag-past"><i class="fa-solid fa-check-double me-1"></i> Completed Stay</span>';
                 }
             } else {
+                statusBadge = `
+                    <span class="booking-card-status-badge past">
+                        <i class="fa-solid fa-check-double me-1"></i> COMPLETED
+                    </span>
+                `;
                 timingBadge = '<span class="stay-duration-tag tag-past"><i class="fa-solid fa-check-double me-1"></i> Completed Stay</span>';
             }
-        } else {
-            statusBadge = `
-                <span class="booking-card-status-badge past">
-                    <i class="fa-solid fa-check-double me-1"></i> COMPLETED
-                </span>
-            `;
-            timingBadge = '<span class="stay-duration-tag tag-past"><i class="fa-solid fa-check-double me-1"></i> Completed Stay</span>';
-        }
 
-        const voucherUrl = `/bookings/${bookingCode}/voucher?name=${encodeURIComponent(booking.guestDetails?.fullName || 'Traveler')}&total=${booking.pricing?.totalAmount || 0}&listingTitle=${encodeURIComponent(title)}&location=${encodeURIComponent(location)}`;
+            const voucherUrl = `/bookings/${bookingCode}/voucher?name=${encodeURIComponent(booking.guestDetails?.fullName || 'Traveler')}&total=${booking.pricing?.totalAmount || 0}&listingTitle=${encodeURIComponent(title)}&location=${encodeURIComponent(location)}`;
 
-        return `
-            <article class="booking-history-card">
-                <div class="booking-card-media">
-                    <img src="${img}" alt="${title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
-                    ${statusBadge}
-                </div>
-                <div class="booking-card-content">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="booking-code-pill">
-                            <i class="fa-solid fa-hashtag text-forest"></i> ${bookingCode}
-                        </span>
-                        ${timingBadge}
+            return `
+                <article class="booking-history-card">
+                    <div class="booking-card-media">
+                        <img src="${img}" alt="${title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                        ${statusBadge}
                     </div>
-
-                    <h3 class="booking-card-title">${title}</h3>
-                    <div class="booking-card-location">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>${location}</span>
-                    </div>
-
-                    <div class="booking-card-meta-list">
-                        <div class="d-flex justify-content-between">
-                            <span><i class="fa-regular fa-calendar me-2 text-forest"></i> Dates:</span>
-                            <strong class="text-navy">${checkInStr} &rarr; ${checkOutStr}</strong>
+                    <div class="booking-card-content">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="booking-code-pill">
+                                <i class="fa-solid fa-hashtag text-forest"></i> ${bookingCode}
+                            </span>
+                            ${timingBadge}
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <span><i class="fa-solid fa-door-open me-2 text-forest"></i> Rooms &amp; Guests:</span>
-                            <strong>${guestsCount} guest${guestsCount > 1 ? 's' : ''} &bull; <span class="text-forest">${roomsAllocated} room${roomsAllocated > 1 ? 's' : ''}</span> (${nights} night${nights > 1 ? 's' : ''})</strong>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <span><i class="fa-solid fa-credit-card me-2 text-forest"></i> Total Paid:</span>
-                            <strong class="text-forest">₹ ${totalPaid} <span class="fw-normal text-muted small">(${paymentMethod})</span></strong>
-                        </div>
-                    </div>
 
-                    <div class="booking-card-actions">
-                        <button type="button" class="roamly-btn-secondary flex-grow-1 view-booking-details-btn" data-code="${bookingCode}">
-                            <i class="fa-regular fa-eye me-1"></i> Details
-                        </button>
-                        <a href="${voucherUrl}" target="_blank" class="roamly-btn-primary flex-grow-1 ${rawStatus === 'CANCELLED' ? 'opacity-75' : ''}">
-                            <i class="fa-solid fa-print me-1"></i> Voucher
-                        </a>
-                        ${(listingId) ? `
-                            <a href="/listings/${listingId}" class="btn btn-sm btn-outline-secondary rounded-pill px-3" title="View or Rebook Sanctuary">
-                                <i class="fa-solid fa-rotate-right"></i>
+                        <h3 class="booking-card-title">${title}</h3>
+                        <div class="booking-card-location">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>${location}</span>
+                        </div>
+
+                        <div class="booking-card-meta-list">
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fa-regular fa-calendar me-2 text-forest"></i> Dates:</span>
+                                <strong class="text-navy">${checkInStr} &rarr; ${checkOutStr}</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fa-solid fa-door-open me-2 text-forest"></i> Rooms &amp; Guests:</span>
+                                <strong>${guestsCount} guest${guestsCount > 1 ? 's' : ''} &bull; <span class="text-forest">${roomsAllocated} room${roomsAllocated > 1 ? 's' : ''}</span> (${nights} night${nights > 1 ? 's' : ''})</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><i class="fa-solid fa-credit-card me-2 text-forest"></i> Total Paid:</span>
+                                <strong class="text-forest">₹ ${totalPaid} <span class="fw-normal text-muted small">(${paymentMethod})</span></strong>
+                            </div>
+                            ${cancellationNoticeHtml}
+                        </div>
+
+                        <div class="booking-card-actions">
+                            <button type="button" class="roamly-btn-secondary flex-grow-1 view-booking-details-btn" data-code="${bookingCode}">
+                                <i class="fa-regular fa-eye me-1"></i> Details
+                            </button>
+                            <a href="${voucherUrl}" target="_blank" class="roamly-btn-primary flex-grow-1 ${rawStatus === 'CANCELLED' ? 'opacity-75' : ''}">
+                                <i class="fa-solid fa-print me-1"></i> Voucher
                             </a>
-                        ` : ''}
+                            ${(!isPast && rawStatus !== 'CANCELLED') ? `
+                                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 trigger-cancel-booking-btn" data-code="${bookingCode}" title="Cancel this reservation">
+                                    <i class="fa-solid fa-ban me-1"></i> Cancel
+                                </button>
+                            ` : ''}
+                            ${(listingId) ? `
+                                <a href="/listings/${listingId}" class="btn btn-sm btn-outline-secondary rounded-pill px-3" title="View or Rebook Sanctuary">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                </a>
+                            ` : ''}
+                        </div>
                     </div>
-                </div>
-            </article>
-        `;
-    }
+                </article>
+            `;
+        }
 
-    // Render Upcoming Grid
-    if (upcomingBookings.length > 0) {
-        upcomingGrid.innerHTML = upcomingBookings.map((b, idx) => createBookingCardHtml(b, false, idx)).join("");
-    } else {
-        if (upcomingGrid) upcomingGrid.innerHTML = "";
-        if (emptyUpcomingNotice) emptyUpcomingNotice.classList.remove("d-none");
-    }
-
-    // Render Past Grid
-    if (pastBookings.length > 0) {
-        pastGrid.innerHTML = pastBookings.map((b, idx) => createBookingCardHtml(b, true, idx)).join("");
-    } else {
-        if (pastGrid) pastGrid.innerHTML = "";
-        if (emptyPastNotice) emptyPastNotice.classList.remove("d-none");
-    }
-
-    // Render Cancelled Grid
-    if (cancelledGrid) {
-        if (cancelledBookings.length > 0) {
-            cancelledGrid.innerHTML = cancelledBookings.map((b, idx) => createBookingCardHtml(b, false, idx)).join("");
+        // Render Upcoming Grid
+        if (upcomingBookings.length > 0) {
+            upcomingGrid.innerHTML = upcomingBookings.map((b, idx) => createBookingCardHtml(b, false, idx)).join("");
+            if (emptyUpcomingNotice) emptyUpcomingNotice.classList.add("d-none");
         } else {
-            cancelledGrid.innerHTML = "";
-            if (emptyCancelledNotice) emptyCancelledNotice.classList.remove("d-none");
+            if (upcomingGrid) upcomingGrid.innerHTML = "";
+            if (emptyUpcomingNotice) emptyUpcomingNotice.classList.remove("d-none");
+        }
+
+        // Render Past Grid
+        if (pastBookings.length > 0) {
+            pastGrid.innerHTML = pastBookings.map((b, idx) => createBookingCardHtml(b, true, idx)).join("");
+            if (emptyPastNotice) emptyPastNotice.classList.add("d-none");
+        } else {
+            if (pastGrid) pastGrid.innerHTML = "";
+            if (emptyPastNotice) emptyPastNotice.classList.remove("d-none");
+        }
+
+        // Render Cancelled Grid
+        if (cancelledGrid) {
+            if (cancelledBookings.length > 0) {
+                cancelledGrid.innerHTML = cancelledBookings.map((b, idx) => createBookingCardHtml(b, false, idx)).join("");
+                if (emptyCancelledNotice) emptyCancelledNotice.classList.add("d-none");
+            } else {
+                cancelledGrid.innerHTML = "";
+                if (emptyCancelledNotice) emptyCancelledNotice.classList.remove("d-none");
+            }
+        }
+
+        // Apply Tab Filter Visibility
+        if (activeFilter === "all") {
+            if (upcomingSection) upcomingSection.style.display = "block";
+            if (pastSection) pastSection.style.display = "block";
+            if (cancelledSection) cancelledSection.style.display = (cancelledBookings.length > 0 ? "block" : "none");
+        } else if (activeFilter === "upcoming") {
+            if (upcomingSection) upcomingSection.style.display = "block";
+            if (pastSection) pastSection.style.display = "none";
+            if (cancelledSection) cancelledSection.style.display = "none";
+        } else if (activeFilter === "past") {
+            if (upcomingSection) upcomingSection.style.display = "none";
+            if (pastSection) pastSection.style.display = "block";
+            if (cancelledSection) cancelledSection.style.display = "none";
+        } else if (activeFilter === "cancelled") {
+            if (upcomingSection) upcomingSection.style.display = "none";
+            if (pastSection) pastSection.style.display = "none";
+            if (cancelledSection) cancelledSection.style.display = "block";
         }
     }
+
+    // Initial calculation and render
+    recalculateAndRender();
 
     // 3. Tab Filter Switching
     const filterBtns = document.querySelectorAll(".bookings-filter-btn");
@@ -464,36 +626,52 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             filterBtns.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
-
-            const filter = btn.dataset.filter;
-            if (filter === "all") {
-                if (upcomingSection) upcomingSection.style.display = "block";
-                if (pastSection) pastSection.style.display = "block";
-                if (cancelledSection) cancelledSection.style.display = (cancelledBookings.length > 0 ? "block" : "none");
-            } else if (filter === "upcoming") {
-                if (upcomingSection) upcomingSection.style.display = "block";
-                if (pastSection) pastSection.style.display = "none";
-                if (cancelledSection) cancelledSection.style.display = "none";
-            } else if (filter === "past") {
-                if (upcomingSection) upcomingSection.style.display = "none";
-                if (pastSection) pastSection.style.display = "block";
-                if (cancelledSection) cancelledSection.style.display = "none";
-            } else if (filter === "cancelled") {
-                if (upcomingSection) upcomingSection.style.display = "none";
-                if (pastSection) pastSection.style.display = "none";
-                if (cancelledSection) cancelledSection.style.display = "block";
-            }
+            activeFilter = btn.dataset.filter || "all";
+            recalculateAndRender();
         });
     });
 
-    // 4. Booking Details Modal Handler
-    const modalEl = document.getElementById("bookingDetailModal");
-    const modal = new bootstrap.Modal(modalEl);
+    // 4. Modals & Handlers
+    const detailModalEl = document.getElementById("bookingDetailModal");
+    const detailModal = new bootstrap.Modal(detailModalEl);
     const modalTitle = document.getElementById("modalListingTitle");
     const modalBody = document.getElementById("modalBookingBody");
     const modalPrintVoucherLink = document.getElementById("modalPrintVoucherLink");
     const modalStatusPill = document.getElementById("modalStatusPill");
+    const modalCancelStayBtn = document.getElementById("modalCancelStayBtn");
 
+    const cancelModalEl = document.getElementById("cancelBookingConfirmModal");
+    const cancelModal = new bootstrap.Modal(cancelModalEl);
+    const cancelListingTitle = document.getElementById("cancelListingTitle");
+    const cancelBookingCode = document.getElementById("cancelBookingCode");
+    const cancelOriginalTotal = document.getElementById("cancelOriginalTotal");
+    const cancelFeeAmount = document.getElementById("cancelFeeAmount");
+    const cancelRefundAmount = document.getElementById("cancelRefundAmount");
+    const confirmCancelSubmitBtn = document.getElementById("confirmCancelSubmitBtn");
+    const cancelReasonSelect = document.getElementById("cancelReasonSelect");
+
+    let currentCancellingBooking = null;
+
+    function openCancellationModal(booking) {
+        if (!booking) return;
+        currentCancellingBooking = booking;
+
+        const listing = booking.listing || {};
+        const title = listing.title || "Curated Roamly Sanctuary";
+        const total = Number(booking.pricing?.totalAmount || booking.totalAmount || 0);
+        const fee = Math.round(total * 0.15);
+        const refund = Math.max(0, total - fee);
+
+        if (cancelListingTitle) cancelListingTitle.textContent = title;
+        if (cancelBookingCode) cancelBookingCode.textContent = booking.bookingId || "ROAM-DEMO";
+        if (cancelOriginalTotal) cancelOriginalTotal.textContent = `₹ ${total.toLocaleString("en-IN")}`;
+        if (cancelFeeAmount) cancelFeeAmount.textContent = `- ₹ ${fee.toLocaleString("en-IN")}`;
+        if (cancelRefundAmount) cancelRefundAmount.textContent = `₹ ${refund.toLocaleString("en-IN")}`;
+
+        cancelModal.show();
+    }
+
+    // Details Modal Click Handler
     document.addEventListener("click", (e) => {
         const btn = e.target.closest(".view-booking-details-btn");
         if (!btn) return;
@@ -510,17 +688,38 @@ document.addEventListener("DOMContentLoaded", () => {
         let modalStatusText = "PAID • CONFIRMED";
         let alertNotice = "";
 
+        const totalPaid = Number(b.pricing?.totalAmount || b.totalAmount || 0);
+
         if (rawStatus === "CANCELLED") {
-            modalStatusBadgeClass = "bg-danger text-white";
-            modalStatusText = "CANCELLED BY HOST";
-            alertNotice = `
-                <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
-                    <i class="fa-solid fa-ban me-2 fs-5"></i>
-                    <div>
-                        <strong>Notice:</strong> This booking request was cancelled or declined by the sanctuary host.
+            const cancelledBy = b.cancellation?.cancelledBy || b.cancelledBy || "host";
+            const isCancelledByTraveler = cancelledBy === "traveler";
+            const fee = b.cancellation?.cancellationFee !== undefined ? b.cancellation.cancellationFee : (isCancelledByTraveler ? Math.round(totalPaid * 0.15) : 0);
+            const refund = b.cancellation?.refundAmount !== undefined ? b.cancellation.refundAmount : Math.max(0, totalPaid - fee);
+
+            if (isCancelledByTraveler) {
+                modalStatusBadgeClass = "bg-danger text-white";
+                modalStatusText = "CANCELLED BY YOU (REFUNDED)";
+                alertNotice = `
+                    <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                        <i class="fa-solid fa-user-xmark me-2 fs-4"></i>
+                        <div>
+                            <strong>Reservation Cancelled by You:</strong> A 15% cancellation &amp; administrative fee of <strong>₹ ${fee.toLocaleString("en-IN")}</strong> was applied.
+                            <div class="fw-bold text-success mt-1"><i class="fa-solid fa-circle-check me-1"></i> Net Refund: ₹ ${refund.toLocaleString("en-IN")} credited to demo payment method</div>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            } else {
+                modalStatusBadgeClass = "bg-danger text-white";
+                modalStatusText = "CANCELLED BY HOST";
+                alertNotice = `
+                    <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                        <i class="fa-solid fa-ban me-2 fs-5"></i>
+                        <div>
+                            <strong>Notice:</strong> This booking request was cancelled or declined by the sanctuary host. 100% full refund was initiated.
+                        </div>
+                    </div>
+                `;
+            }
         } else if (rawStatus === "PENDING") {
             modalStatusBadgeClass = "bg-warning text-dark";
             modalStatusText = "PENDING HOST CONFIRMATION";
@@ -540,6 +739,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (modalStatusPill) {
             modalStatusPill.className = `badge ${modalStatusBadgeClass} py-2 px-3 mb-1`;
             modalStatusPill.innerHTML = `<i class="fa-solid fa-circle-info me-1"></i> ${modalStatusText}`;
+        }
+
+        // Toggle Cancel Button in Details Modal
+        if (modalCancelStayBtn) {
+            const checkOutDate = b.checkOut ? new Date(b.checkOut) : null;
+            const isStayPast = checkOutDate && checkOutDate < new Date().setHours(0, 0, 0, 0);
+            if (!isStayPast && rawStatus !== "CANCELLED") {
+                modalCancelStayBtn.classList.remove("d-none");
+                modalCancelStayBtn.dataset.code = b.bookingId;
+            } else {
+                modalCancelStayBtn.classList.add("d-none");
+            }
         }
 
         const checkIn = b.checkIn ? new Date(b.checkIn).toLocaleDateString("en-IN", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) : "-";
@@ -608,7 +819,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="col-sm-6 text-sm-end">
                     <span class="fs-6 fw-bold text-navy d-block">Total Paid (Demo):</span>
-                    <span class="fs-4 fw-bold text-forest">₹ ${(b.pricing?.totalAmount || 0).toLocaleString("en-IN")}</span>
+                    <span class="fs-4 fw-bold text-forest">₹ ${totalPaid.toLocaleString("en-IN")}</span>
                 </div>
             </div>
 
@@ -619,7 +830,123 @@ document.addEventListener("DOMContentLoaded", () => {
         const voucherUrl = `/bookings/${b.bookingId}/voucher?name=${encodeURIComponent(b.guestDetails?.fullName || 'Traveler')}&total=${b.pricing?.totalAmount || 0}&listingTitle=${encodeURIComponent(listing.title || 'Sanctuary')}&location=${encodeURIComponent(location)}&rooms=${roomsAllocated}`;
         modalPrintVoucherLink.href = voucherUrl;
 
-        modal.show();
+        detailModal.show();
     });
+
+    // Trigger Cancel from Card
+    document.addEventListener("click", (e) => {
+        const cancelBtn = e.target.closest(".trigger-cancel-booking-btn");
+        if (!cancelBtn) return;
+        const code = cancelBtn.dataset.code;
+        const b = allBookings.find(item => item.bookingId === code);
+        if (b) {
+            openCancellationModal(b);
+        }
+    });
+
+    // Trigger Cancel from Details Modal Footer
+    if (modalCancelStayBtn) {
+        modalCancelStayBtn.addEventListener("click", () => {
+            const code = modalCancelStayBtn.dataset.code;
+            const b = allBookings.find(item => item.bookingId === code);
+            if (b) {
+                detailModal.hide();
+                setTimeout(() => {
+                    openCancellationModal(b);
+                }, 350);
+            }
+        });
+    }
+
+    // Submit Cancellation Handler
+    if (confirmCancelSubmitBtn) {
+        confirmCancelSubmitBtn.addEventListener("click", async () => {
+            if (!currentCancellingBooking) return;
+
+            confirmCancelSubmitBtn.disabled = true;
+            confirmCancelSubmitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Processing Cancellation...';
+
+            const targetCode = currentCancellingBooking.bookingId;
+            const total = Number(currentCancellingBooking.pricing?.totalAmount || currentCancellingBooking.totalAmount || 0);
+            const fee = Math.round(total * 0.15);
+            const refund = Math.max(0, total - fee);
+            const reason = cancelReasonSelect ? cancelReasonSelect.value : "Cancelled by traveler";
+
+            try {
+                const res = await fetch(`/bookings/${targetCode}/cancel`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({ reason, isAjax: true })
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to cancel reservation.");
+                }
+
+                // Hide confirmation modal
+                cancelModal.hide();
+
+                // Update booking in local memory
+                const found = allBookings.find(item => item.bookingId === targetCode);
+                if (found) {
+                    found.status = "CANCELLED";
+                    found.bookingStatus = "cancelled";
+                    found.paymentStatus = "refunded";
+                    found.cancellation = data.booking?.cancellation || {
+                        cancelledBy: "traveler",
+                        cancelledAt: new Date(),
+                        cancellationFee: fee,
+                        cancellationFeeRate: 0.15,
+                        refundAmount: refund,
+                        refundStatus: "refunded",
+                        reason
+                    };
+                }
+
+                // Sync user-scoped localStorage
+                if (currentUserId) {
+                    try {
+                        const scopedKey = `roamly_bookings_${currentUserId}`;
+                        const localData = JSON.parse(localStorage.getItem(scopedKey) || "[]");
+                        const localItem = localData.find(item => item.bookingId === targetCode);
+                        if (localItem) {
+                            localItem.status = "CANCELLED";
+                            localItem.bookingStatus = "cancelled";
+                            localItem.paymentStatus = "refunded";
+                            localItem.cancellation = found ? found.cancellation : null;
+                        } else if (found) {
+                            localData.push(found);
+                        }
+                        localStorage.setItem(scopedKey, JSON.stringify(localData));
+                    } catch (storageErr) {
+                        console.warn("Could not sync localStorage after cancellation:", storageErr);
+                    }
+                }
+
+                // Re-calculate counts and re-render grids
+                recalculateAndRender();
+
+                // Display success toast
+                const toastEl = document.getElementById("cancellationSuccessToast");
+                if (toastEl) {
+                    const msgEl = document.getElementById("toastMessage");
+                    if (msgEl) {
+                        msgEl.textContent = `Reservation ${targetCode} cancelled. ₹ ${fee.toLocaleString("en-IN")} fee deducted; ₹ ${refund.toLocaleString("en-IN")} refund processed.`;
+                    }
+                    const toast = new bootstrap.Toast(toastEl, { delay: 6000 });
+                    toast.show();
+                }
+            } catch (err) {
+                alert(err.message || "An error occurred while cancelling your reservation. Please try again.");
+            } finally {
+                confirmCancelSubmitBtn.disabled = false;
+                confirmCancelSubmitBtn.innerHTML = '<i class="fa-solid fa-ban me-1"></i> Cancel &amp; Confirm Refund';
+            }
+        });
+    }
 });
 </script>

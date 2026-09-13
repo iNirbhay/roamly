@@ -334,3 +334,111 @@ module.exports.downloadVoucher = async (req, res) => {
 
     res.render("bookings/voucher.ejs", { booking });
 };
+
+module.exports.cancelBookingByUser = async (req, res) => {
+    const { id } = req.params;
+    const { reason } = req.body || {};
+
+    const isJsonRequest = req.xhr || 
+        (req.headers.accept && req.headers.accept.includes("application/json")) || 
+        (req.headers["content-type"] && req.headers["content-type"].includes("application/json")) ||
+        req.body?.isAjax;
+
+    if (!req.user) {
+        if (isJsonRequest) {
+            return res.status(401).json({ success: false, message: "Authentication required." });
+        }
+        req.flash("error", "Authentication required to cancel a booking.");
+        return res.redirect("/login");
+    }
+
+    try {
+        let booking = null;
+        if (id && id.match(/^[0-9a-fA-F]{24}$/)) {
+            booking = await Booking.findById(id).populate("listing").populate("propertyId");
+        }
+        if (!booking) {
+            booking = await Booking.findOne({ bookingId: id }).populate("listing").populate("propertyId");
+        }
+
+        if (!booking) {
+            if (isJsonRequest) {
+                return res.status(404).json({ success: false, message: "Booking reservation not found." });
+            }
+            req.flash("error", "Booking reservation not found.");
+            return res.redirect("/bookings");
+        }
+
+        // Verify that the user is the traveler who made the booking or an admin
+        const isTraveler = (booking.travelerId && (booking.travelerId.equals ? booking.travelerId.equals(req.user._id) : String(booking.travelerId) === String(req.user._id))) ||
+                           (booking.user && (booking.user.equals ? booking.user.equals(req.user._id) : String(booking.user) === String(req.user._id)));
+        const isAdmin = req.user.role === "admin";
+
+        if (!isTraveler && !isAdmin) {
+            if (isJsonRequest) {
+                return res.status(403).json({ success: false, message: "Access denied. You can only cancel your own bookings." });
+            }
+            req.flash("error", "You are not authorized to cancel this booking.");
+            return res.redirect("/bookings");
+        }
+
+        // Verify status is not already CANCELLED
+        const currentStatus = (booking.status || booking.bookingStatus || "").toUpperCase();
+        if (currentStatus === "CANCELLED") {
+            if (isJsonRequest) {
+                return res.status(400).json({ success: false, message: "This booking has already been cancelled." });
+            }
+            req.flash("error", "This booking has already been cancelled.");
+            return res.redirect("/bookings");
+        }
+
+        // Verify stay is not completed or past
+        if (currentStatus === "COMPLETED") {
+            if (isJsonRequest) {
+                return res.status(400).json({ success: false, message: "Completed stays cannot be cancelled." });
+            }
+            req.flash("error", "Completed stays cannot be cancelled.");
+            return res.redirect("/bookings");
+        }
+
+        // Calculate 15% cancellation charge
+        const totalPaid = Number(booking.pricing?.totalAmount || booking.totalAmount || 0);
+        const cancellationFeeRate = 0.15;
+        const cancellationFee = Math.round(totalPaid * cancellationFeeRate);
+        const refundAmount = Math.max(0, totalPaid - cancellationFee);
+
+        booking.status = "CANCELLED";
+        booking.bookingStatus = "cancelled";
+        booking.paymentStatus = "refunded";
+        booking.cancellation = {
+            cancelledBy: "traveler",
+            cancelledAt: new Date(),
+            cancellationFee,
+            cancellationFeeRate,
+            refundAmount,
+            refundStatus: "refunded",
+            reason: reason || "Cancelled by traveler"
+        };
+
+        await booking.save();
+
+        if (isJsonRequest) {
+            return res.json({
+                success: true,
+                message: `Booking ${booking.bookingId} cancelled successfully. ₹ ${cancellationFee.toLocaleString("en-IN")} cancellation charge applied; ₹ ${refundAmount.toLocaleString("en-IN")} refunded to demo payment method.`,
+                booking
+            });
+        }
+
+        req.flash("success", `Booking ${booking.bookingId} has been cancelled. ₹ ${cancellationFee.toLocaleString("en-IN")} cancellation fee deducted; ₹ ${refundAmount.toLocaleString("en-IN")} refunded.`);
+        return res.redirect("/bookings");
+    } catch (err) {
+        console.error("Error cancelling booking:", err);
+        if (isJsonRequest) {
+            return res.status(500).json({ success: false, message: "Failed to cancel booking: " + err.message });
+        }
+        req.flash("error", "An error occurred while attempting to cancel your reservation.");
+        return res.redirect("/bookings");
+    }
+};
+

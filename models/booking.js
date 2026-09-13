@@ -132,6 +132,23 @@ const bookingSchema = new Schema({
         type: String,
         enum: ["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"],
         default: "CONFIRMED"
+    },
+    cancellation: {
+        cancelledBy: {
+            type: String,
+            enum: ["traveler", "host", "admin"],
+            default: "traveler"
+        },
+        cancelledAt: { type: Date },
+        cancellationFee: { type: Number, default: 0 },
+        cancellationFeeRate: { type: Number, default: 0.15 },
+        refundAmount: { type: Number, default: 0 },
+        refundStatus: {
+            type: String,
+            enum: ["pending", "processed", "refunded", "none"],
+            default: "refunded"
+        },
+        reason: { type: String, default: "Traveler requested cancellation" }
     }
 }, {
     timestamps: true,
