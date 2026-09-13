@@ -34,7 +34,17 @@ function configurePassport() {
     // 2. Google OAuth 2.0 Strategy
     const googleClientId = process.env.GOOGLE_CLIENT_ID;
     const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || "http://localhost:8080/auth/google/callback";
+
+    // Detect environment callback URL:
+    // 1. Explicit env var GOOGLE_CALLBACK_URL if provided
+    // 2. In production / Vercel -> https://roamly-tan.vercel.app/auth/google/callback
+    // 3. In local development -> http://localhost:8080/auth/google/callback
+    let defaultCallbackUrl = "http://localhost:8080/auth/google/callback";
+    if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+        const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || "roamly-tan.vercel.app";
+        defaultCallbackUrl = `https://${host.replace(/^https?:\/\//, '')}/auth/google/callback`;
+    }
+    const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || defaultCallbackUrl;
 
     if (googleClientId && googleClientSecret) {
         passport.use(
@@ -43,6 +53,7 @@ function configurePassport() {
                     clientID: googleClientId,
                     clientSecret: googleClientSecret,
                     callbackURL: googleCallbackUrl,
+                    proxy: true,
                 },
                 async (accessToken, refreshToken, profile, done) => {
                     try {
@@ -53,9 +64,10 @@ function configurePassport() {
                         }
 
                         // 2. Try to match by email if user previously registered locally
-                        const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
-                        if (email) {
-                            user = await User.findOne({ email });
+                        const rawEmail = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+                        const cleanEmail = rawEmail ? rawEmail.trim().toLowerCase() : null;
+                        if (cleanEmail) {
+                            user = await User.findOne({ email: cleanEmail });
                             if (user) {
                                 // Link Google ID & avatar to existing account
                                 user.googleId = profile.id;
@@ -65,35 +77,41 @@ function configurePassport() {
                                 if (!user.displayName && profile.displayName) {
                                     user.displayName = profile.displayName;
                                 }
+                                if (!user.name && profile.displayName) {
+                                    user.name = profile.displayName;
+                                }
                                 await user.save();
                                 return done(null, user);
                             }
                         }
 
                         // 3. Create a new user for Google Sign-In
-                        const baseName = (email ? email.split("@")[0] : profile.displayName) || "traveler";
+                        const baseName = (cleanEmail ? cleanEmail.split("@")[0] : profile.displayName) || "traveler";
                         const username = await generateUniqueUsername(baseName);
 
                         const newUser = new User({
                             username,
-                            email: email || `${username}@roamly.travel`,
+                            email: cleanEmail || `${username}@roamly.travel`,
                             googleId: profile.id,
+                            name: profile.displayName || username,
                             displayName: profile.displayName || username,
                             avatar: profile.photos && profile.photos[0] ? profile.photos[0].value : "",
                             authProvider: "google",
+                            role: "user",
                         });
 
                         await newUser.save();
                         return done(null, newUser);
                     } catch (err) {
+                        console.error("Error in GoogleStrategy verify callback:", err);
                         return done(err, null);
                     }
                 }
             )
         );
-        console.log("✅ Google OAuth 2.0 initialized successfully.");
+        console.log(`✅ Google OAuth 2.0 initialized successfully (callback: ${googleCallbackUrl}).`);
     } else {
-        console.log("ℹ️  Google OAuth credentials not detected in .env (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET).");
+        console.log("ℹ️  Google OAuth credentials not detected in environment variables (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET).");
     }
 
     // 3. Auth0 Strategy (as requested via passport-auth0)

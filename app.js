@@ -1,7 +1,6 @@
-if (process.env.NODE_ENV !== "production") {
+try {
     require("dotenv").config();
-}
-
+} catch (e) {}
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -28,6 +27,7 @@ const adminSetup = require("./init/adminSetup");
 const { configurePassport, isGoogleConfigured, isAuth0Configured } = require("./config/passport");
 
 const app = express();
+app.set("trust proxy", 1);
 
 const dbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || process.env.MONGODB_URI || (process.env.VERCEL ? null : 'mongodb://127.0.0.1:27017/wanderlust');
 

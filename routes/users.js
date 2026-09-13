@@ -24,10 +24,10 @@ router.get("/logout", users.logout);
 // Google OAuth Routes
 router.get("/auth/google", (req, res, next) => {
     if (!isGoogleConfigured()) {
-        req.flash(
-            "error",
-            "Google Sign-In is not configured yet. Please provide GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file."
-        );
+        const hint = (process.env.VERCEL || process.env.NODE_ENV === "production")
+            ? "Google Sign-In requires GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Vercel Project Settings > Environment Variables."
+            : "Google Sign-In is not configured yet. Please provide GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in your .env file.";
+        req.flash("error", hint);
         return res.redirect("/login");
     }
     passport.authenticate("google", { scope: ["profile", "email"], prompt: "select_account" })(req, res, next);
@@ -36,6 +36,10 @@ router.get("/auth/google", (req, res, next) => {
 router.get(
     "/auth/google/callback",
     (req, res, next) => {
+        if (req.query.error) {
+            req.flash("error", "Google Sign-In was cancelled or denied.");
+            return res.redirect("/login");
+        }
         if (!isGoogleConfigured()) {
             req.flash("error", "Google Sign-In configuration missing.");
             return res.redirect("/login");

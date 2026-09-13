@@ -77,10 +77,17 @@ module.exports.logout = (req, res, next) => {
 };
 
 module.exports.googleCallback = (req, res) => {
-    const name = req.user.displayName || req.user.username || "traveler";
+    if (!req.user) {
+        req.flash("error", "Google authentication could not be completed. Please try again.");
+        return res.redirect("/login");
+    }
+    const name = req.user.displayName || req.user.name || req.user.username || "traveler";
     req.flash("success", `Welcome to Roamly, ${name}!`);
     const defaultTarget = (req.user && (req.user.role === "host" || req.user.role === "admin")) ? "/host/dashboard" : "/listings";
-    const redirectUrl = req.session.redirectUrl || defaultTarget;
+    let redirectUrl = req.session.redirectUrl || defaultTarget;
+    if (!redirectUrl || redirectUrl === "/login" || redirectUrl === "/signup") {
+        redirectUrl = defaultTarget;
+    }
     delete req.session.redirectUrl;
     res.redirect(redirectUrl);
 };
