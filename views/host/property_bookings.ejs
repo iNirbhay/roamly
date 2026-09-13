@@ -1,0 +1,478 @@
+<% layout("layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/stylesheets/checkout.css">
+
+<div class="roamly-editorial-page py-4">
+
+    <!-- TOP BREADCRUMB & BACK LINK -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="/host/dashboard" class="text-forest text-decoration-none">Host Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/host/properties" class="text-forest text-decoration-none">My Properties</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= listing.title %></li>
+        </ol>
+    </nav>
+
+    <!-- PROPERTY HEADER CARD -->
+    <section class="host-property-header-card mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+            <div class="d-flex align-items-center gap-3">
+                <img src="<%= listing.imageUrl %>" 
+                     alt="<%= listing.title %>" 
+                     class="property-header-thumb"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                <div>
+                    <span class="badge bg-forest text-white mb-1">
+                        <i class="fa-solid fa-hotel me-1"></i> Managed Sanctuary
+                    </span>
+                    <h1 class="explore-heading mb-1" style="font-size: 1.8rem;"><%= listing.title %></h1>
+                    <div class="text-muted small">
+                        <i class="fa-solid fa-location-dot text-forest me-1"></i>
+                        <%= listing.location %>, <%= listing.country %> &bull;
+                        <span class="fw-semibold text-navy">₹ <%= (listing.price || 0).toLocaleString("en-IN") %></span> / night
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROPERTY STATS STRIP -->
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <div class="header-stat-box">
+                    <span class="header-stat-label">Total Bookings</span>
+                    <span class="header-stat-val"><%= stats.totalBookings %></span>
+                </div>
+                <div class="header-stat-box">
+                    <span class="header-stat-label">Upcoming</span>
+                    <span class="header-stat-val text-forest"><%= stats.upcomingCount %></span>
+                </div>
+                <div class="header-stat-box">
+                    <span class="header-stat-label">Pending</span>
+                    <span class="header-stat-val text-warning"><%= stats.pendingCount %></span>
+                </div>
+                <div class="header-stat-box">
+                    <span class="header-stat-label">Property Earnings</span>
+                    <span class="header-stat-val text-forest">₹ <%= stats.totalRevenue.toLocaleString("en-IN") %></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EMBEDDED JSON FOR REACTIVE CLIENT FILTERING -->
+    <script id="propertyBookingsData" type="application/json">
+        <%- JSON.stringify(bookings || []) %>
+    </script>
+
+    <% if (!bookings || bookings.length === 0) { %>
+        <div class="empty-section-card py-5 mb-5 text-center">
+            <i class="fa-solid fa-calendar-xmark fs-1 text-muted mb-3 d-block"></i>
+            <h4 class="fw-bold text-navy mb-2">No bookings for this property yet.</h4>
+            <p class="text-muted small mx-auto mb-4" style="max-width: 440px;">
+                When travelers reserve this sanctuary, their guest records, stay dates, and payment summaries will appear here.
+            </p>
+            <a href="/listings/<%= listing._id %>" class="roamly-btn-secondary px-4 py-2 text-decoration-none">
+                <i class="fa-solid fa-eye me-1"></i> Preview Sanctuary Listing
+            </a>
+        </div>
+    <% } else { %>
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <div class="host-tracker-toolbar mb-4">
+            <div class="row g-3 align-items-center">
+                <!-- Search input -->
+                <div class="col-md-5">
+                    <div class="search-input-wrap">
+                        <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
+                        <input type="text" id="bookingSearchInput" class="explore-input" placeholder="Search by guest name, email, or booking ID...">
+                    </div>
+                </div>
+
+                <!-- Filter tabs -->
+                <div class="col-md-7 d-flex justify-content-md-end align-items-center gap-2 flex-wrap">
+                    <div class="tracker-filter-pills" role="tablist">
+                        <button type="button" class="tracker-filter-btn active" data-filter="ALL">All (<%= stats.totalBookings %>)</button>
+                        <button type="button" class="tracker-filter-btn" data-filter="UPCOMING">Upcoming (<%= stats.upcomingCount %>)</button>
+                        <button type="button" class="tracker-filter-btn" data-filter="PENDING">Pending (<%= stats.pendingCount %>)</button>
+                        <button type="button" class="tracker-filter-btn" data-filter="CONFIRMED">Confirmed (<%= stats.confirmedCount %>)</button>
+                        <button type="button" class="tracker-filter-btn" data-filter="COMPLETED">Completed (<%= stats.completedCount %>)</button>
+                        <button type="button" class="tracker-filter-btn" data-filter="CANCELLED">Cancelled (<%= stats.cancelledCount %>)</button>
+                    </div>
+
+                    <!-- Sort select -->
+                    <select id="trackerSortSelect" class="form-select form-select-sm w-auto rounded-pill border-sand">
+                        <option value="NEWEST">Sort: Newest First</option>
+                        <option value="CHECKIN_ASC">Sort: Check-in (Soonest)</option>
+                        <option value="AMOUNT_DESC">Sort: Amount (Highest)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKINGS LIST / TABLE CONTAINER -->
+        <div id="trackerTableWrap" class="host-panel-card p-0 overflow-hidden shadow-sm mb-5">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle host-table mb-0" id="propertyBookingsTable">
+                    <thead class="bg-light">
+                        <tr>
+                            <th style="min-width: 130px;">Booking Code</th>
+                            <th style="min-width: 180px;">Primary Guest</th>
+                            <th style="min-width: 170px;">Stay Dates</th>
+                            <th style="min-width: 90px;">Guests</th>
+                            <th style="min-width: 110px;">Amount</th>
+                            <th style="min-width: 120px;">Payment</th>
+                            <th style="min-width: 120px;">Status</th>
+                            <th class="text-end" style="min-width: 170px;">Management Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="noBookingsMatched" class="text-center py-5 text-muted small d-none">
+                <i class="fa-solid fa-filter-circle-xmark fs-2 text-muted mb-2 d-block"></i>
+                No bookings match the current search query or active filter.
+            </div>
+        </div>
+    <% } %>
+
+</div>
+
+<!-- DETAILED BOOKING MODAL -->
+<div class="modal fade" id="hostBookingDetailModal" tabindex="-1" aria-labelledby="hostBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom px-4 py-3" style="background-color: var(--roamly-cream);">
+                <div>
+                    <span class="badge bg-forest text-white mb-1" id="modalStatusBadge">CONFIRMED</span>
+                    <h5 class="modal-title font-serif text-navy fw-bold" id="modalBookingTitle">Reservation Summary</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="modalHostBody">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="modal-footer border-top px-4 py-3 bg-light d-flex justify-content-between align-items-center">
+                <div id="modalActionControls">
+                    <!-- Confirm / Cancel buttons injected dynamically -->
+                </div>
+                <button type="button" class="roamly-btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const rawData = document.getElementById("propertyBookingsData")?.textContent || "[]";
+    let bookings = [];
+    try {
+        bookings = JSON.parse(rawData);
+    } catch (e) {
+        bookings = [];
+    }
+
+    const searchInput = document.getElementById("bookingSearchInput");
+    const filterBtns = document.querySelectorAll(".tracker-filter-btn");
+    const sortSelect = document.getElementById("trackerSortSelect");
+    const tableBody = document.getElementById("bookingsTableBody");
+    const noMatchedNotice = document.getElementById("noBookingsMatched");
+
+    let currentFilter = "ALL";
+    let currentQuery = "";
+    let currentSort = "NEWEST";
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    function renderTable() {
+        let filtered = bookings.filter(b => {
+            // Text Search
+            const q = currentQuery.toLowerCase().trim();
+            const guestName = (b.guestDetails?.fullName || "").toLowerCase();
+            const guestEmail = (b.guestDetails?.email || "").toLowerCase();
+            const guestPhone = (b.guestDetails?.phone || "").toLowerCase();
+            const code = (b.bookingId || "").toLowerCase();
+
+            const matchesQuery = !q || guestName.includes(q) || guestEmail.includes(q) || guestPhone.includes(q) || code.includes(q);
+            if (!matchesQuery) return false;
+
+            // Status / Time Filter
+            if (currentFilter === "ALL") return true;
+            if (currentFilter === "UPCOMING") {
+                return b.status !== "CANCELLED" && b.checkOut && new Date(b.checkOut) >= today;
+            }
+            return b.status === currentFilter;
+        });
+
+        // Sorting
+        filtered.sort((a, b) => {
+            if (currentSort === "CHECKIN_ASC") {
+                return new Date(a.checkIn || 0) - new Date(b.checkIn || 0);
+            } else if (currentSort === "AMOUNT_DESC") {
+                return (b.pricing?.totalAmount || 0) - (a.pricing?.totalAmount || 0);
+            }
+            // NEWEST
+            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+        });
+
+        if (filtered.length === 0) {
+            tableBody.innerHTML = "";
+            noMatchedNotice.classList.remove("d-none");
+            return;
+        }
+
+        noMatchedNotice.classList.add("d-none");
+
+        tableBody.innerHTML = filtered.map(b => {
+            const checkInStr = b.checkIn ? new Date(b.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "-";
+            const checkOutStr = b.checkOut ? new Date(b.checkOut).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "-";
+            const totalPaid = (b.pricing?.totalAmount || 0).toLocaleString("en-IN");
+            const guestsCount = b.guests?.total || 1;
+            const status = b.status || "CONFIRMED";
+
+            // Action buttons based on status
+            let actionButtons = "";
+            if (status === "PENDING") {
+                actionButtons = `
+                    <button type="button" class="btn btn-sm btn-success rounded-pill px-3 me-1 status-action-btn" data-id="${b._id}" data-action="CONFIRMED">
+                        <i class="fa-solid fa-check me-1"></i> Confirm
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Cancel Booking">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                `;
+            } else if (status === "CONFIRMED") {
+                actionButtons = `
+                    <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-2 me-1 status-action-btn" data-id="${b._id}" data-action="COMPLETED" title="Mark Stay as Completed">
+                        <i class="fa-solid fa-check-double me-1"></i> Complete
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" title="Cancel Booking">
+                        <i class="fa-solid fa-ban"></i>
+                    </button>
+                `;
+            } else if (status === "CANCELLED") {
+                actionButtons = `<span class="text-muted small">Cancelled</span>`;
+            } else if (status === "COMPLETED") {
+                actionButtons = `<span class="text-forest small fw-semibold"><i class="fa-solid fa-circle-check me-1"></i> Completed</span>`;
+            }
+
+            return `
+                <tr id="booking-row-${b._id}">
+                    <td>
+                        <button type="button" class="booking-code-pill border-0 text-start view-modal-btn" data-id="${b._id}">
+                            <i class="fa-solid fa-hashtag text-forest"></i> ${b.bookingId}
+                        </button>
+                    </td>
+                    <td>
+                        <div class="fw-bold text-navy">${b.guestDetails?.fullName || "Guest"}</div>
+                        <div class="text-muted small">${b.guestDetails?.email || "-"}</div>
+                        <div class="text-muted" style="font-size: 0.72rem;"><i class="fa-solid fa-phone me-1"></i> ${b.guestDetails?.phone || "-"}</div>
+                    </td>
+                    <td class="small">
+                        <strong>${checkInStr}</strong> &rarr; <br>
+                        <strong>${checkOutStr}</strong>
+                        <div class="text-muted" style="font-size: 0.74rem;">${b.nights || 1} nights</div>
+                    </td>
+                    <td class="small fw-semibold">
+                        ${guestsCount} guest${guestsCount > 1 ? 's' : ''}
+                    </td>
+                    <td class="fw-bold text-forest">
+                        ₹ ${totalPaid}
+                    </td>
+                    <td>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size: 0.72rem;">
+                            <i class="fa-solid fa-check me-1"></i> ${b.payment?.status || 'PAID • DEMO'}
+                        </span>
+                        <div class="text-muted" style="font-size: 0.7rem;">${b.payment?.method || 'Demo'}</div>
+                    </td>
+                    <td>
+                        <span class="badge status-pill status-${status.toLowerCase()}" id="badge-${b._id}">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <div class="d-inline-flex align-items-center">
+                            ${actionButtons}
+                            <button type="button" class="btn btn-sm btn-light border rounded-pill ms-1 view-modal-btn" data-id="${b._id}" title="View Details">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    renderTable();
+
+    // Event: Search Input
+    searchInput.addEventListener("input", (e) => {
+        currentQuery = e.target.value;
+        renderTable();
+    });
+
+    // Event: Filter Tabs
+    filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentFilter = btn.dataset.filter;
+            renderTable();
+        });
+    });
+
+    // Event: Sort Select
+    sortSelect.addEventListener("change", (e) => {
+        currentSort = e.target.value;
+        renderTable();
+    });
+
+    // Event: Update Status (AJAX)
+    document.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".status-action-btn");
+        if (!btn) return;
+
+        const bookingId = btn.dataset.id;
+        const newStatus = btn.dataset.action;
+
+        if (newStatus === "CANCELLED" && !confirm("Are you sure you want to cancel this booking?")) {
+            return;
+        }
+
+        btn.disabled = true;
+        const origContent = btn.innerHTML;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
+
+        try {
+            const res = await fetch(`/host/bookings/${bookingId}/status`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                // Update local model
+                const item = bookings.find(b => b._id === bookingId);
+                if (item) item.status = newStatus;
+                renderTable();
+            } else {
+                alert("Error: " + (data.message || "Failed to update status"));
+                btn.disabled = false;
+                btn.innerHTML = origContent;
+            }
+        } catch (err) {
+            console.error("Status update error:", err);
+            alert("Failed to update status on server.");
+            btn.disabled = false;
+            btn.innerHTML = origContent;
+        }
+    });
+
+    // Event: Open Details Modal
+    const modalEl = document.getElementById("hostBookingDetailModal");
+    const modal = new bootstrap.Modal(modalEl);
+    const modalTitle = document.getElementById("modalBookingTitle");
+    const modalBody = document.getElementById("modalHostBody");
+    const modalBadge = document.getElementById("modalStatusBadge");
+    const modalActions = document.getElementById("modalActionControls");
+
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".view-modal-btn");
+        if (!btn) return;
+
+        const bookingId = btn.dataset.id;
+        const b = bookings.find(item => item._id === bookingId);
+        if (!b) return;
+
+        modalTitle.textContent = `Reservation Details &bull; ${b.bookingId}`;
+        modalBadge.textContent = b.status || "CONFIRMED";
+        modalBadge.className = `badge status-pill status-${(b.status || 'CONFIRMED').toLowerCase()} mb-1`;
+
+        const checkInStr = b.checkIn ? new Date(b.checkIn).toLocaleDateString("en-IN", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) : "-";
+        const checkOutStr = b.checkOut ? new Date(b.checkOut).toLocaleDateString("en-IN", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) : "-";
+
+        let addonsHtml = "";
+        if (b.addOns && b.addOns.length > 0) {
+            addonsHtml = `
+                <div class="mt-3">
+                    <h6 class="fw-bold text-navy mb-2">Curated Add-ons:</h6>
+                    <ul class="list-unstyled mb-0">
+                        ${b.addOns.map(a => `<li class="d-flex justify-content-between text-muted small py-1 border-bottom"><span>${a.name}</span> <strong>₹ ${(a.price || 0).toLocaleString("en-IN")}</strong></li>`).join("")}
+                    </ul>
+                </div>
+            `;
+        }
+
+        modalBody.innerHTML = `
+            <div class="p-3 rounded-3 mb-3" style="background-color: var(--roamly-cream); border: 1px solid var(--roamly-border);">
+                <div class="row g-2 text-navy">
+                    <div class="col-sm-6">
+                        <span class="text-muted small d-block">Check-in</span>
+                        <strong>${checkInStr}</strong> (from 2:00 PM)
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="text-muted small d-block">Check-out</span>
+                        <strong>${checkOutStr}</strong> (until 11:00 AM)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <h6 class="fw-bold text-navy mb-1">Guest Information</h6>
+                    <div class="text-navy fw-semibold">${b.guestDetails?.fullName || 'Traveler'}</div>
+                    <div class="text-muted small"><i class="fa-regular fa-envelope me-1"></i> ${b.guestDetails?.email || '-'}</div>
+                    <div class="text-muted small"><i class="fa-solid fa-phone me-1"></i> ${b.guestDetails?.phone || '-'}</div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="fw-bold text-navy mb-1">Payment &amp; Method</h6>
+                    <div class="text-muted small">${b.payment?.method || 'Demo Gateway'}</div>
+                    <div class="text-muted small">Txn: <code>${b.payment?.transactionId || 'TXN-DEMO'}</code></div>
+                    <div class="badge bg-success-subtle text-success border border-success-subtle mt-1">${b.payment?.status || 'PAID • DEMO'}</div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3 border-top pt-3">
+                <div class="col-sm-6">
+                    <span class="text-muted small d-block">Total Guests</span>
+                    <strong class="text-navy">${b.guests?.total || 1} guest(s) (${b.nights || 1} nights)</strong>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                    <span class="text-muted small d-block">Total Sanctuary Amount</span>
+                    <strong class="fs-4 text-forest">₹ ${(b.pricing?.totalAmount || 0).toLocaleString("en-IN")}</strong>
+                </div>
+            </div>
+
+            ${addonsHtml}
+        `;
+
+        // Controls at bottom of modal
+        let modalBtns = "";
+        if (b.status === "PENDING") {
+            modalBtns = `
+                <button type="button" class="btn btn-success rounded-pill px-3 status-action-btn" data-id="${b._id}" data-action="CONFIRMED" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-check me-1"></i> Confirm Booking
+                </button>
+                <button type="button" class="btn btn-outline-danger rounded-pill px-3 ms-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark me-1"></i> Reject / Cancel
+                </button>
+            `;
+        } else if (b.status === "CONFIRMED") {
+            modalBtns = `
+                <button type="button" class="btn btn-outline-success rounded-pill px-3 status-action-btn" data-id="${b._id}" data-action="COMPLETED" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-check-double me-1"></i> Mark as Completed Stay
+                </button>
+                <button type="button" class="btn btn-outline-danger rounded-pill px-3 ms-2 status-action-btn" data-id="${b._id}" data-action="CANCELLED" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-ban me-1"></i> Cancel Reservation
+                </button>
+            `;
+        }
+        modalActions.innerHTML = modalBtns;
+
+        modal.show();
+    });
+});
+</script>

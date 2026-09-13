@@ -1,0 +1,1067 @@
+<% layout("layouts/boilerplate") %>
+
+<!-- Leaflet Map CSS & Location Section Styles -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="/stylesheets/location_map.css">
+
+<div class="roamly-editorial-page roamly-show-page">
+    <!-- BREADCRUMB NAV -->
+    <nav class="show-breadcrumb anim-fade-down" aria-label="breadcrumb">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <a href="/listings" class="crumb-link">All Stays</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current"><%= listing.title %></span>
+    </nav>
+
+    <!-- LISTING TITLE & TOP BAR -->
+    <header class="show-header reveal-init">
+        <div class="header-eyebrow">
+            <span class="dest-badge">
+                <i class="fa-solid fa-location-dot"></i> <%= listing.location || "Scenic Escape" %>, <%= listing.country || "India" %>
+            </span>
+            <span class="verified-badge">
+                <i class="fa-solid fa-shield-halved"></i> Roamly Verified Sanctuary
+            </span>
+        </div>
+        <h1 class="show-title"><%= listing.title %></h1>
+        <div class="show-meta-bar">
+            <div class="meta-left">
+                <span class="rating-highlight">
+                    <i class="fa-solid fa-star"></i> 4.96
+                </span>
+                <span class="meta-dot">&bull;</span>
+                <span class="reviews-count-text">
+                    <%= (listing.reviews && listing.reviews.length) ? listing.reviews.length : 0 %> verified guest <%= (listing.reviews && listing.reviews.length === 1) ? "review" : "reviews" %>
+                </span>
+                <span class="meta-dot">&bull;</span>
+                <span class="superhost-tag">
+                    <i class="fa-solid fa-award"></i> Premier Host
+                </span>
+            </div>
+            <div class="meta-right">
+                <button type="button" class="action-icon-btn" onclick="navigator.clipboard && navigator.clipboard.writeText(window.location.href); alert('Sanctuary link copied to clipboard!');" title="Share Stay">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i> <span>Share</span>
+                </button>
+                <button type="button" class="action-icon-btn bookmark-toggle-btn" onclick="this.classList.toggle('saved');" title="Save to Wishlist">
+                    <i class="fa-regular fa-heart"></i> <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- IMMERSIVE IMAGE GALLERY (DYNAMICALLY ADAPTIVE) -->
+    <section class="show-gallery-section reveal-init">
+        <% const mainImg = typeof resolveListingImage === 'function' ? resolveListingImage(listing) : (listing.imageUrl || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80'); %>
+        <div class="gallery-grid">
+            <div class="gallery-main-frame">
+                <img src="<%= mainImg %>" 
+                     alt="<%= listing.title %>" 
+                     class="gallery-hero-img" 
+                     id="mainGalleryImg"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80';">
+                <div class="gallery-tag">
+                    <i class="fa-solid fa-camera"></i> Sanctuary Perspective
+                </div>
+            </div>
+            <div class="gallery-side-frames d-none d-md-flex">
+                <div class="gallery-sub-frame">
+                    <img src="<%= (Array.isArray(listing.images) && listing.images.length > 1) ? (typeof listing.images[1] === 'string' ? listing.images[1] : (listing.images[1].url || mainImg)) : mainImg %>" 
+                         alt="<%= listing.title %> detail" 
+                         class="gallery-sub-img" 
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';">
+                    <div class="gallery-sub-badge">Architectural Detail</div>
+                </div>
+                <div class="gallery-sub-frame">
+                    <img src="<%= (Array.isArray(listing.images) && listing.images.length > 2) ? (typeof listing.images[2] === 'string' ? listing.images[2] : (listing.images[2].url || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80')) : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80' %>" 
+                         alt="<%= listing.title %> surroundings" 
+                         class="gallery-sub-img" 
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';">
+                    <div class="gallery-sub-badge">Surroundings</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN EDITORIAL CONTENT & FLOATING BOOKING CARD -->
+    <div class="show-layout-grid">
+        <!-- LEFT COLUMN: SANCTUARY STORY, HOST, AMENITIES -->
+        <main class="show-content-col">
+            <!-- HOST CARD -->
+            <% 
+                const hostDisplayName = (listing.owner && (listing.owner.name || listing.owner.displayName || (listing.owner.username === 'admin' ? 'Admin' : listing.owner.username))) ? (listing.owner.name || listing.owner.displayName || (listing.owner.username === 'admin' ? 'Admin' : listing.owner.username)) : "Admin";
+                const hostInitial = hostDisplayName.charAt(0).toUpperCase();
+            %>
+            <div class="host-editorial-card reveal-init">
+                <div class="host-avatar-wrap">
+                    <div class="host-initial-avatar">
+                        <%= hostInitial %>
+                    </div>
+                </div>
+                <div class="host-details">
+                    <div class="host-name">Hosted by <%= hostDisplayName %></div>
+                    <div class="host-stats">Dedicated Host &bull; Identity Verified &bull; Committed to Mindful Hospitality</div>
+                </div>
+                <div class="host-badge-chip">
+                    <i class="fa-solid fa-shield-halved"></i> Verified Host
+                </div>
+            </div>
+
+            <!-- STORY / DESCRIPTION -->
+            <section class="show-description-card reveal-init">
+                <h2 class="col-section-title">The Sanctuary Experience</h2>
+                <div class="description-text">
+                    <p><%= listing.description || "A serene and thoughtfully designed retreat offering peace, architectural charm, and natural beauty. Handpicked by Roamly for travelers seeking authentic rejuvenation." %></p>
+                </div>
+            </section>
+
+            <!-- CURATED AMENITIES -->
+            <section class="show-amenities-section reveal-init">
+                <h2 class="col-section-title">What this sanctuary offers</h2>
+                <div class="amenities-grid">
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-mountain-sun"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">Scenic Horizons</span>
+                            <span class="amenity-desc">Unobstructed sunrise &amp; sunset vistas</span>
+                        </div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-wifi"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">High-Speed Wi-Fi</span>
+                            <span class="amenity-desc">Seamless connectivity for remote work</span>
+                        </div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-kitchen-set"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">Equipped Kitchen</span>
+                            <span class="amenity-desc">Prepared for mindful home cooking</span>
+                        </div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-fire"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">Cozy Warmth &amp; Climate</span>
+                            <span class="amenity-desc">Thoughtful temperature control</span>
+                        </div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-car"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">Private On-Site Parking</span>
+                            <span class="amenity-desc">Complimentary secure parking area</span>
+                        </div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa-solid fa-mug-hot"></i>
+                        <div class="amenity-info">
+                            <span class="amenity-name">Local Roamly Provisions</span>
+                            <span class="amenity-desc">Handcrafted local teas &amp; fresh coffee</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OWNER EDIT / DELETE ACTIONS -->
+            <% const isOwnerUser = currUser && (currUser.role === 'admin' || (currUser.username && currUser.username.toLowerCase() === 'admin') || (listing.owner && (currUser._id.equals ? currUser._id.equals(listing.owner._id || listing.owner) : String(currUser._id) === String(listing.owner._id || listing.owner)))); %>
+            <% if(isOwnerUser) { %>
+                <div class="owner-controls-card reveal-init">
+                    <div class="owner-note">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Host Tools &bull; You manage this sanctuary (<%= (typeof hostStats !== 'undefined') ? hostStats.totalBookings : 0 %> bookings, <%= (typeof hostStats !== 'undefined') ? hostStats.upcomingBookings : 0 %> upcoming).</span>
+                    </div>
+                    <div class="owner-btn-group flex-wrap">
+                        <a href="/host/properties/<%= listing._id %>/bookings" class="roamly-btn-primary">
+                            <i class="fa-solid fa-list-check me-1"></i> View Guest Bookings
+                        </a>
+                        <a href="/listings/<%= listing._id %>/edit" class="roamly-btn-edit">
+                            <i class="fa-regular fa-pen-to-square me-1"></i> Edit Listing
+                        </a>
+                        <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this sanctuary?');">
+                            <button type="submit" class="roamly-btn-delete">
+                                <i class="fa-regular fa-trash-can me-1"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- REVIEWS SECTION -->
+            <section class="show-reviews-section reveal-init" id="reviewsSection">
+                <div class="reviews-header-wrap">
+                    <h2 class="col-section-title mb-1">
+                        <i class="fa-solid fa-star text-warning me-2"></i>
+                        Guest Reflections
+                    </h2>
+                    <span class="reviews-sub-count">
+                        <%= (listing.reviews && listing.reviews.length) ? listing.reviews.length : 0 %> verified experiences &bull; 4.96 average score
+                    </span>
+                </div>
+
+                <!-- ADD REVIEW FORM -->
+                <div class="add-review-box">
+                    <% if (currUser) { %>
+                        <h3 class="box-subtitle">Share your sanctuary experience</h3>
+                        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+                            <div class="mb-3">
+                                <label class="form-label font-bold">Your Rating</label>
+                                <fieldset class="starability-basic">
+                                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+                                    <input type="radio" id="second-rate1" name="review[rating]" value="1" />
+                                    <label for="second-rate1" title="Terrible">1 star</label>
+                                    <input type="radio" id="second-rate2" name="review[rating]" value="2" />
+                                    <label for="second-rate2" title="Not good">2 stars</label>
+                                    <input type="radio" id="second-rate3" name="review[rating]" value="3" />
+                                    <label for="second-rate3" title="Average">3 stars</label>
+                                    <input type="radio" id="second-rate4" name="review[rating]" value="4" />
+                                    <label for="second-rate4" title="Very good">4 stars</label>
+                                    <input type="radio" id="second-rate5" name="review[rating]" value="5" />
+                                    <label for="second-rate5" title="Amazing">5 stars</label>
+                                </fieldset>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label font-bold">Your Thoughts</label>
+                                <textarea 
+                                    id="comment" 
+                                    name="review[comment]" 
+                                    rows="4" 
+                                    class="form-control review-textarea" 
+                                    placeholder="Describe the atmosphere, quiet moments, or host hospitality..."
+                                    required
+                                ></textarea>
+                                <div class="invalid-feedback">Please share a few words about your stay.</div>
+                            </div>
+                            <button type="submit" class="roamly-btn-primary">
+                                <span>Publish Review</span>
+                                <i class="fa-solid fa-paper-plane ms-2"></i>
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <div class="login-prompt-box">
+                            <i class="fa-solid fa-feather empty-icon mb-2"></i>
+                            <p class="mb-2">Have you stayed at this sanctuary?</p>
+                            <a href="/login" class="roamly-btn-secondary">Log in to leave a review</a>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- EXISTING REVIEWS LIST -->
+                <div class="reviews-list-wrap">
+                    <% if (!listing.reviews || listing.reviews.length === 0) { %>
+                        <div class="no-reviews-note">
+                            <i class="fa-regular fa-comment-dots me-2"></i>
+                            No reflections posted yet. Be the first mindful traveler to share your stay.
+                        </div>
+                    <% } else { %>
+                        <div class="reviews-grid">
+                            <% for (const review of listing.reviews) { %>
+                                <div class="review-card">
+                                    <div class="review-card-top">
+                                        <div class="review-user-info">
+                                            <div class="review-avatar">
+                                                <%= (review.author && review.author.username) ? review.author.username.charAt(0).toUpperCase() : "G" %>
+                                            </div>
+                                            <div>
+                                                <div class="reviewer-name"><%= review.author ? review.author.username : "Verified Traveler" %></div>
+                                                <div class="review-date">Mindful Guest</div>
+                                            </div>
+                                        </div>
+                                        <div class="review-stars-pill">
+                                            <% for(let s = 1; s <= (review.rating || 5); s++) { %>
+                                                <i class="fa-solid fa-star"></i>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    <p class="review-comment-body"><%= review.comment %></p>
+                                    <% if (currUser && review.author && ((currUser._id.equals ? currUser._id.equals(review.author._id || review.author) : String(currUser._id) === String(review.author._id || review.author)) || currUser.role === 'admin' || (currUser.username && currUser.username.toLowerCase() === 'admin'))) { %>
+                                        <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="mt-2 text-end">
+                                            <button type="submit" class="delete-review-btn">
+                                                <i class="fa-regular fa-trash-can me-1"></i> Delete
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+        </main>
+
+        <!-- RIGHT COLUMN: FLOATING BOOKING & PRICE CARD / HOST TOOLS -->
+        <aside class="show-booking-col">
+            <% const isHostOwner = currUser && (currUser.role === 'admin' || (currUser.username && currUser.username.toLowerCase() === 'admin') || (listing.owner && (currUser._id.equals ? currUser._id.equals(listing.owner._id || listing.owner) : String(currUser._id) === String(listing.owner._id || listing.owner)))); %>
+            <% if (isHostOwner) { %>
+                <!-- HOST MANAGEMENT TOOLS CARD -->
+                <div class="floating-booking-card reveal-init" style="border: 2px solid var(--roamly-forest); box-shadow: 0 10px 30px rgba(36, 82, 53, 0.15);">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-forest text-white py-2 px-3 fw-bold">
+                            <i class="fa-solid fa-hotel me-1"></i> Host Dashboard
+                        </span>
+                        <span class="text-muted small">Your Sanctuary</span>
+                    </div>
+
+                    <h3 class="font-serif fw-bold text-navy mb-1 fs-5">Host Management Tools</h3>
+                    <p class="text-muted small mb-3">
+                        Track reservations, monitor incoming guests, and manage your property listing.
+                    </p>
+
+                    <!-- DYNAMIC BOOKING COUNTERS -->
+                    <div class="row g-2 p-3 rounded-3 mb-3" style="background-color: var(--roamly-cream); border: 1px solid var(--roamly-border);">
+                        <div class="col-6 text-center border-end">
+                            <span class="text-muted small d-block">Total Bookings</span>
+                            <strong class="fs-4 text-navy"><%= (typeof hostStats !== 'undefined') ? hostStats.totalBookings : 0 %></strong>
+                        </div>
+                        <div class="col-6 text-center">
+                            <span class="text-muted small d-block">Upcoming Stays</span>
+                            <strong class="fs-4 text-forest"><%= (typeof hostStats !== 'undefined') ? hostStats.upcomingBookings : 0 %></strong>
+                        </div>
+                    </div>
+
+                    <!-- VIEW GUEST BOOKINGS CTA -->
+                    <a href="/host/properties/<%= listing._id %>/bookings" class="roamly-btn-primary w-100 py-3 fs-6 text-decoration-none mb-3">
+                        <i class="fa-solid fa-list-check me-2"></i> View Guest Bookings
+                    </a>
+
+                    <!-- EDIT & DELETE BUTTONS -->
+                    <div class="d-flex gap-2">
+                        <a href="/listings/<%= listing._id %>/edit" class="roamly-btn-secondary flex-grow-1 text-center py-2 text-decoration-none">
+                            <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                        </a>
+                        <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="flex-grow-1" onsubmit="return confirm('Are you sure you want to delete this sanctuary?');">
+                            <button type="submit" class="roamly-btn-secondary w-100 text-danger border-danger py-2">
+                                <i class="fa-regular fa-trash-can me-1"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-top text-center">
+                        <a href="/host/dashboard" class="text-muted small text-decoration-none">
+                            <i class="fa-solid fa-chart-pie me-1"></i> Return to Full Host Dashboard
+                        </a>
+                    </div>
+                </div>
+            <% } else { %>
+                <!-- STANDARD TRAVELER BOOKING CARD -->
+                <div class="floating-booking-card reveal-init">
+                    <div class="booking-price-header">
+                        <div class="price-stack">
+                            <span class="booking-currency">₹</span>
+                            <span class="booking-amount"><%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></span>
+                            <span class="booking-unit">/ night</span>
+                        </div>
+                        <div class="booking-rating-pill">
+                            <i class="fa-solid fa-star"></i> 4.96
+                        </div>
+                    </div>
+
+                    <!-- DATE & GUESTS SELECTOR PREVIEW -->
+                    <div class="booking-inputs-box" id="showBookingBox">
+                        <div class="booking-input-dates" id="showDatesTrigger" role="button" tabindex="0">
+                            <div class="date-field">
+                                <span class="field-label">CHECK-IN</span>
+                                <span class="field-value" id="showCheckInValue">Select date</span>
+                            </div>
+                            <div class="date-divider"></div>
+                            <div class="date-field">
+                                <span class="field-label">CHECKOUT</span>
+                                <span class="field-value" id="showCheckOutValue">Select date</span>
+                            </div>
+                        </div>
+                        <div class="booking-input-guests" id="showGuestsTrigger" role="button" tabindex="0">
+                            <span class="field-label">GUESTS</span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="field-value" id="showGuestsValue">2 guests</span>
+                                <i class="fa-solid fa-chevron-down text-muted small"></i>
+                            </div>
+                        </div>
+
+                        <!-- SHOW CALENDAR POPOVER -->
+                        <div class="roamly-popover calendar-popover d-none" id="showCalendarPopover" style="left: 0; right: 0; width: 100%; transform: none; top: calc(100% + 8px);">
+                            <div class="cal-header-bar">
+                                <button type="button" class="cal-nav-btn" id="showCalPrevBtn" aria-label="Previous Month">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <span class="cal-month-title" id="showCalMonthTitle">Month Year</span>
+                                <button type="button" class="cal-nav-btn" id="showCalNextBtn" aria-label="Next Month">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="cal-weekdays">
+                                <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                            </div>
+                            <div class="cal-days-grid" id="showCalDaysGrid"></div>
+                            <div class="cal-shortcuts-row">
+                                <button type="button" class="cal-shortcut-pill" id="showShortcutWeekend">This Weekend</button>
+                                <button type="button" class="cal-shortcut-pill" id="showShortcutWeek">Next 7 Days</button>
+                                <button type="button" class="cal-shortcut-pill" id="showShortcutReset">Reset</button>
+                            </div>
+                            <div class="cal-footer-bar">
+                                <span class="cal-summary-pill" id="showCalSummaryPill">Select dates</span>
+                                <button type="button" class="cal-done-btn" id="showCalDoneBtn">Apply Dates</button>
+                            </div>
+                        </div>
+
+                        <!-- SHOW GUESTS POPOVER -->
+                        <div class="roamly-popover guests-popover d-none" id="showGuestsPopover" style="left: 0; right: 0; width: 100%; top: calc(100% + 8px);">
+                            <div class="popover-header">
+                                <span class="popover-title"><i class="fa-solid fa-users me-1"></i> Sanctuary Guests</span>
+                            </div>
+                            <div class="guest-row">
+                                <div class="guest-meta">
+                                    <span class="guest-type">Adults</span>
+                                    <span class="guest-subtext">Ages 13+</span>
+                                </div>
+                                <div class="guest-counter">
+                                    <button type="button" class="counter-btn" id="showBtnAdultDec" aria-label="Decrease adults"><i class="fa-solid fa-minus"></i></button>
+                                    <span class="counter-num" id="showValAdults">2</span>
+                                    <button type="button" class="counter-btn" id="showBtnAdultInc" aria-label="Increase adults"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="guest-row">
+                                <div class="guest-meta">
+                                    <span class="guest-type">Children</span>
+                                    <span class="guest-subtext">Ages 2–12</span>
+                                </div>
+                                <div class="guest-counter">
+                                    <button type="button" class="counter-btn" id="showBtnChildDec" aria-label="Decrease children"><i class="fa-solid fa-minus"></i></button>
+                                    <span class="counter-num" id="showValChildren">0</span>
+                                    <button type="button" class="counter-btn" id="showBtnChildInc" aria-label="Increase children"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="guest-row">
+                                <div class="guest-meta">
+                                    <span class="guest-type">Infants</span>
+                                    <span class="guest-subtext">Under 2</span>
+                                </div>
+                                <div class="guest-counter">
+                                    <button type="button" class="counter-btn" id="showBtnInfantDec" aria-label="Decrease infants"><i class="fa-solid fa-minus"></i></button>
+                                    <span class="counter-num" id="showValInfants">0</span>
+                                    <button type="button" class="counter-btn" id="showBtnInfantInc" aria-label="Increase infants"><i class="fa-solid fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="guests-footer">
+                                <button type="button" class="cal-done-btn" id="showGuestsDoneBtn">Done</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RESERVE BUTTON -->
+                    <button type="button" class="roamly-btn-reserve" id="openReserveModalBtn">
+                        <i class="fa-solid fa-calendar-check me-2"></i> Reserve Sanctuary
+                    </button>
+
+                    <p class="reserve-reassurance">
+                        You won’t be charged yet &bull; Instant booking verification
+                    </p>
+
+                    <!-- TRANSPARENT PRICE BREAKDOWN (LIVE REACTIVE) -->
+                    <% const price = listing.price || 0; %>
+                    <div class="price-breakdown-list" id="priceBreakdownList" data-nightly-price="<%= price %>">
+                        <div class="breakdown-row" id="breakdownBaseRow">
+                            <span id="breakdownNightsFormula">₹ <%= price.toLocaleString("en-IN") %> &times; <span id="displayNightsCount">3</span> nights</span>
+                            <span id="breakdownBaseTotal">₹ <%= (price * 3).toLocaleString("en-IN") %></span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Roamly concierge service</span>
+                            <span class="text-success font-bold">Free</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Sanctuary preservation fee (5%)</span>
+                            <span id="breakdownPreservationFee">₹ <%= Math.round(price * 3 * 0.05).toLocaleString("en-IN") %></span>
+                        </div>
+                        <div class="breakdown-divider"></div>
+                        <div class="breakdown-row total-row">
+                            <span>Total before taxes</span>
+                            <span class="total-amount" id="breakdownGrandTotal">₹ <%= (price * 3 + Math.round(price * 3 * 0.05)).toLocaleString("en-IN") %></span>
+                        </div>
+                    </div>
+
+                    <!-- CANCELLATION GUARANTEE -->
+                    <div class="cancellation-policy-box">
+                        <i class="fa-solid fa-clock-rotate-left policy-icon"></i>
+                        <div>
+                            <div class="policy-title">Flexible Sanctuary Cancellation</div>
+                            <div class="policy-desc">Full refund up to 48 hours prior to check-in.</div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </aside>
+    </div>
+
+    <!-- LOCATION & NEARBY SECTION -->
+    <section class="show-location-section reveal-init" id="locationNearbySection">
+        <div class="location-header-wrap">
+            <span class="location-eyebrow">
+                <i class="fa-solid fa-compass"></i> GEOGRAPHIC SETTING
+            </span>
+            <h2 class="location-title">Location &amp; Nearby</h2>
+            <p class="location-subheading">
+                Explore what's around your stay in <%= listing.location || "this destination" %>, <%= listing.country || "India" %>
+            </p>
+        </div>
+
+        <div class="location-content-grid">
+            <!-- Left: Interactive Map Card -->
+            <div class="location-map-card">
+                <div class="location-map-top-bar">
+                    <span class="location-badge-pill">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="mapBadgeCityText"><%= listing.location || "India" %></span>
+                    </span>
+                </div>
+
+                <div id="propertyLocationMap" class="location-map-container"></div>
+
+                <button type="button" class="map-recenter-btn" id="mapRecenterBtn" title="Recenter to Sanctuary &amp; Attractions">
+                    <i class="fa-solid fa-crosshairs"></i> Recenter
+                </button>
+
+                <a href="#" target="_blank" rel="noopener noreferrer" class="get-directions-btn" id="getDirectionsBtn">
+                    <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+                </a>
+            </div>
+
+            <!-- Right: Nearby Attractions Side Card -->
+            <div class="nearby-attractions-panel">
+                <div>
+                    <div class="nearby-panel-header">
+                        <h3 class="nearby-panel-title">
+                            <i class="fa-solid fa-mountain-city text-forest"></i> Things to explore nearby
+                        </h3>
+                        <p class="nearby-panel-subtitle">Key tourist attractions and landmarks close to this sanctuary</p>
+                    </div>
+
+                    <div class="nearby-attractions-list" id="nearbyAttractionsList">
+                        <!-- Populated dynamically via listing_location_map.js -->
+                    </div>
+                </div>
+
+                <div class="nearby-panel-footer">
+                    <span class="nearby-transit-note">
+                        <i class="fa-solid fa-circle-info text-forest"></i> Distances calculated aerial from stay
+                    </span>
+                    <span class="badge bg-light text-dark border">
+                        <i class="fa-solid fa-map-pin text-forest me-1"></i> Interactive Map
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- RESERVATION CONFIRMATION MODAL -->
+<div class="roamly-modal-backdrop d-none" id="reserveModalBackdrop">
+    <div class="roamly-modal-card" role="dialog" aria-modal="true">
+        <button type="button" class="modal-close-btn" id="closeReserveModalBtn" aria-label="Close modal">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-badge-success">
+            <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h3 class="modal-title mb-1">Sanctuary Request Confirmed</h3>
+        <p class="text-muted mb-4" style="font-size: 0.92rem; line-height: 1.5;">
+            Your reservation request for <strong><%= listing.title %></strong> in <%= listing.location %>, <%= listing.country %> has been registered with your host.
+        </p>
+
+        <div class="modal-summary-box mb-4 p-3 rounded-4" style="background: var(--roamly-cream); border: 1px solid var(--roamly-border);">
+            <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="text-muted font-medium">Dates &amp; Duration:</span>
+                <strong id="modalSummaryDates">3 nights</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="text-muted font-medium">Guests:</span>
+                <strong id="modalSummaryGuests">2 guests</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+                <span class="text-muted font-medium">Nightly Rate:</span>
+                <strong>₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> / night</strong>
+            </div>
+            <div class="d-flex justify-content-between pt-2">
+                <span class="font-bold text-navy">Total Price (est.):</span>
+                <strong class="text-forest fs-5" id="modalSummaryTotal">₹ <%= (((listing.price || 0) * 3) + Math.round((listing.price || 0) * 3 * 0.05)).toLocaleString("en-IN") %></strong>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column gap-2">
+            <a href="/listings" class="roamly-btn-reserve text-center text-decoration-none" style="padding: 0.85rem;">
+                <i class="fa-solid fa-compass me-2"></i> Explore More Sanctuaries
+            </a>
+            <button type="button" class="btn btn-link text-muted text-decoration-none small" id="modalModifyBtn">
+                Modify Booking Details
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- CLIENT-SIDE SCRIPT -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. Entrance Reveals
+        const reveals = document.querySelectorAll(".reveal-init");
+        if ("IntersectionObserver" in window) {
+            const obs = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, idx) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add("revealed");
+                        }, (idx % 3) * 70);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: "0px 0px -30px 0px" });
+            reveals.forEach(r => obs.observe(r));
+        } else {
+            reveals.forEach(r => r.classList.add("revealed"));
+        }
+
+        // 2. Interactive Booking Card Elements
+        const showDatesTrigger = document.getElementById("showDatesTrigger");
+        const showGuestsTrigger = document.getElementById("showGuestsTrigger");
+        const showCalendarPopover = document.getElementById("showCalendarPopover");
+        const showGuestsPopover = document.getElementById("showGuestsPopover");
+
+        const showCheckInValue = document.getElementById("showCheckInValue");
+        const showCheckOutValue = document.getElementById("showCheckOutValue");
+        const showGuestsValue = document.getElementById("showGuestsValue");
+
+        const priceBreakdownList = document.getElementById("priceBreakdownList");
+        const nightlyPrice = priceBreakdownList ? parseFloat(priceBreakdownList.getAttribute("data-nightly-price") || 0) : 0;
+        const displayNightsCount = document.getElementById("displayNightsCount");
+        const breakdownNightsFormula = document.getElementById("breakdownNightsFormula");
+        const breakdownBaseTotal = document.getElementById("breakdownBaseTotal");
+        const breakdownPreservationFee = document.getElementById("breakdownPreservationFee");
+        const breakdownGrandTotal = document.getElementById("breakdownGrandTotal");
+
+        // Modal Elements
+        const openReserveModalBtn = document.getElementById("openReserveModalBtn");
+        const reserveModalBackdrop = document.getElementById("reserveModalBackdrop");
+        const closeReserveModalBtn = document.getElementById("closeReserveModalBtn");
+        const modalModifyBtn = document.getElementById("modalModifyBtn");
+        const modalSummaryDates = document.getElementById("modalSummaryDates");
+        const modalSummaryGuests = document.getElementById("modalSummaryGuests");
+        const modalSummaryTotal = document.getElementById("modalSummaryTotal");
+
+        const closeShowPopovers = () => {
+            if (showCalendarPopover) showCalendarPopover.classList.add("d-none");
+            if (showGuestsPopover) showGuestsPopover.classList.add("d-none");
+            if (showDatesTrigger) showDatesTrigger.classList.remove("active-picker");
+            if (showGuestsTrigger) showGuestsTrigger.classList.remove("active-picker");
+        };
+
+        if (showDatesTrigger) {
+            showDatesTrigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isOpen = !showCalendarPopover.classList.contains("d-none");
+                closeShowPopovers();
+                if (!isOpen) {
+                    showCalendarPopover.classList.remove("d-none");
+                    showDatesTrigger.classList.add("active-picker");
+                }
+            });
+        }
+
+        if (showGuestsTrigger) {
+            showGuestsTrigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isOpen = !showGuestsPopover.classList.contains("d-none");
+                closeShowPopovers();
+                if (!isOpen) {
+                    showGuestsPopover.classList.remove("d-none");
+                    showGuestsTrigger.classList.add("active-picker");
+                }
+            });
+        }
+
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest("#showBookingBox")) {
+                closeShowPopovers();
+            }
+        });
+
+        // 3. Calendar Engine for Show Page
+        const showCalMonthTitle = document.getElementById("showCalMonthTitle");
+        const showCalDaysGrid = document.getElementById("showCalDaysGrid");
+        const showCalPrevBtn = document.getElementById("showCalPrevBtn");
+        const showCalNextBtn = document.getElementById("showCalNextBtn");
+        const showCalSummaryPill = document.getElementById("showCalSummaryPill");
+        const showCalDoneBtn = document.getElementById("showCalDoneBtn");
+
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Default: Tomorrow for 3 nights
+        let showStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        let showEndDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4);
+
+        let showViewYear = showStartDate.getFullYear();
+        let showViewMonth = showStartDate.getMonth();
+
+        const formatShortDate = (d) => {
+            const m = monthNames[d.getMonth()].slice(0, 3);
+            return `${m} ${d.getDate()}`;
+        };
+
+        const formatFieldDate = (d) => {
+            const m = monthNames[d.getMonth()].slice(0, 3);
+            return `${m} ${d.getDate()}, ${d.getFullYear()}`;
+        };
+
+        const updateShowPricingAndDates = () => {
+            if (showStartDate && showEndDate) {
+                const diffTime = Math.abs(showEndDate - showStartDate);
+                const nights = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
+
+                if (showCheckInValue) showCheckInValue.textContent = formatFieldDate(showStartDate);
+                if (showCheckOutValue) showCheckOutValue.textContent = formatFieldDate(showEndDate);
+                if (showCalSummaryPill) showCalSummaryPill.textContent = `${formatShortDate(showStartDate)} – ${formatShortDate(showEndDate)} (${nights} night${nights > 1 ? 's' : ''})`;
+
+                // Recalculate transparent pricing
+                const baseTotal = nightlyPrice * nights;
+                const preservationFee = Math.round(baseTotal * 0.05);
+                const grandTotal = baseTotal + preservationFee;
+
+                if (displayNightsCount) displayNightsCount.textContent = nights;
+                if (breakdownNightsFormula) breakdownNightsFormula.innerHTML = `₹ ${nightlyPrice.toLocaleString("en-IN")} &times; <span id="displayNightsCount">${nights}</span> night${nights > 1 ? 's' : ''}`;
+                if (breakdownBaseTotal) breakdownBaseTotal.textContent = `₹ ${baseTotal.toLocaleString("en-IN")}`;
+                if (breakdownPreservationFee) breakdownPreservationFee.textContent = `₹ ${preservationFee.toLocaleString("en-IN")}`;
+                if (breakdownGrandTotal) breakdownGrandTotal.textContent = `₹ ${grandTotal.toLocaleString("en-IN")}`;
+
+                // Update Modal Summary
+                if (modalSummaryDates) modalSummaryDates.textContent = `${formatShortDate(showStartDate)} – ${formatShortDate(showEndDate)} (${nights} night${nights > 1 ? 's' : ''})`;
+                if (modalSummaryTotal) modalSummaryTotal.textContent = `₹ ${grandTotal.toLocaleString("en-IN")}`;
+            } else if (showStartDate) {
+                if (showCheckInValue) showCheckInValue.textContent = formatFieldDate(showStartDate);
+                if (showCheckOutValue) showCheckOutValue.textContent = "Select checkout";
+                if (showCalSummaryPill) showCalSummaryPill.textContent = "Select checkout date";
+            } else {
+                if (showCheckInValue) showCheckInValue.textContent = "Select date";
+                if (showCheckOutValue) showCheckOutValue.textContent = "Select date";
+                if (showCalSummaryPill) showCalSummaryPill.textContent = "Select dates";
+            }
+        };
+
+        const renderShowCalendar = () => {
+            if (!showCalDaysGrid || !showCalMonthTitle) return;
+            showCalMonthTitle.textContent = `${monthNames[showViewMonth]} ${showViewYear}`;
+
+            if (showCalPrevBtn) {
+                const isPast = (showViewYear < today.getFullYear()) || (showViewYear === today.getFullYear() && showViewMonth <= today.getMonth());
+                showCalPrevBtn.disabled = isPast;
+                showCalPrevBtn.style.opacity = isPast ? "0.3" : "1";
+                showCalPrevBtn.style.cursor = isPast ? "not-allowed" : "pointer";
+            }
+
+            showCalDaysGrid.innerHTML = "";
+
+            const firstDayIndex = new Date(showViewYear, showViewMonth, 1).getDay();
+            const daysInMonth = new Date(showViewYear, showViewMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement("div");
+                emptyCell.className = "cal-empty-cell";
+                showCalDaysGrid.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(showViewYear, showViewMonth, day);
+                dayDate.setHours(0, 0, 0, 0);
+
+                const cell = document.createElement("button");
+                cell.type = "button";
+                cell.className = "cal-day-cell";
+                cell.textContent = day;
+
+                const isPastDay = dayDate < today;
+                if (isPastDay) {
+                    cell.classList.add("disabled");
+                    cell.disabled = true;
+                } else {
+                    const time = dayDate.getTime();
+                    const startTime = showStartDate ? showStartDate.getTime() : null;
+                    const endTime = showEndDate ? showEndDate.getTime() : null;
+
+                    if (startTime && time === startTime) {
+                        cell.classList.add("selected-start");
+                    } else if (endTime && time === endTime) {
+                        cell.classList.add("selected-end");
+                    } else if (startTime && endTime && time > startTime && time < endTime) {
+                        cell.classList.add("in-range");
+                    }
+
+                    cell.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        if (!showStartDate || (showStartDate && showEndDate)) {
+                            showStartDate = new Date(dayDate);
+                            showEndDate = null;
+                        } else if (showStartDate && !showEndDate) {
+                            if (dayDate > showStartDate) {
+                                showEndDate = new Date(dayDate);
+                            } else {
+                                showStartDate = new Date(dayDate);
+                                showEndDate = null;
+                            }
+                        }
+                        updateShowPricingAndDates();
+                        renderShowCalendar();
+                    });
+                }
+
+                showCalDaysGrid.appendChild(cell);
+            }
+        };
+
+        if (showCalPrevBtn) {
+            showCalPrevBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                showViewMonth--;
+                if (showViewMonth < 0) {
+                    showViewMonth = 11;
+                    showViewYear--;
+                }
+                renderShowCalendar();
+            });
+        }
+
+        if (showCalNextBtn) {
+            showCalNextBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                showViewMonth++;
+                if (showViewMonth > 11) {
+                    showViewMonth = 0;
+                    showViewYear++;
+                }
+                renderShowCalendar();
+            });
+        }
+
+        if (showCalDoneBtn) {
+            showCalDoneBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                closeShowPopovers();
+            });
+        }
+
+        const showShortcutWeekend = document.getElementById("showShortcutWeekend");
+        const showShortcutWeek = document.getElementById("showShortcutWeek");
+        const showShortcutReset = document.getElementById("showShortcutReset");
+
+        if (showShortcutWeekend) {
+            showShortcutWeekend.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const now = new Date();
+                const dayOfWeek = now.getDay();
+                const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7;
+                const friday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilFriday);
+                const sunday = new Date(friday.getFullYear(), friday.getMonth(), friday.getDate() + 2);
+                showStartDate = friday;
+                showEndDate = sunday;
+                showViewYear = friday.getFullYear();
+                showViewMonth = friday.getMonth();
+                updateShowPricingAndDates();
+                renderShowCalendar();
+            });
+        }
+
+        if (showShortcutWeek) {
+            showShortcutWeek.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const now = new Date();
+                const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 8);
+                showStartDate = start;
+                showEndDate = end;
+                showViewYear = start.getFullYear();
+                showViewMonth = start.getMonth();
+                updateShowPricingAndDates();
+                renderShowCalendar();
+            });
+        }
+
+        if (showShortcutReset) {
+            showShortcutReset.addEventListener("click", (e) => {
+                e.stopPropagation();
+                showStartDate = null;
+                showEndDate = null;
+                updateShowPricingAndDates();
+                renderShowCalendar();
+            });
+        }
+
+        // 4. Guests Counter Engine for Show Page
+        let showAdults = 2;
+        let showChildren = 0;
+        let showInfants = 0;
+
+        const showValAdults = document.getElementById("showValAdults");
+        const showValChildren = document.getElementById("showValChildren");
+        const showValInfants = document.getElementById("showValInfants");
+
+        const showBtnAdultDec = document.getElementById("showBtnAdultDec");
+        const showBtnAdultInc = document.getElementById("showBtnAdultInc");
+        const showBtnChildDec = document.getElementById("showBtnChildDec");
+        const showBtnChildInc = document.getElementById("showBtnChildInc");
+        const showBtnInfantDec = document.getElementById("showBtnInfantDec");
+        const showBtnInfantInc = document.getElementById("showBtnInfantInc");
+        const showGuestsDoneBtn = document.getElementById("showGuestsDoneBtn");
+
+        const updateShowGuests = () => {
+            if (showValAdults) showValAdults.textContent = showAdults;
+            if (showValChildren) showValChildren.textContent = showChildren;
+            if (showValInfants) showValInfants.textContent = showInfants;
+
+            if (showBtnAdultDec) showBtnAdultDec.disabled = showAdults <= 1;
+            if (showBtnChildDec) showBtnChildDec.disabled = showChildren <= 0;
+            if (showBtnInfantDec) showBtnInfantDec.disabled = showInfants <= 0;
+
+            const totalTravelers = showAdults + showChildren;
+            let text = `${totalTravelers} guest${totalTravelers > 1 ? 's' : ''}`;
+            if (showInfants > 0) {
+                text += `, ${showInfants} infant${showInfants > 1 ? 's' : ''}`;
+            }
+
+            if (showGuestsValue) showGuestsValue.textContent = text;
+            if (modalSummaryGuests) modalSummaryGuests.textContent = text;
+        };
+
+        if (showBtnAdultDec) {
+            showBtnAdultDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showAdults > 1) {
+                    showAdults--;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showBtnAdultInc) {
+            showBtnAdultInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showAdults < 16) {
+                    showAdults++;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showBtnChildDec) {
+            showBtnChildDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showChildren > 0) {
+                    showChildren--;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showBtnChildInc) {
+            showBtnChildInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showChildren < 10) {
+                    showChildren++;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showBtnInfantDec) {
+            showBtnInfantDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showInfants > 0) {
+                    showInfants--;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showBtnInfantInc) {
+            showBtnInfantInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (showInfants < 5) {
+                    showInfants++;
+                    updateShowGuests();
+                }
+            });
+        }
+        if (showGuestsDoneBtn) {
+            showGuestsDoneBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                closeShowPopovers();
+            });
+        }
+
+        // 5. Reservation / Checkout Handler
+        if (openReserveModalBtn) {
+            openReserveModalBtn.addEventListener("click", () => {
+                const sDate = showStartDate || new Date();
+                const eDate = showEndDate || new Date(sDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+                const checkInStr = sDate.toISOString().split("T")[0];
+                const checkOutStr = eDate.toISOString().split("T")[0];
+                const nights = Math.max(1, Math.round((eDate - sDate) / (1000 * 60 * 60 * 24)));
+                const totalGuests = (showAdults || 1) + (showChildren || 0) + (showInfants || 0);
+                const checkoutUrl = `/listings/<%= listing._id %>/checkout?checkIn=${checkInStr}&checkOut=${checkOutStr}&nights=${nights}&guests=${totalGuests}&adults=${showAdults || 1}&children=${showChildren || 0}&infants=${showInfants || 0}`;
+                window.location.href = checkoutUrl;
+            });
+        }
+
+        if (closeReserveModalBtn && reserveModalBackdrop) {
+            closeReserveModalBtn.addEventListener("click", () => {
+                reserveModalBackdrop.classList.add("d-none");
+            });
+        }
+
+        if (modalModifyBtn && reserveModalBackdrop) {
+            modalModifyBtn.addEventListener("click", () => {
+                reserveModalBackdrop.classList.add("d-none");
+                if (showCalendarPopover && showDatesTrigger) {
+                    setTimeout(() => {
+                        showCalendarPopover.classList.remove("d-none");
+                        showDatesTrigger.classList.add("active-picker");
+                    }, 150);
+                }
+            });
+        }
+
+        if (reserveModalBackdrop) {
+            reserveModalBackdrop.addEventListener("click", (e) => {
+                if (e.target === reserveModalBackdrop) {
+                    reserveModalBackdrop.classList.add("d-none");
+                }
+            });
+        }
+
+        // Initialize Show Page Calendar & Guests
+        updateShowPricingAndDates();
+        renderShowCalendar();
+        updateShowGuests();
+    });
+</script>
+
+<!-- Leaflet & Listing Location Map Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/js/listing_location_map.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.ListingLocationMap) {
+            window.ListingLocationMap.init({
+                containerId: "propertyLocationMap",
+                attractionsContainerId: "nearbyAttractionsList",
+                listing: {
+                    _id: "<%= listing._id %>",
+                    title: <%- JSON.stringify(listing.title) %>,
+                    location: <%- JSON.stringify(listing.location || '') %>,
+                    country: <%- JSON.stringify(listing.country || 'India') %>,
+                    price: <%= listing.price || 0 %>,
+                    imageUrl: <%- JSON.stringify(typeof resolveListingImage === 'function' ? resolveListingImage(listing) : (listing.imageUrl || '')) %>
+                }
+            });
+        }
+    });
+</script>

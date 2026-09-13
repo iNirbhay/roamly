@@ -1,0 +1,179 @@
+<footer class="roamly-footer">
+    <!-- Subtle Top Decorative Travel Route -->
+    <div class="footer-travel-route" aria-hidden="true">
+        <svg viewBox="0 0 1440 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="travel-route-svg" preserveAspectRatio="none">
+            <path d="M0 12 Q 360 4, 720 12 T 1440 12" stroke="rgba(30, 83, 56, 0.4)" stroke-width="1.5" stroke-dasharray="6 6"/>
+            <circle cx="180" cy="10" r="3" fill="#d99b26" class="route-node" />
+            <circle cx="540" cy="8" r="3.5" fill="#1e5338" class="route-node" />
+            <circle cx="900" cy="14" r="3" fill="#d99b26" class="route-node" />
+            <circle cx="1260" cy="11" r="3.5" fill="#1e5338" class="route-node" />
+        </svg>
+    </div>
+
+    <div class="container footer-inner-container">
+        <!-- Top Row: Brand Statement & Newsletter Discovery Console -->
+        <div class="footer-main-header">
+            <div class="footer-brand-summary">
+                <a href="/" class="footer-logo-link" aria-label="Roamly Home">
+                    <img src="/images/roamly-logo-light.png" alt="Roamly" class="footer-logo" onerror="this.onerror=null; this.src='/images/roamly-logo-transparent.png';">
+                </a>
+                <div class="footer-brand-tagline">
+                    <span>Discover. Stay. Explore.</span>
+                    <span class="golden-sun-dot" title="Roamly discovery accent"></span>
+                </div>
+                <p class="footer-description">
+                    Your gateway to memorable stays, beautiful destinations and experiences across India.
+                </p>
+                <div class="footer-brand-motto">
+                    <span class="motto-badge">
+                        <i class="fa-solid fa-compass me-1 text-gold"></i> Mindful Hospitality
+                    </span>
+                </div>
+            </div>
+
+            <!-- Newsletter / Discovery Section -->
+            <div class="footer-newsletter-card">
+                <div class="newsletter-headline-wrap">
+                    <h3 class="newsletter-title">
+                        <i class="fa-solid fa-paper-plane me-2 text-forest"></i>Find your next escape.
+                    </h3>
+                    <p class="newsletter-subtext">Get destination inspiration and discover places worth staying.</p>
+                </div>
+
+                <form id="footerNewsletterForm" class="newsletter-input-form" onsubmit="handleFooterNewsletter(event)">
+                    <div class="newsletter-field-shell">
+                        <i class="fa-regular fa-envelope newsletter-field-icon"></i>
+                        <input 
+                            type="email" 
+                            id="footerEmailInput" 
+                            class="newsletter-text-field" 
+                            placeholder="Enter your email" 
+                            required
+                            aria-label="Enter your email for destination inspiration"
+                        >
+                        <button type="submit" class="newsletter-submit-btn">
+                            <span>Join Roamly</span>
+                            <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                    <div id="newsletterSuccessFeedback" class="newsletter-feedback-toast d-none">
+                        <i class="fa-solid fa-circle-check text-forest me-1"></i>
+                        <span>Welcome to Roamly! Destination inspiration will be delivered to your inbox.</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Middle Row: Clean Role-Aware Navigation Columns -->
+        <div class="footer-navigation-grid">
+            <!-- Column 1: Explore Sanctuaries -->
+            <div class="footer-nav-col">
+                <span class="footer-group-heading">EXPLORE</span>
+                <ul class="footer-link-list">
+                    <li><a href="/explore-india"><i class="fa-solid fa-map-location-dot footer-link-icon"></i> Explore India</a></li>
+                    <li><a href="/listings"><i class="fa-solid fa-compass footer-link-icon"></i> All Sanctuaries</a></li>
+                    <li><a href="/listings?category=cabins"><i class="fa-solid fa-mountain footer-link-icon"></i> Cabins & Cottages</a></li>
+                    <li><a href="/listings?category=beachfront"><i class="fa-solid fa-water footer-link-icon"></i> Beachfront Escapes</a></li>
+                    <li><a href="/listings?category=mountains"><i class="fa-solid fa-tree footer-link-icon"></i> Mountain Retreats</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Signature Destinations (Working search routes) -->
+            <div class="footer-nav-col">
+                <span class="footer-group-heading">POPULAR DESTINATIONS</span>
+                <ul class="footer-link-list">
+                    <li><a href="/listings?search=Jaipur"><i class="fa-solid fa-location-dot footer-link-icon"></i> Royal Jaipur</a></li>
+                    <li><a href="/listings?search=Udaipur"><i class="fa-solid fa-location-dot footer-link-icon"></i> Lakeside Udaipur</a></li>
+                    <li><a href="/listings?search=Goa"><i class="fa-solid fa-location-dot footer-link-icon"></i> Coastal Goa</a></li>
+                    <li><a href="/listings?search=Manali"><i class="fa-solid fa-location-dot footer-link-icon"></i> Alpine Manali</a></li>
+                    <li><a href="/listings?search=Kerala"><i class="fa-solid fa-location-dot footer-link-icon"></i> Kerala Backwaters</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Role-Aware User / Host Navigation -->
+            <% 
+                const isHostSession = currUser && (currUser.role === 'host' || currUser.role === 'admin' || (currUser.username && currUser.username.toLowerCase() === 'admin'));
+            %>
+            <div class="footer-nav-col">
+                <% if (isHostSession) { %>
+                    <span class="footer-group-heading">FOR HOSTS</span>
+                    <ul class="footer-link-list">
+                        <li><a href="/host/dashboard"><i class="fa-solid fa-chart-pie footer-link-icon"></i> Host Dashboard</a></li>
+                        <li><a href="/host/properties"><i class="fa-solid fa-hotel footer-link-icon"></i> My Properties</a></li>
+                        <li><a href="/listings/new"><i class="fa-solid fa-plus-circle footer-link-icon"></i> Host a New Stay</a></li>
+                        <li><a href="/explore-india"><i class="fa-solid fa-map footer-link-icon"></i> View India Map</a></li>
+                    </ul>
+                <% } else if (currUser) { %>
+                    <span class="footer-group-heading">PLAN YOUR TRIP</span>
+                    <ul class="footer-link-list">
+                        <li><a href="/bookings"><i class="fa-solid fa-suitcase-rolling footer-link-icon"></i> My Bookings</a></li>
+                        <li><a href="/explore-india"><i class="fa-solid fa-map-location-dot footer-link-icon"></i> Explore India</a></li>
+                        <li><a href="/listings"><i class="fa-solid fa-border-all footer-link-icon"></i> All Stays</a></li>
+                        <li><a href="/listings/new"><i class="fa-solid fa-house-chimney footer-link-icon"></i> Host a Stay</a></li>
+                    </ul>
+                <% } else { %>
+                    <span class="footer-group-heading">PLAN YOUR TRIP</span>
+                    <ul class="footer-link-list">
+                        <li><a href="/signup"><i class="fa-solid fa-user-plus footer-link-icon"></i> Start Journey</a></li>
+                        <li><a href="/login"><i class="fa-solid fa-arrow-right-to-bracket footer-link-icon"></i> Sign In</a></li>
+                        <li><a href="/explore-india"><i class="fa-solid fa-compass footer-link-icon"></i> Explore India</a></li>
+                        <li><a href="/listings/new"><i class="fa-solid fa-house-chimney footer-link-icon"></i> Host a Stay</a></li>
+                    </ul>
+                <% } %>
+            </div>
+
+            <!-- Column 4: Community & Social Channels -->
+            <div class="footer-nav-col">
+                <span class="footer-group-heading">CONNECT</span>
+                <p class="footer-connect-text">Follow our curated journeys across India's hidden gems.</p>
+                <div class="footer-social-circles">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Roamly on Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Roamly on LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Roamly on YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-circle-btn" aria-label="Roamly on X">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                </div>
+                <div class="footer-sun-motto">
+                    <span class="sun-icon">☀️</span>
+                    <span class="sun-motto-text">Explore more. Travel better.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Footer Bar -->
+        <div class="footer-bottom-bar">
+            <div class="footer-copyright-text">
+                &copy; <%= new Date().getFullYear() %> Roamly Private Limited. All rights reserved.
+            </div>
+            <div class="footer-bottom-statement">
+                <span>Crafted for mindful travel in India</span>
+                <span class="footer-bottom-dot">•</span>
+                <span>Discover. Stay. Explore.</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function handleFooterNewsletter(e) {
+        e.preventDefault();
+        var input = document.getElementById("footerEmailInput");
+        var toast = document.getElementById("newsletterSuccessFeedback");
+        if (input && input.value) {
+            if (toast) {
+                toast.classList.remove("d-none");
+            }
+            input.value = "";
+            setTimeout(function() {
+                if (toast) toast.classList.add("d-none");
+            }, 6000);
+        }
+    }
+</script>

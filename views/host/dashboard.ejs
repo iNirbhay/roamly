@@ -1,0 +1,278 @@
+<% layout("layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/stylesheets/checkout.css">
+
+<div class="roamly-editorial-page py-4">
+
+    <!-- HOST DASHBOARD HEADER -->
+    <header class="bookings-dashboard-header">
+        <div class="explore-eyebrow mb-2">
+            <span class="hero-dot"></span>
+            <span>HOST &amp; PORTFOLIO ANALYTICS</span>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+                <h1 class="explore-heading mb-2">
+                    Welcome back, <%= currUser.displayName || currUser.username %>
+                </h1>
+                <p class="explore-subheading mb-0">
+                    Real-time reservation tracking, property occupancy, and earnings for your curated sanctuaries.
+                </p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="/listings/new" class="roamly-btn-primary">
+                    <i class="fa-solid fa-plus me-1"></i> Host a New Sanctuary
+                </a>
+                <a href="/host/properties" class="roamly-btn-secondary">
+                    <i class="fa-solid fa-hotel me-1"></i> All Properties
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- METRICS OVERVIEW STRIP (5 CARDS) -->
+    <div class="row g-3 mb-5">
+        <!-- 1. Total Properties -->
+        <div class="col-6 col-lg">
+            <div class="host-metric-card">
+                <div class="metric-icon-wrap icon-forest">
+                    <i class="fa-solid fa-hotel"></i>
+                </div>
+                <div class="metric-number"><%= metrics.totalProperties %></div>
+                <div class="metric-label">Managed Properties</div>
+            </div>
+        </div>
+
+        <!-- 2. Total Bookings -->
+        <div class="col-6 col-lg">
+            <div class="host-metric-card">
+                <div class="metric-icon-wrap icon-navy">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="metric-number"><%= metrics.totalBookings %></div>
+                <div class="metric-label">Total Reservations</div>
+            </div>
+        </div>
+
+        <!-- 3. Upcoming Stays -->
+        <div class="col-6 col-lg">
+            <div class="host-metric-card">
+                <div class="metric-icon-wrap icon-ochre">
+                    <i class="fa-solid fa-plane-departure"></i>
+                </div>
+                <div class="metric-number text-forest"><%= metrics.upcomingStays %></div>
+                <div class="metric-label">Upcoming Stays</div>
+            </div>
+        </div>
+
+        <!-- 4. Pending Bookings -->
+        <div class="col-6 col-lg">
+            <div class="host-metric-card">
+                <div class="metric-icon-wrap icon-amber">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <div class="metric-number text-warning-emphasis"><%= metrics.pendingBookings %></div>
+                <div class="metric-label">Pending Approval</div>
+            </div>
+        </div>
+
+        <!-- 5. Net Revenue -->
+        <div class="col-12 col-lg">
+            <div class="host-metric-card card-revenue">
+                <div class="metric-icon-wrap icon-green">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+                <div class="metric-number text-forest">₹ <%= metrics.revenue.toLocaleString("en-IN") %></div>
+                <div class="metric-label">Gross Sanctuary Revenue</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY PROPERTIES SECTION -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-3">
+            <div>
+                <h2 class="bookings-section-title">
+                    <i class="fa-solid fa-hotel text-forest"></i> My Properties
+                    <span class="badge bg-forest text-white rounded-pill fs-6 px-3 py-1 ms-2"><%= properties.length %></span>
+                </h2>
+                <p class="text-muted small mb-0">Sanctuaries owned and managed under your host profile</p>
+            </div>
+            <% if (properties.length > 6) { %>
+                <a href="/host/properties" class="text-forest fw-bold small text-decoration-none">
+                    View All <%= properties.length %> Properties &rarr;
+                </a>
+            <% } %>
+        </div>
+
+        <% if (properties.length === 0) { %>
+            <div class="empty-section-card">
+                <i class="fa-solid fa-hotel fs-2 text-muted mb-2 d-block"></i>
+                <h5 class="fw-bold text-navy mb-1">No Properties Found</h5>
+                <p class="text-muted small mb-3">You don’t currently have any properties listed under this account.</p>
+                <a href="/listings/new" class="roamly-btn-primary px-3 py-2 text-decoration-none">
+                    <i class="fa-solid fa-plus me-1"></i> List Your First Sanctuary
+                </a>
+            </div>
+        <% } else { %>
+            <div class="row g-4">
+                <% properties.slice(0, 6).forEach(property => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <article class="host-property-card">
+                            <div class="host-property-media">
+                                <img src="<%= property.imageUrl %>" 
+                                     alt="<%= property.title %>"
+                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                                <span class="property-rate-badge">
+                                    ₹ <%= (property.price || 0).toLocaleString("en-IN") %> / night
+                                </span>
+                            </div>
+                            <div class="host-property-body">
+                                <h3 class="host-property-title"><%= property.title %></h3>
+                                <div class="host-property-location">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span><%= property.location %>, <%= property.country %></span>
+                                </div>
+
+                                <div class="host-property-stats-grid">
+                                    <div class="stat-pill">
+                                        <i class="fa-solid fa-calendar-check text-navy"></i>
+                                        <span><strong><%= property.totalBookingsCount %></strong> Bookings</span>
+                                    </div>
+                                    <div class="stat-pill">
+                                        <i class="fa-solid fa-plane-departure text-forest"></i>
+                                        <span><strong><%= property.upcomingBookingsCount %></strong> Upcoming</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2 mt-auto">
+                                    <a href="/host/properties/<%= property._id %>/bookings" class="roamly-btn-primary flex-grow-1 text-center text-decoration-none">
+                                        <i class="fa-solid fa-list-check me-1"></i> View Bookings
+                                    </a>
+                                    <a href="/listings/<%= property._id %>" class="roamly-btn-secondary px-3" title="View Public Listing">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </section>
+
+    <!-- RECENT BOOKINGS & UPCOMING GUESTS (2-COLUMN LAYOUT) -->
+    <div class="row g-4">
+        <!-- Left: Recent Bookings Table -->
+        <div class="col-lg-8">
+            <div class="host-panel-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fs-5 fw-bold text-navy mb-0">
+                        <i class="fa-solid fa-clock-rotate-left text-forest me-2"></i> Recent Booking Activity
+                    </h3>
+                    <span class="text-muted small">Latest <%= recentBookings.length %> reservations</span>
+                </div>
+
+                <% if (recentBookings.length === 0) { %>
+                    <div class="text-center py-4 text-muted small">
+                        No guest reservations recorded yet for your properties.
+                    </div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle host-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>Property</th>
+                                    <th>Dates</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recentBookings.forEach(b => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold text-navy"><%= b.guestDetails?.fullName || "Guest" %></div>
+                                            <div class="text-muted small font-monospace"><%= b.bookingId %></div>
+                                        </td>
+                                        <td>
+                                            <div class="small fw-semibold text-truncate" style="max-width: 170px;">
+                                                <%= b.listing ? b.listing.title : "Sanctuary" %>
+                                            </div>
+                                            <div class="text-muted" style="font-size: 0.76rem;"><%= b.listing ? b.listing.location : "" %></div>
+                                        </td>
+                                        <td class="small">
+                                            <%= b.checkIn ? new Date(b.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : "-" %> &rarr;
+                                            <%= b.checkOut ? new Date(b.checkOut).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : "-" %>
+                                            <div class="text-muted" style="font-size: 0.74rem;"><%= b.nights %> nights &bull; <%= b.guests?.total || 1 %> guests</div>
+                                        </td>
+                                        <td class="fw-bold text-forest small">
+                                            ₹ <%= (b.pricing?.totalAmount || 0).toLocaleString("en-IN") %>
+                                        </td>
+                                        <td>
+                                            <span class="badge status-pill status-<%= (b.status || 'CONFIRMED').toLowerCase() %>">
+                                                <%= b.status || "CONFIRMED" %>
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <% if (b.listing && b.listing._id) { %>
+                                                <a href="/host/properties/<%= b.listing._id %>/bookings" class="btn btn-sm btn-outline-secondary rounded-pill" title="View on property tracker">
+                                                    <i class="fa-solid fa-arrow-right"></i>
+                                                </a>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Right: Incoming Guests -->
+        <div class="col-lg-4">
+            <div class="host-panel-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fs-5 fw-bold text-navy mb-0">
+                        <i class="fa-solid fa-plane-departure text-ochre me-2"></i> Arriving Next
+                    </h3>
+                    <span class="badge bg-cream text-navy border"><%= upcomingGuests.length %> guests</span>
+                </div>
+
+                <% if (upcomingGuests.length === 0) { %>
+                    <div class="text-center py-4 text-muted small">
+                        No upcoming arrivals scheduled in the next few days.
+                    </div>
+                <% } else { %>
+                    <div class="upcoming-guests-list">
+                        <% upcomingGuests.forEach(guest => { %>
+                            <div class="guest-arrival-item">
+                                <div class="arrival-avatar">
+                                    <%= (guest.guestDetails?.fullName || "G").charAt(0).toUpperCase() %>
+                                </div>
+                                <div class="arrival-info">
+                                    <div class="d-flex justify-content-between align-items-baseline">
+                                        <strong class="text-navy small"><%= guest.guestDetails?.fullName || "Guest" %></strong>
+                                        <span class="badge bg-light text-forest border" style="font-size: 0.72rem;">
+                                            <%= guest.checkIn ? new Date(guest.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric" }) : "" %>
+                                        </span>
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.78rem;">
+                                        <%= guest.listing ? guest.listing.title : "Property" %>
+                                    </div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">
+                                        <i class="fa-solid fa-phone me-1"></i> <%= guest.guestDetails?.phone || "Phone on file" %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+</div>

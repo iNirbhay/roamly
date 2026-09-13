@@ -1,0 +1,15 @@
+<% if(success && success.length) { %> 
+<div class="alert alert-success alert-dismissible fade show roamly-flash-alert success-flash mx-auto" role="alert"> 
+    <i class="fa-solid fa-circle-check me-2"></i>
+    <span><%= success %></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<% } %>
+
+<% if(error && error.length) { %> 
+<div class="alert alert-danger alert-dismissible fade show roamly-flash-alert error-flash mx-auto" role="alert"> 
+    <i class="fa-solid fa-circle-exclamation me-2"></i>
+    <span><%= error %></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<% } %>

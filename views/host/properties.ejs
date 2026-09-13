@@ -1,0 +1,132 @@
+<% layout("layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/stylesheets/checkout.css">
+
+<div class="roamly-editorial-page py-4">
+
+    <!-- HEADER -->
+    <header class="bookings-dashboard-header">
+        <div class="explore-eyebrow mb-2">
+            <span class="hero-dot"></span>
+            <span>PORTFOLIO DIRECTORY &bull; HOST MANAGEMENT</span>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+                <h1 class="explore-heading mb-2">My Properties</h1>
+                <p class="explore-subheading mb-0">
+                    Manage your active sanctuaries, monitor booking volumes, and track occupancy across all your listings.
+                </p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="/listings/new" class="roamly-btn-primary">
+                    <i class="fa-solid fa-plus me-1"></i> Host a New Sanctuary
+                </a>
+                <a href="/host/dashboard" class="roamly-btn-secondary">
+                    <i class="fa-solid fa-chart-pie me-1"></i> Dashboard Overview
+                </a>
+            </div>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="explore-search-bar anim-fade-up mt-4">
+            <div class="search-input-wrap">
+                <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
+                <input 
+                    type="text" 
+                    id="propertyFilterInput" 
+                    class="explore-input" 
+                    placeholder="Search properties by title, city, or state..."
+                    autocomplete="off"
+                >
+            </div>
+        </div>
+    </header>
+
+    <% if (properties.length === 0) { %>
+        <div class="empty-section-card py-5">
+            <i class="fa-solid fa-hotel fs-1 text-muted mb-3 d-block"></i>
+            <h4 class="fw-bold text-navy mb-2">No Properties Under Management</h4>
+            <p class="text-muted small mx-auto mb-4" style="max-width: 440px;">
+                You don’t currently own or manage any properties under this account.
+            </p>
+            <a href="/listings/new" class="roamly-btn-primary px-4 py-2">
+                <i class="fa-solid fa-plus me-1"></i> Add Your First Property
+            </a>
+        </div>
+    <% } else { %>
+        <div class="row g-4" id="propertiesListGrid">
+            <% properties.forEach(property => { %>
+                <div class="col-md-6 col-lg-4 property-item-card" data-title="<%= property.title.toLowerCase() %>" data-location="<%= (property.location || '').toLowerCase() %>">
+                    <article class="host-property-card">
+                        <div class="host-property-media">
+                            <img src="<%= property.imageUrl %>" 
+                                 alt="<%= property.title %>"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                            <span class="property-rate-badge">
+                                ₹ <%= (property.price || 0).toLocaleString("en-IN") %> / night
+                            </span>
+                        </div>
+                        <div class="host-property-body">
+                            <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                <span class="badge bg-light text-forest border" style="font-size: 0.72rem;">ACTIVE SANCTUARY</span>
+                                <span class="small fw-bold text-navy"><i class="fa-solid fa-star text-warning"></i> 4.96</span>
+                            </div>
+
+                            <h3 class="host-property-title"><%= property.title %></h3>
+                            <div class="host-property-location">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span><%= property.location %>, <%= property.country %></span>
+                            </div>
+
+                            <div class="host-property-stats-grid">
+                                <div class="stat-pill">
+                                    <i class="fa-solid fa-calendar-check text-navy"></i>
+                                    <span><strong><%= property.totalBookingsCount %></strong> Bookings</span>
+                                </div>
+                                <div class="stat-pill">
+                                    <i class="fa-solid fa-plane-departure text-forest"></i>
+                                    <span><strong><%= property.upcomingBookingsCount %></strong> Upcoming</span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 mt-auto pt-2">
+                                <a href="/host/properties/<%= property._id %>/bookings" class="roamly-btn-primary flex-grow-1 text-center text-decoration-none">
+                                    <i class="fa-solid fa-list-check me-1"></i> View Bookings
+                                </a>
+                                <a href="/listings/<%= property._id %>/edit" class="roamly-btn-secondary px-3" title="Edit Sanctuary Details">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                <a href="/listings/<%= property._id %>" class="roamly-btn-secondary px-3" title="View Public Listing">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("propertyFilterInput");
+    const cards = document.querySelectorAll(".property-item-card");
+
+    if (input) {
+        input.addEventListener("input", (e) => {
+            const q = e.target.value.toLowerCase().trim();
+            cards.forEach(card => {
+                const title = card.dataset.title || "";
+                const loc = card.dataset.location || "";
+                if (!q || title.includes(q) || loc.includes(q)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    }
+});
+</script>

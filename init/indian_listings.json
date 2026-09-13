@@ -1,0 +1,890 @@
+[
+  {
+    "_id": "6aa5b64c203ff4473bb63c74",
+    "title": "Hawa Mahal Heritage Haveli",
+    "description": "A graceful heritage haveli with traditional courtyards, carved details, and a peaceful old-city atmosphere.",
+    "images": [
+      "/images/havelis/haveli-night-courtyard.webp",
+      "/images/havelis/haveli-amber-palace.jpg",
+      "/images/havelis/haveli-lake-courtyard.jpg",
+      "/images/havelis/haveli-heritage-courtyard.jpg",
+      "/images/havelis/haveli-royal-bedroom.webp"
+    ],
+    "price": 3200,
+    "location": "Jaipur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "/images/havelis/haveli-night-courtyard.webp",
+      "filename": "haveli_1_img"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c75",
+    "title": "Amber Fort View Retreat",
+    "description": "A refined stay with warm Rajasthani interiors and easy access to Amber Fort and the Aravalli hills.",
+    "images": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85",
+    "price": 4200,
+    "location": "Jaipur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c76",
+    "title": "Lake Pichola Palace Stay",
+    "description": "A romantic lakeside retreat inspired by Udaipur's royal architecture, with terraces overlooking the water.",
+    "images": "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=85",
+    "price": 5800,
+    "location": "Udaipur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c77",
+    "title": "Aravalli Courtyard Villa",
+    "description": "A private villa surrounded by the Aravalli landscape, designed for slow mornings and relaxed evenings.",
+    "images": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85",
+    "price": 4600,
+    "location": "Udaipur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c78",
+    "title": "Blue City Heritage Home",
+    "description": "Stay among Jodhpur's famous blue lanes in a restored home filled with traditional details.",
+    "images": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=85",
+    "price": 2900,
+    "location": "Jodhpur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c79",
+    "title": "Mehrangarh View Haveli",
+    "description": "A characterful haveli with rooftop views toward Mehrangarh Fort and the old city.",
+    "images": [
+      "/images/havelis/haveli-royal-bedroom.webp",
+      "/images/havelis/haveli-lake-courtyard.jpg",
+      "/images/havelis/haveli-night-courtyard.webp",
+      "/images/havelis/haveli-heritage-courtyard.jpg",
+      "/images/havelis/haveli-amber-palace.jpg"
+    ],
+    "price": 3900,
+    "location": "Jodhpur",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "/images/havelis/haveli-royal-bedroom.webp",
+      "filename": "haveli_2_img"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7a",
+    "title": "Golden Dune Desert Camp",
+    "description": "A comfortable desert camp experience near the Thar dunes, with sunset views and Rajasthani hospitality.",
+    "images": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85",
+    "price": 5200,
+    "location": "Jaisalmer",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7b",
+    "title": "Jaisalmer Fort Courtyard Stay",
+    "description": "A sandstone heritage stay close to Jaisalmer Fort, with carved balconies and a rooftop terrace.",
+    "images": "https://images.unsplash.com/photo-1590766940554-634a7ed41450?auto=format&fit=crop&w=1200&q=85",
+    "price": 3500,
+    "location": "Jaisalmer",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1590766940554-634a7ed41450?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7c",
+    "title": "Pushkar Lake Boutique Stay",
+    "description": "A calm boutique stay near Pushkar Lake, combining simple interiors with traditional Rajasthani touches.",
+    "images": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85",
+    "price": 2800,
+    "location": "Pushkar",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7d",
+    "title": "Royal Courtyard Haveli",
+    "description": "An atmospheric Bikaner haveli with ornate facades, quiet courtyards, and classic desert-city character.",
+    "images": [
+      "/images/havelis/haveli-courtyard-arch.webp",
+      "/images/havelis/haveli-night-courtyard.webp",
+      "/images/havelis/haveli-royal-bedroom.webp",
+      "/images/havelis/haveli-heritage-courtyard.jpg",
+      "/images/havelis/haveli-sandstone-facade.jpg"
+    ],
+    "price": 2600,
+    "location": "Bikaner",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "/images/havelis/haveli-courtyard-arch.webp",
+      "filename": "haveli_3_img"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7e",
+    "title": "Palolem Beach Villa",
+    "description": "A relaxed coastal villa near Palolem, with tropical greenery, outdoor living, and easy beach access.",
+    "images": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+    "price": 6500,
+    "location": "Goa",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c7f",
+    "title": "Anjuna Garden Retreat",
+    "description": "A leafy Goan retreat with bright interiors and a relaxed garden setting close to Anjuna's beaches.",
+    "images": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=85",
+    "price": 4200,
+    "location": "Goa",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c80",
+    "title": "Fontainhas Heritage House",
+    "description": "A colorful heritage home in Panjim's Latin Quarter, surrounded by walkable streets and cafés.",
+    "images": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=85",
+    "price": 3600,
+    "location": "Panjim",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c81",
+    "title": "Marine Drive Skyline Apartment",
+    "description": "A polished city apartment with sweeping Mumbai skyline views and a refined contemporary interior.",
+    "images": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=85",
+    "price": 5600,
+    "location": "Mumbai",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c82",
+    "title": "Bandra Art Deco Residence",
+    "description": "A stylish urban residence inspired by Mumbai's Art Deco heritage, close to Bandra's cafés and galleries.",
+    "images": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=85",
+    "price": 4500,
+    "location": "Mumbai",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c83",
+    "title": "Old Delhi Heritage Courtyard",
+    "description": "A thoughtfully restored courtyard home offering a calm retreat after exploring Old Delhi's historic lanes.",
+    "images": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85",
+    "price": 4200,
+    "location": "Delhi",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c84",
+    "title": "Lutyens Garden Apartment",
+    "description": "An elegant modern apartment surrounded by greenery, with spacious interiors and quick access to central Delhi.",
+    "images": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
+    "price": 4300,
+    "location": "Delhi",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c85",
+    "title": "Modern Skyline Business Stay",
+    "description": "A sleek serviced-style apartment designed for business travelers, with a bright workspace and city views.",
+    "images": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=85",
+    "price": 4500,
+    "location": "Gurgaon",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c86",
+    "title": "Indiranagar Garden Loft",
+    "description": "A contemporary loft tucked into a leafy neighborhood close to Bengaluru's cafés, restaurants, and nightlife.",
+    "images": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85",
+    "price": 4200,
+    "location": "Bengaluru",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c87",
+    "title": "Banjara Hills Urban Retreat",
+    "description": "A modern Hyderabad stay with comfortable interiors and easy access to restaurants, shopping, and city life.",
+    "images": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85",
+    "price": 3900,
+    "location": "Hyderabad",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c88",
+    "title": "Koregaon Park Courtyard Stay",
+    "description": "A stylish Pune stay combining quiet courtyard spaces with easy access to cafés and galleries.",
+    "images": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+    "price": 3500,
+    "location": "Pune",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c89",
+    "title": "Lonavala Valley Villa",
+    "description": "A spacious hill villa surrounded by greenery, ideal for weekend escapes from Mumbai and Pune.",
+    "images": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85",
+    "price": 5200,
+    "location": "Lonavala",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8a",
+    "title": "Mahabaleshwar Forest Cottage",
+    "description": "A cozy cottage surrounded by misty Western Ghats forest, with a peaceful veranda and garden.",
+    "images": "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1200&q=85",
+    "price": 3800,
+    "location": "Mahabaleshwar",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8b",
+    "title": "Marina Beach City Stay",
+    "description": "A bright Chennai apartment close to the coast, with airy interiors and easy access to the city's landmarks.",
+    "images": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+    "price": 3200,
+    "location": "Chennai",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8c",
+    "title": "White Town Courtyard Home",
+    "description": "A charming Pondicherry home with French-inspired architecture, a shaded courtyard, and walkable cafés nearby.",
+    "images": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+    "price": 3400,
+    "location": "Pondicherry",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8d",
+    "title": "Fort Kochi Heritage Residence",
+    "description": "A restored heritage residence in Fort Kochi with high ceilings, local character, and a quiet courtyard.",
+    "images": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+    "price": 3600,
+    "location": "Kochi",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8e",
+    "title": "Backwater Houseboat Retreat",
+    "description": "A traditional Kerala houseboat stay drifting through palm-lined backwaters with open-air living spaces.",
+    "images": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=85",
+    "price": 6200,
+    "location": "Alleppey",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c8f",
+    "title": "Kumarakom Lakefront Villa",
+    "description": "A tranquil lakeside villa surrounded by palms and backwater scenery, made for slow tropical mornings.",
+    "images": "/images/villas/lakefront-villa.png",
+    "price": 5400,
+    "location": "Kumarakom",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "/images/villas/lakefront-villa.png",
+      "filename": "lakefront_villa_img"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c90",
+    "title": "Munnar Tea Garden Cottage",
+    "description": "A cozy mountain cottage overlooking rolling tea plantations, cool weather, and misty hills.",
+    "images": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=85",
+    "price": 3900,
+    "location": "Munnar",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c91",
+    "title": "Wayanad Forest Hideaway",
+    "description": "A peaceful nature retreat surrounded by rainforest, coffee plantations, and the Western Ghats.",
+    "images": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=85",
+    "price": 4100,
+    "location": "Wayanad",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c92",
+    "title": "Kovalam Coastal Escape",
+    "description": "A breezy coastal stay near Kovalam's beaches with tropical gardens and relaxed interiors.",
+    "images": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85",
+    "price": 4300,
+    "location": "Kovalam",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c93",
+    "title": "Ooty Lake Cottage",
+    "description": "A warm hill-station cottage surrounded by eucalyptus trees, gardens, and Ooty's cool mountain air.",
+    "images": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85",
+    "price": 3600,
+    "location": "Ooty",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c94",
+    "title": "Snow Valley Mountain Chalet",
+    "description": "A wooden mountain chalet with cozy interiors and dramatic Himalayan views near Manali.",
+    "images": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=85",
+    "price": 5200,
+    "location": "Manali",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c95",
+    "title": "Shimla Ridge Heritage Stay",
+    "description": "A classic hill retreat near Shimla's historic center, with timber details and sweeping mountain views.",
+    "images": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85",
+    "price": 3900,
+    "location": "Shimla",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c96",
+    "title": "Kasol Riverside Cabin",
+    "description": "A relaxed wooden cabin beside the Parvati Valley landscape, ideal for a quiet mountain getaway.",
+    "images": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1200&q=85",
+    "price": 3000,
+    "location": "Kasol",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c97",
+    "title": "Dharamshala Cedar Retreat",
+    "description": "A serene cedar-lined stay with mountain views and easy access to cafés and trails around Dharamshala.",
+    "images": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85",
+    "price": 3400,
+    "location": "Dharamshala",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c98",
+    "title": "Mussoorie Hillside Cottage",
+    "description": "A charming hillside cottage surrounded by pine trees and misty Himalayan foothills.",
+    "images": "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=85",
+    "price": 3600,
+    "location": "Mussoorie",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c99",
+    "title": "Nainital Lakeview Retreat",
+    "description": "A cozy retreat overlooking Naini Lake, with balconies and easy access to the town's walking routes.",
+    "images": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=85",
+    "price": 3800,
+    "location": "Nainital",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9a",
+    "title": "Rishikesh Riverside Sanctuary",
+    "description": "A peaceful riverside stay surrounded by Himalayan greenery, perfect for yoga and slow mornings.",
+    "images": "/images/sanctuaries/riverside-sanctuary.png",
+    "price": 3300,
+    "location": "Rishikesh",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "/images/sanctuaries/riverside-sanctuary.png",
+      "filename": "riverside_sanctuary_img"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9b",
+    "title": "Taj View Boutique Stay",
+    "description": "A comfortable Agra retreat with elegant interiors and easy access to the Taj Mahal and old city.",
+    "images": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=85",
+    "price": 3000,
+    "location": "Agra",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9c",
+    "title": "Varanasi Ghat Heritage Home",
+    "description": "A characterful riverside home near Varanasi's ghats, with traditional details and an intimate courtyard.",
+    "images": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=85",
+    "price": 2800,
+    "location": "Varanasi",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9d",
+    "title": "Amritsar Golden Temple Stay",
+    "description": "A welcoming heritage-style stay close to the Golden Temple and Amritsar's historic center.",
+    "images": "https://images.unsplash.com/photo-1598977123118-4e30ba3c4f5b?auto=format&fit=crop&w=1200&q=85",
+    "price": 2900,
+    "location": "Amritsar",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1598977123118-4e30ba3c4f5b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9e",
+    "title": "Park Street Heritage Apartment",
+    "description": "A stylish Kolkata apartment blending colonial-era character with modern comfort near Park Street.",
+    "images": "https://images.unsplash.com/photo-1502005229762-ee1b2b8ab32f?auto=format&fit=crop&w=1200&q=85",
+    "price": 3200,
+    "location": "Kolkata",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1502005229762-ee1b2b8ab32f?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63c9f",
+    "title": "Darjeeling Tea Estate Cottage",
+    "description": "A mountain cottage overlooking tea gardens and Himalayan ridges, with a peaceful veranda.",
+    "images": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
+    "price": 3500,
+    "location": "Darjeeling",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca0",
+    "title": "Gangtok Mountain View Lodge",
+    "description": "A modern Himalayan lodge with mountain views, warm interiors, and easy access to Gangtok's markets.",
+    "images": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=85",
+    "price": 3300,
+    "location": "Gangtok",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca1",
+    "title": "Nashik Vineyard Retreat",
+    "description": "A refined countryside stay surrounded by vineyards, rolling hills, and peaceful outdoor spaces.",
+    "images": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=85",
+    "price": 4200,
+    "location": "Nashik",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca2",
+    "title": "Mysore Palace Heritage Stay",
+    "description": "An elegant heritage-inspired stay close to Mysore Palace, with classic details and garden spaces.",
+    "images": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=1200&q=85",
+    "price": 3000,
+    "location": "Mysore",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca3",
+    "title": "Coorg Coffee Estate Villa",
+    "description": "A private villa within a coffee estate, surrounded by rainforest, plantations, and cool hill air.",
+    "images": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85",
+    "price": 4400,
+    "location": "Coorg",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca4",
+    "title": "Havelock Island Beach Retreat",
+    "description": "A tropical island retreat surrounded by palms and clear water, close to Havelock's famous beaches.",
+    "images": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+    "price": 5800,
+    "location": "Havelock Island",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca5",
+    "title": "Puri Beachfront Guesthouse",
+    "description": "A relaxed coastal guesthouse near Puri Beach, with breezy rooms and easy access to the shoreline.",
+    "images": "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=85",
+    "price": 2600,
+    "location": "Puri",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca6",
+    "title": "Chandigarh Garden Residence",
+    "description": "A clean contemporary residence surrounded by Chandigarh's landscaped neighborhoods and green spaces.",
+    "images": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=85",
+    "price": 3100,
+    "location": "Chandigarh",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca7",
+    "title": "Lucknow Nawabi Courtyard",
+    "description": "A graceful stay inspired by Lucknow's Nawabi architecture, with arches, courtyards, and warm interiors.",
+    "images": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85",
+    "price": 3000,
+    "location": "Lucknow",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca8",
+    "title": "Ahmedabad Pol Heritage Home",
+    "description": "A restored traditional pol house offering a distinctive old-city Ahmedabad experience with modern comforts.",
+    "images": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85",
+    "price": 2800,
+    "location": "Ahmedabad",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63ca9",
+    "title": "Indore Central Design Stay",
+    "description": "A contemporary city stay with stylish interiors and convenient access to Indore's food and cultural districts.",
+    "images": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85",
+    "price": 2700,
+    "location": "Indore",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63caa",
+    "title": "Shillong Pine Valley Retreat",
+    "description": "A cozy hill retreat surrounded by pine forests and rolling Meghalaya landscapes.",
+    "images": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85",
+    "price": 3400,
+    "location": "Shillong",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63cab",
+    "title": "Alibaug Coastal Villa",
+    "description": "A bright weekend villa surrounded by palms and open coastal air, a short escape from Mumbai.",
+    "images": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+    "price": 4800,
+    "location": "Alibaug",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63cac",
+    "title": "Kashmir Valley Houseboat",
+    "description": "A peaceful houseboat-style retreat inspired by Srinagar's Dal Lake, with carved wood and mountain scenery.",
+    "images": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=85",
+    "price": 5000,
+    "location": "Srinagar",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  },
+  {
+    "_id": "6aa5b64c203ff4473bb63cad",
+    "title": "Hampi Stone Courtyard Stay",
+    "description": "A characterful stay surrounded by the rocky landscapes and historic stone architecture of Hampi.",
+    "images": "https://images.unsplash.com/photo-1590766940554-634a7ed41450?auto=format&fit=crop&w=1200&q=85",
+    "price": 2700,
+    "location": "Hampi",
+    "country": "India",
+    "owner": "6a9d19e904748e79d26a5e12",
+    "reviews": [],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1590766940554-634a7ed41450?auto=format&fit=crop&w=1200&q=85",
+      "filename": "curated_photo"
+    }
+  }
+]

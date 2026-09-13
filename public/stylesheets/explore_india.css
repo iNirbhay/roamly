@@ -1,0 +1,1601 @@
+/* ==========================================================================
+   ROAMLY — EXPLORE INDIA PREMIUM TRAVEL-DISCOVERY STYLESHEET
+   Brand Palette: Deep Navy, Roamly Forest Green, Warm Gold, Soft Sand
+   ========================================================================== */
+
+:root {
+  /* Core Roamly Brand Identity */
+  --roamly-navy: #0b1b2b;
+  --roamly-navy-soft: #16243a;
+  --roamly-navy-deep: #06111d;
+  
+  --roamly-forest: #1e5338;
+  --roamly-forest-dark: #143b27;
+  --roamly-forest-light: #2c724e;
+  --roamly-forest-tint: rgba(30, 83, 56, 0.08);
+  --roamly-forest-glow: rgba(30, 83, 56, 0.24);
+
+  --roamly-gold: #d99b26;
+  --roamly-gold-hover: #c4871a;
+  --roamly-gold-soft: #fbf0d9;
+  --roamly-gold-glow: rgba(217, 155, 38, 0.25);
+
+  --roamly-sand-bg: #fbf8f2;
+  --roamly-sand-soft: #f5efe6;
+  --roamly-sand-surface: #fffdfa;
+  --roamly-sand-border: #e8dfd1;
+  --roamly-sand-border-strong: #d8cdbd;
+
+  --roamly-charcoal: #141f19;
+  --roamly-muted: #5e6f64;
+  --roamly-muted-light: #89988e;
+
+  /* Shadows & Radius */
+  --roamly-radius-sm: 8px;
+  --roamly-radius-md: 14px;
+  --roamly-radius-lg: 20px;
+  --roamly-radius-full: 999px;
+
+  --roamly-shadow-sm: 0 4px 12px rgba(11, 27, 43, 0.05);
+  --roamly-shadow-md: 0 8px 24px rgba(11, 27, 43, 0.08);
+  --roamly-shadow-lg: 0 16px 40px rgba(11, 27, 43, 0.12);
+  --roamly-shadow-float: 0 20px 50px rgba(11, 27, 43, 0.16);
+}
+
+/* --------------------------------------------------------------------------
+   Layout Reset & Container Breakout
+   -------------------------------------------------------------------------- */
+body:has(.explore-page-root) {
+  background-color: var(--roamly-sand-bg) !important;
+  color: var(--roamly-charcoal);
+  overflow-x: hidden !important;
+}
+
+body:has(.explore-page-root) .container {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
+}
+
+/* Page Root Wrapper */
+.explore-page-root {
+  background-color: var(--roamly-sand-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   1. HERO & SEARCH CONSOLE SECTION
+   -------------------------------------------------------------------------- */
+.explore-hero-section {
+  background: linear-gradient(180deg, #f5efe6 0%, #fbf8f2 100%);
+  border-bottom: 1px solid var(--roamly-sand-border);
+  padding: 3rem 1.5rem 2.25rem;
+  position: relative;
+}
+
+.explore-hero-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.explore-eyebrow {
+  margin-bottom: 0.85rem;
+}
+
+.explore-eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(30, 83, 56, 0.09);
+  color: var(--roamly-forest);
+  border: 1px solid rgba(30, 83, 56, 0.2);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--roamly-radius-full);
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(30, 83, 56, 0.05);
+}
+
+.explore-eyebrow-pill i {
+  color: var(--roamly-gold);
+}
+
+.explore-hero-heading {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 0.75rem 0;
+}
+
+.explore-hero-subheading {
+  font-size: 1.05rem;
+  color: var(--roamly-muted);
+  max-width: 620px;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+/* Premium Search Console */
+.explore-search-console {
+  width: 100%;
+  max-width: 640px;
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+.search-input-shell {
+  position: relative;
+  width: 100%;
+}
+
+.search-text-field {
+  width: 100%;
+  background: var(--roamly-sand-surface);
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-full);
+  padding: 0.95rem 3.2rem 0.95rem 3.2rem;
+  font-size: 1rem;
+  color: var(--roamly-navy);
+  font-weight: 500;
+  box-shadow: 0 6px 20px rgba(11, 27, 43, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-text-field::placeholder {
+  color: var(--roamly-muted-light);
+  font-weight: 400;
+}
+
+.search-text-field:focus {
+  outline: none;
+  border-color: var(--roamly-forest);
+  box-shadow: 0 0 0 4px var(--roamly-forest-glow), 0 8px 24px rgba(11, 27, 43, 0.08);
+  background: #ffffff;
+}
+
+.search-leading-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--roamly-forest);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--roamly-sand-soft);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--roamly-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.search-clear-btn:hover {
+  background: var(--roamly-navy);
+  color: #ffffff;
+}
+
+/* Autocomplete Suggestions Dropdown */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--roamly-sand-surface);
+  border-radius: var(--roamly-radius-md);
+  border: 1.5px solid var(--roamly-sand-border);
+  box-shadow: var(--roamly-shadow-lg);
+  max-height: 310px;
+  overflow-y: auto;
+  z-index: 1050;
+  display: none;
+  text-align: left;
+}
+
+.search-suggestions-dropdown.active {
+  display: block;
+}
+
+.suggestion-item {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(232, 223, 209, 0.5);
+  transition: background 0.15s ease;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover, .suggestion-item.selected {
+  background: var(--roamly-sand-soft);
+}
+
+.suggestion-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.suggestion-city {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--roamly-navy);
+}
+
+.suggestion-state {
+  font-size: 0.78rem;
+  color: var(--roamly-muted);
+}
+
+.suggestion-count {
+  font-size: 0.76rem;
+  background: var(--roamly-forest-tint);
+  color: var(--roamly-forest);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--roamly-radius-full);
+  font-weight: 700;
+}
+
+/* Modern Travel Category Filter Chips */
+.explore-chips-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.travel-chip {
+  background: var(--roamly-sand-surface);
+  border: 1.5px solid var(--roamly-sand-border);
+  color: var(--roamly-navy);
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--roamly-shadow-sm);
+}
+
+.travel-chip:hover {
+  border-color: var(--roamly-forest);
+  background: var(--roamly-sand-soft);
+  transform: translateY(-2px);
+}
+
+.travel-chip.active {
+  background: var(--roamly-forest);
+  color: #ffffff;
+  border-color: var(--roamly-forest);
+  box-shadow: 0 6px 18px rgba(30, 83, 56, 0.28);
+}
+
+.travel-chip.active .chip-icon {
+  color: var(--roamly-gold);
+}
+
+.travel-chip .chip-icon {
+  font-size: 0.82rem;
+  color: var(--roamly-forest);
+  transition: color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. FRAMED INTERACTIVE MAP CENTERPIECE
+   -------------------------------------------------------------------------- */
+.explore-stage-section {
+  padding: 2rem 1.5rem 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.explore-stage-frame {
+  position: relative;
+  height: 680px;
+  background: #f7f4ed;
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-lg);
+  box-shadow: var(--roamly-shadow-lg);
+  overflow: hidden;
+  display: flex;
+}
+
+#indiaMap {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Leaflet Container Overrides */
+.leaflet-container {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+  background-color: #f7f4ed !important;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  color: #94a3b8 !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  padding: 2px 6px !important;
+}
+
+/* Live Status Badge Overlay (Top Left) */
+.map-status-pill {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(255, 253, 250, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--roamly-sand-border);
+  box-shadow: var(--roamly-shadow-md);
+  padding: 0.45rem 1rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--roamly-forest);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.status-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  animation: liveAuraPulse 2s infinite;
+}
+
+@keyframes liveAuraPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Floating Legend Card (Top Right over map) */
+.map-floating-legend {
+  position: absolute;
+  top: 20px;
+  right: 430px; /* Sits next to side panel */
+  z-index: 10;
+  background: rgba(255, 253, 250, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--roamly-sand-border);
+  box-shadow: var(--roamly-shadow-md);
+  border-radius: var(--roamly-radius-md);
+  padding: 0.45rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.75rem;
+}
+
+.legend-header {
+  font-weight: 800;
+  color: var(--roamly-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  border-right: 1px solid var(--roamly-sand-border);
+  padding-right: 0.75rem;
+}
+
+.legend-items {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--roamly-muted);
+  font-weight: 600;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend-dot.dot-green { background: var(--roamly-forest); }
+.legend-dot.dot-gold { background: var(--roamly-gold); }
+.legend-dot.dot-navy { background: var(--roamly-navy); }
+
+/* "✨ Surprise Me" Discovery Card (Floating Lower-Left) */
+.map-surprise-card {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(255, 253, 250, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-md);
+  box-shadow: var(--roamly-shadow-lg);
+  padding: 0.9rem 1.15rem;
+  max-width: 290px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-surprise-card:hover {
+  border-color: var(--roamly-forest);
+  box-shadow: var(--roamly-shadow-float);
+  transform: translateY(-2px);
+}
+
+.surprise-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.text-gold {
+  color: var(--roamly-gold) !important;
+}
+
+.surprise-desc {
+  font-size: 0.76rem;
+  color: var(--roamly-muted);
+  margin: 0 0 0.65rem 0;
+  line-height: 1.35;
+}
+
+.btn-surprise-me {
+  background: linear-gradient(135deg, var(--roamly-forest) 0%, var(--roamly-forest-dark) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 14px rgba(30, 83, 56, 0.3);
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-surprise-me:hover {
+  background: linear-gradient(135deg, var(--roamly-forest-light) 0%, var(--roamly-forest) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(30, 83, 56, 0.4);
+}
+
+/* Custom Roamly Map Controls (Floating Bottom-Right of map canvas) */
+.map-custom-controls {
+  position: absolute;
+  bottom: 24px;
+  right: 430px; /* Sits next to the side panel */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.65rem;
+}
+
+.map-zoom-group {
+  background: var(--roamly-sand-surface);
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-md);
+  box-shadow: var(--roamly-shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-ctrl-btn {
+  background: none;
+  border: none;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--roamly-navy);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-ctrl-btn:hover {
+  background: var(--roamly-sand-soft);
+  color: var(--roamly-forest);
+}
+
+.map-ctrl-divider {
+  height: 1px;
+  background: var(--roamly-sand-border);
+  width: 100%;
+}
+
+.map-recenter-btn {
+  background: var(--roamly-sand-surface);
+  color: var(--roamly-navy);
+  border: 1.5px solid var(--roamly-sand-border);
+  box-shadow: var(--roamly-shadow-md);
+  padding: 0.55rem 1rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.map-recenter-btn:hover {
+  border-color: var(--roamly-forest);
+  color: var(--roamly-forest);
+  background: var(--roamly-sand-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--roamly-shadow-lg);
+}
+
+.map-recenter-btn i {
+  color: var(--roamly-forest);
+}
+
+/* --------------------------------------------------------------------------
+   3. CUSTOM ROAMLY MARKER PINS & CLUSTERS
+   -------------------------------------------------------------------------- */
+.custom-div-icon {
+  background: none;
+  border: none;
+}
+
+.roamly-marker-pin {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.roamly-marker-pin:hover {
+  transform: scale(1.25) translateY(-5px);
+  z-index: 9999 !important;
+}
+
+.pin-bubble {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--roamly-forest) 0%, var(--roamly-forest-dark) 100%);
+  border: 2.5px solid #ffffff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(11, 27, 43, 0.3);
+  transition: all 0.25s ease;
+}
+
+.roamly-marker-pin:hover .pin-bubble {
+  background: linear-gradient(135deg, var(--roamly-navy) 0%, #06121e 100%);
+  border-color: var(--roamly-gold);
+}
+
+.pin-icon-inner {
+  transform: rotate(45deg);
+  color: #ffffff;
+  font-size: 13px;
+  transition: color 0.25s ease;
+}
+
+.roamly-marker-pin:hover .pin-icon-inner {
+  color: var(--roamly-gold);
+}
+
+/* Marker Pulse Aura */
+.pin-pulse-ring {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--roamly-forest-glow);
+  pointer-events: none;
+  z-index: -1;
+  animation: pinAuraPulse 3s ease-in-out infinite;
+}
+
+@keyframes pinAuraPulse {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(0.85); opacity: 0; }
+}
+
+/* Cluster Marker Design */
+.roamly-cluster-marker {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--roamly-navy) 0%, var(--roamly-forest-dark) 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border: 2.5px solid var(--roamly-gold);
+  box-shadow: 0 8px 24px rgba(11, 27, 43, 0.4);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  line-height: 1.1;
+}
+
+.roamly-cluster-marker:hover {
+  transform: scale(1.18);
+  box-shadow: 0 12px 30px rgba(11, 27, 43, 0.5);
+  border-color: #ffffff;
+}
+
+.cluster-count-num {
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.cluster-count-lbl {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--roamly-gold);
+}
+
+.cluster-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--roamly-forest-glow);
+  z-index: -1;
+  animation: clusterPulse 2.5s infinite;
+}
+
+@keyframes clusterPulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  70% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   4. EDITORIAL POPUP / PREVIEW CARD
+   -------------------------------------------------------------------------- */
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  border-radius: 18px !important;
+  box-shadow: var(--roamly-shadow-float) !important;
+  border: 1px solid var(--roamly-sand-border) !important;
+  overflow: hidden;
+  background: var(--roamly-sand-surface) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  width: 300px !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--roamly-sand-surface) !important;
+  box-shadow: none !important;
+}
+
+.map-popup-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.popup-media-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.map-popup-card:hover .popup-media-wrap img {
+  transform: scale(1.06);
+}
+
+.popup-category-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(11, 27, 43, 0.85);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--roamly-radius-full);
+}
+
+.popup-rating-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--roamly-charcoal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--roamly-radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.popup-rating-badge i {
+  color: var(--roamly-gold);
+}
+
+.popup-body {
+  padding: 1rem 1.15rem 1.15rem;
+}
+
+.popup-location-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--roamly-forest);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.popup-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popup-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--roamly-sand-border);
+  margin-top: 0.45rem;
+}
+
+.popup-price {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+}
+
+.popup-price span {
+  font-size: 0.74rem;
+  font-weight: 400;
+  color: var(--roamly-muted);
+}
+
+.popup-view-btn {
+  background: var(--roamly-forest);
+  color: #ffffff !important;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--roamly-radius-full);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(30, 83, 56, 0.25);
+}
+
+.popup-view-btn:hover {
+  background: var(--roamly-forest-dark);
+  transform: translateX(2px);
+  box-shadow: 0 6px 16px rgba(30, 83, 56, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   5. SIDE DISCOVERY PANEL (RIGHT)
+   -------------------------------------------------------------------------- */
+.explore-side-panel {
+  width: 410px;
+  background: var(--roamly-sand-surface);
+  border-left: 1.5px solid var(--roamly-sand-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 15;
+  box-shadow: -6px 0 24px rgba(11, 27, 43, 0.04);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-header-block {
+  padding: 1.35rem 1.4rem 0.95rem;
+  border-bottom: 1px solid var(--roamly-sand-border);
+  background: var(--roamly-sand-surface);
+}
+
+.panel-headline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.panel-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin: 0;
+}
+
+.panel-total-badge {
+  background: var(--roamly-forest-tint);
+  color: var(--roamly-forest);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--roamly-radius-full);
+}
+
+.panel-subtitle {
+  font-size: 0.82rem;
+  color: var(--roamly-muted);
+  margin: 0;
+}
+
+/* Active Context Pill (Filtered City) */
+.panel-context-filter {
+  margin-top: 0.75rem;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--roamly-sand-soft);
+  border: 1px solid var(--roamly-sand-border);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--roamly-radius-sm);
+  font-size: 0.82rem;
+}
+
+.panel-context-filter.active {
+  display: flex;
+}
+
+.context-filter-text {
+  font-weight: 600;
+  color: var(--roamly-navy);
+}
+
+.text-forest {
+  color: var(--roamly-forest) !important;
+}
+
+.context-clear-btn {
+  background: none;
+  border: none;
+  color: var(--roamly-forest);
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.context-clear-btn:hover {
+  color: var(--roamly-forest-dark);
+}
+
+/* Panel Switcher Tabs */
+.panel-tab-controls {
+  display: flex;
+  background: var(--roamly-sand-soft);
+  padding: 0.3rem;
+  border-radius: var(--roamly-radius-md);
+  margin-top: 0.85rem;
+  border: 1px solid var(--roamly-sand-border);
+}
+
+.panel-tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--roamly-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.panel-tab-btn.active {
+  background: #ffffff;
+  color: var(--roamly-navy);
+  box-shadow: 0 2px 6px rgba(11, 27, 43, 0.06);
+}
+
+/* Scrollable Cards Feed */
+.panel-scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+/* Cities List View in Panel */
+.cities-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.city-row-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: #ffffff;
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-md);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--roamly-shadow-sm);
+}
+
+.city-row-card:hover, .city-row-card.active {
+  border-color: var(--roamly-forest);
+  background: var(--roamly-sand-soft);
+  transform: translateX(4px);
+  box-shadow: var(--roamly-shadow-md);
+}
+
+.city-info-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.city-pin-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--roamly-forest-tint);
+  color: var(--roamly-forest);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.city-row-card:hover .city-pin-icon, .city-row-card.active .city-pin-icon {
+  background: var(--roamly-forest);
+  color: #ffffff;
+}
+
+.city-name-txt {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+}
+
+.city-state-txt {
+  font-size: 0.76rem;
+  color: var(--roamly-muted);
+}
+
+.city-stays-count {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--roamly-forest);
+  background: var(--roamly-forest-tint);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--roamly-radius-full);
+  white-space: nowrap;
+}
+
+/* Stays Cards View in Side Panel */
+.stays-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.panel-stay-card {
+  display: flex;
+  background: #ffffff;
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--roamly-shadow-sm);
+  text-decoration: none;
+  color: inherit;
+}
+
+.panel-stay-card:hover {
+  border-color: var(--roamly-forest);
+  transform: translateY(-2px);
+  box-shadow: var(--roamly-shadow-md);
+  color: inherit;
+}
+
+.stay-thumb-frame {
+  width: 120px;
+  min-width: 120px;
+  position: relative;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.stay-thumb-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.panel-stay-card:hover .stay-thumb-frame img {
+  transform: scale(1.08);
+}
+
+.stay-meta-body {
+  padding: 0.8rem 0.95rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stay-city-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--roamly-forest);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.stay-card-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin: 0;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.stay-bottom-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+}
+
+.stay-card-price {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+}
+
+.stay-card-price span {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--roamly-muted);
+}
+
+.stay-card-rating {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.stay-card-rating i {
+  color: var(--roamly-gold);
+}
+
+/* Empty State */
+.panel-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--roamly-muted);
+}
+
+.panel-empty-state i {
+  font-size: 2.5rem;
+  color: var(--roamly-sand-border);
+  margin-bottom: 0.85rem;
+}
+
+.panel-empty-state h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin-bottom: 0.35rem;
+}
+
+.panel-empty-state p {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+/* Mobile Toggle Button */
+.mobile-panel-toggle {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 100;
+  background: var(--roamly-forest);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 8px 24px rgba(30, 83, 56, 0.35);
+  padding: 0.8rem 1.35rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.88rem;
+  font-weight: 800;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mobile-panel-toggle:hover {
+  background: var(--roamly-forest-dark);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   6. "EXPLORE BY DESTINATION" GRID SECTION (BELOW MAP)
+   -------------------------------------------------------------------------- */
+.explore-destinations-section {
+  padding: 4rem 1.5rem 5rem;
+  background: var(--roamly-sand-bg);
+  border-top: 1px solid var(--roamly-sand-border);
+}
+
+.explore-destinations-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.section-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.section-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--roamly-forest);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.35rem;
+}
+
+.section-main-heading {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+}
+
+.section-subtext {
+  font-size: 0.95rem;
+  color: var(--roamly-muted);
+  max-width: 680px;
+  margin: 0;
+}
+
+.btn-scroll-to-map {
+  background: var(--roamly-sand-surface);
+  color: var(--roamly-navy);
+  border: 1.5px solid var(--roamly-sand-border);
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.22s ease;
+  box-shadow: var(--roamly-shadow-sm);
+}
+
+.btn-scroll-to-map:hover {
+  border-color: var(--roamly-forest);
+  color: var(--roamly-forest);
+  background: var(--roamly-sand-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--roamly-shadow-md);
+}
+
+.btn-scroll-to-map i {
+  color: var(--roamly-forest);
+}
+
+/* Destinations Cards Grid */
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.75rem;
+}
+
+.destination-card {
+  background: var(--roamly-sand-surface);
+  border: 1.5px solid var(--roamly-sand-border);
+  border-radius: var(--roamly-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--roamly-shadow-sm);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.destination-card:hover {
+  border-color: var(--roamly-forest);
+  transform: translateY(-6px);
+  box-shadow: var(--roamly-shadow-lg);
+}
+
+.destination-card-media {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.destination-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.destination-card:hover .destination-card-media img {
+  transform: scale(1.08);
+}
+
+.destination-tag-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(11, 27, 43, 0.85);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--roamly-radius-full);
+}
+
+.destination-count-pill {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255, 253, 250, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--roamly-navy);
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--roamly-radius-full);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.destination-count-pill i {
+  color: var(--roamly-forest);
+}
+
+.destination-card-body {
+  padding: 1.25rem 1.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.dest-location-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--roamly-forest);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.dest-city-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--roamly-navy);
+  margin: 0 0 0.4rem 0;
+}
+
+.dest-subtitle {
+  font-size: 0.85rem;
+  color: var(--roamly-muted);
+  margin: 0 0 1.25rem 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.dest-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--roamly-sand-border);
+}
+
+.dest-cta-text {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--roamly-forest);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.destination-card:hover .dest-cta-text {
+  transform: translateX(4px);
+  color: var(--roamly-forest-dark);
+}
+
+.dest-quick-link {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--roamly-sand-soft);
+  color: var(--roamly-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dest-quick-link:hover {
+  background: var(--roamly-forest);
+  color: #ffffff;
+}
+
+/* Show More / Show Less Destinations Action */
+.destinations-show-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.75rem;
+}
+
+.btn-show-more-dest {
+  background: var(--roamly-sand-surface);
+  color: var(--roamly-navy);
+  border: 1.5px solid var(--roamly-sand-border);
+  padding: 0.85rem 2.2rem;
+  border-radius: var(--roamly-radius-full);
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: var(--roamly-shadow-sm);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-show-more-dest:hover {
+  background: var(--roamly-forest);
+  color: #ffffff;
+  border-color: var(--roamly-forest);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(30, 83, 56, 0.25);
+}
+
+.btn-show-more-dest .btn-show-more-icon {
+  font-size: 0.85rem;
+  color: var(--roamly-forest);
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.btn-show-more-dest:hover .btn-show-more-icon {
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   7. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .explore-side-panel {
+    width: 360px;
+  }
+  .map-floating-legend,
+  .map-custom-controls {
+    right: 380px;
+  }
+}
+
+@media (max-width: 992px) {
+  .explore-hero-heading {
+    font-size: 2.3rem;
+  }
+
+  .explore-side-panel {
+    width: 330px;
+  }
+
+  .map-floating-legend,
+  .map-custom-controls {
+    right: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .explore-hero-section {
+    padding: 2.25rem 1rem 1.75rem;
+  }
+
+  .explore-hero-heading {
+    font-size: 1.85rem;
+  }
+
+  .explore-hero-subheading {
+    font-size: 0.92rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .explore-stage-section {
+    padding: 1rem 1rem 2.5rem;
+  }
+
+  .explore-stage-frame {
+    height: 540px;
+    border-radius: var(--roamly-radius-md);
+  }
+
+  .map-floating-legend {
+    display: none !important;
+  }
+
+  .map-custom-controls {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .map-surprise-card {
+    display: none; /* Accessible via chips or mobile buttons */
+  }
+
+  /* Side Panel Bottom Drawer Sheet */
+  .explore-side-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 70vh;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(11, 27, 43, 0.25);
+    border-left: none;
+    border-top: 1.5px solid var(--roamly-sand-border);
+    transform: translateY(105%);
+    z-index: 1060;
+  }
+
+  .explore-side-panel.open {
+    transform: translateY(0);
+  }
+
+  .mobile-panel-toggle {
+    display: inline-flex;
+  }
+
+  .panel-drag-handle {
+    width: 44px;
+    height: 5px;
+    background: var(--roamly-sand-border-strong);
+    border-radius: var(--roamly-radius-full);
+    margin: 0.6rem auto 0;
+  }
+
+  .explore-destinations-section {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .section-main-heading {
+    font-size: 1.65rem;
+  }
+}

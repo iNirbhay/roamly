@@ -1,0 +1,259 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-auth-container anim-fade-up">
+    <div class="auth-split-card">
+        <!-- VISUAL TRAVEL STORY SIDE (DIFFERENT VISUAL: ALPINE SUNRISE SANCTUARY) -->
+        <div class="auth-visual-side">
+            <div class="auth-visual-img-wrap">
+                <img 
+                    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=85" 
+                    alt="Sunlit mountain landscape and alpine pine trees" 
+                    class="auth-ambient-img"
+                >
+                <div class="auth-visual-overlay"></div>
+            </div>
+            <div class="auth-visual-content">
+                <div class="auth-logo-badge">
+                    <img src="/images/roamly-logo-transparent.png" alt="Roamly" class="auth-logo-badge-img">
+                </div>
+                <blockquote class="auth-quote">
+                    “Start your journey. Uncover spaces where mornings unfold in peace and mountains hold the silence.”
+                </blockquote>
+                <div class="auth-tagline">
+                    <span>MINDFUL TRAVEL</span> &bull; <span>CURATED HOMES</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM SIDE -->
+        <div class="auth-form-side">
+            <div class="auth-form-inner">
+
+                <!-- STEP 1: ROLE SELECTION -->
+                <div id="roleSelectionStep">
+                    <div class="form-header-wrap mb-4">
+                        <span class="auth-eyebrow">BEGIN YOUR EXPLORATION</span>
+                        <h2 class="auth-title">How will you use Roamly?</h2>
+                        <p class="auth-subtitle">
+                            Please select how you would like to participate in our sanctuary community to continue.
+                        </p>
+                    </div>
+
+                    <div class="role-selection-grid">
+                        <!-- Traveler Role Option -->
+                        <div class="role-choice-card selected" data-role="user" id="travelerRoleCard">
+                            <div class="role-icon-circle">
+                                <i class="fa-regular fa-compass"></i>
+                            </div>
+                            <h3 class="role-title">I'm a Traveler</h3>
+                            <p class="role-desc">Discover and book stays &amp; experiences</p>
+                            <div class="role-selected-check">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                        </div>
+
+                        <!-- Host Role Option -->
+                        <div class="role-choice-card" data-role="host" id="hostRoleCard">
+                            <div class="role-icon-circle">
+                                <i class="fa-solid fa-hotel"></i>
+                            </div>
+                            <h3 class="role-title">I'm a Host</h3>
+                            <p class="role-desc">List and manage your properties</p>
+                            <div class="role-selected-check">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="roamly-auth-submit-btn w-100 mb-3" id="btnContinueRole">
+                        <span>Continue Registration</span>
+                        <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+
+                    <div class="auth-footer-note mt-3">
+                        Already have an account? 
+                        <a href="/login" class="auth-switch-link">Sign in here</a>
+                    </div>
+                </div>
+
+                <!-- STEP 2: REGISTRATION FORM (CLEAN, NO PRE-FILLED SUGGESTIONS) -->
+                <div id="registrationFormStep" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <button type="button" class="btn btn-sm btn-link text-muted p-0 text-decoration-none" id="btnBackToRole">
+                            <i class="fa-solid fa-arrow-left me-1"></i> Change role
+                        </button>
+                        <span class="badge bg-forest text-white rounded-pill px-3 py-1 fw-bold" id="roleBadgeDisplay">
+                            Traveler Account
+                        </span>
+                    </div>
+
+                    <div class="form-header-wrap">
+                        <h2 class="auth-title mb-1">Create your account</h2>
+                        <p class="auth-subtitle mb-4">
+                            Enter your details below to finalize your registration.
+                        </p>
+                    </div>
+
+                    <form action="/signup" method="POST" class="needs-validation auth-form" novalidate id="cleanSignupForm">
+                        <input type="hidden" name="role" id="selectedRoleInput" value="user">
+
+                        <div class="auth-field-group mb-3">
+                            <label for="name" class="auth-label">Full Name</label>
+                            <div class="auth-input-wrapper">
+                                <i class="fa-regular fa-id-card auth-field-icon"></i>
+                                <input 
+                                    type="text" 
+                                    id="name"
+                                    name="name" 
+                                    placeholder="Enter your full name" 
+                                    required 
+                                    class="form-control auth-input"
+                                    autocomplete="name"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide your full name.
+                            </div>
+                        </div>
+
+                        <div class="auth-field-group mb-3">
+                            <label for="username" class="auth-label">Username</label>
+                            <div class="auth-input-wrapper">
+                                <i class="fa-regular fa-user auth-field-icon"></i>
+                                <input 
+                                    type="text" 
+                                    id="username"
+                                    name="username" 
+                                    placeholder="Choose a unique username" 
+                                    required 
+                                    class="form-control auth-input"
+                                    autocomplete="username"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please choose a username.
+                            </div>
+                        </div>
+
+                        <div class="auth-field-group mb-3">
+                            <label for="email" class="auth-label">Email Address</label>
+                            <div class="auth-input-wrapper">
+                                <i class="fa-regular fa-envelope auth-field-icon"></i>
+                                <input 
+                                    type="email" 
+                                    id="email"
+                                    name="email" 
+                                    placeholder="name@example.com" 
+                                    required 
+                                    class="form-control auth-input"
+                                    autocomplete="email"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid email address.
+                            </div>
+                        </div>
+
+                        <div class="auth-field-group mb-3">
+                            <label for="phone" class="auth-label">Phone Number (Optional)</label>
+                            <div class="auth-input-wrapper">
+                                <i class="fa-solid fa-phone auth-field-icon"></i>
+                                <input 
+                                    type="tel" 
+                                    id="phone"
+                                    name="phone" 
+                                    placeholder="+91 98765 43210" 
+                                    class="form-control auth-input"
+                                    autocomplete="tel"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="auth-field-group mb-4">
+                            <label for="password" class="auth-label">Password</label>
+                            <div class="auth-input-wrapper">
+                                <i class="fa-solid fa-lock auth-field-icon"></i>
+                                <input 
+                                    type="password" 
+                                    id="password"
+                                    name="password" 
+                                    placeholder="Create a secure password" 
+                                    required 
+                                    class="form-control auth-input"
+                                    autocomplete="new-password"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a password.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="roamly-auth-submit-btn">
+                            <span>Create Account</span>
+                            <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
+
+                    <div class="auth-footer-note">
+                        Already part of Roamly? 
+                        <a href="/login" class="auth-switch-link">Sign in here</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const roleCards = document.querySelectorAll(".role-choice-card");
+    const roleInput = document.getElementById("selectedRoleInput");
+    const roleSelectionStep = document.getElementById("roleSelectionStep");
+    const registrationFormStep = document.getElementById("registrationFormStep");
+    const btnContinueRole = document.getElementById("btnContinueRole");
+    const btnBackToRole = document.getElementById("btnBackToRole");
+    const roleBadgeDisplay = document.getElementById("roleBadgeDisplay");
+
+    let currentSelectedRole = "user";
+
+    roleCards.forEach(card => {
+        card.addEventListener("click", () => {
+            roleCards.forEach(c => c.classList.remove("selected"));
+            card.classList.add("selected");
+            currentSelectedRole = card.getAttribute("data-role") || "user";
+            if (roleInput) roleInput.value = currentSelectedRole;
+        });
+    });
+
+    if (btnContinueRole) {
+        btnContinueRole.addEventListener("click", () => {
+            if (roleInput) roleInput.value = currentSelectedRole;
+            if (roleBadgeDisplay) {
+                if (currentSelectedRole === "host") {
+                    roleBadgeDisplay.textContent = "🏠 Host Account";
+                    roleBadgeDisplay.className = "badge bg-navy text-white rounded-pill px-3 py-1 fw-bold";
+                } else {
+                    roleBadgeDisplay.textContent = "👤 Traveler Account";
+                    roleBadgeDisplay.className = "badge bg-forest text-white rounded-pill px-3 py-1 fw-bold";
+                }
+            }
+            if (roleSelectionStep) roleSelectionStep.style.display = "none";
+            if (registrationFormStep) {
+                registrationFormStep.style.display = "block";
+                registrationFormStep.classList.add("anim-fade-up");
+            }
+        });
+    }
+
+    if (btnBackToRole) {
+        btnBackToRole.addEventListener("click", () => {
+            if (registrationFormStep) registrationFormStep.style.display = "none";
+            if (roleSelectionStep) {
+                roleSelectionStep.style.display = "block";
+                roleSelectionStep.classList.add("anim-fade-up");
+            }
+        });
+    }
+});
+</script>

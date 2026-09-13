@@ -1,0 +1,1483 @@
+/* ==========================================================================
+   ROAMLY — DEMO PAYMENT GATEWAY & BOOKING CHECKOUT STYLES
+   ========================================================================== */
+
+/* Page Shell */
+.roamly-checkout-page {
+    padding-top: 1.5rem;
+    padding-bottom: 5rem;
+}
+
+/* Stepper Progress Navigation */
+.checkout-stepper-wrap {
+    margin-bottom: 2.5rem;
+}
+
+.checkout-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.stepper-step {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--roamly-text-muted);
+    transition: all 0.25s ease;
+}
+
+.stepper-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--roamly-sand);
+    color: var(--roamly-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+}
+
+.stepper-step.active {
+    color: var(--roamly-navy);
+}
+
+.stepper-step.active .stepper-num {
+    background-color: var(--roamly-forest);
+    color: #ffffff;
+    box-shadow: 0 4px 12px var(--roamly-forest-glow);
+}
+
+.stepper-step.completed {
+    color: var(--roamly-forest-dark);
+}
+
+.stepper-step.completed .stepper-num {
+    background-color: var(--roamly-forest);
+    color: #ffffff;
+}
+
+.stepper-divider {
+    flex: 1;
+    height: 2px;
+    background-color: var(--roamly-border);
+    max-width: 60px;
+}
+
+.stepper-divider.active {
+    background-color: var(--roamly-forest);
+}
+
+/* 2-Column Desktop Grid */
+.checkout-layout-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+/* Stage Cards */
+.checkout-stage-card {
+    background-color: #ffffff;
+    border: 1px solid var(--roamly-border-card);
+    border-radius: var(--roamly-radius-lg);
+    padding: 2.25rem;
+    box-shadow: var(--roamly-shadow-sm);
+    margin-bottom: 2rem;
+    transition: box-shadow 0.25s ease;
+}
+
+.checkout-stage-card:hover {
+    box-shadow: var(--roamly-shadow-md);
+}
+
+.stage-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin-bottom: 0.5rem;
+}
+
+.stage-subtitle {
+    font-size: 0.95rem;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+}
+
+/* Demo Mode Badge / Notice */
+.demo-mode-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    background: linear-gradient(135deg, var(--roamly-ochre-light) 0%, #fffbf5 100%);
+    border: 1px solid rgba(217, 130, 43, 0.35);
+    border-radius: var(--roamly-radius-md);
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.demo-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--roamly-navy);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.demo-banner-left i {
+    color: var(--roamly-ochre);
+    font-size: 1.15rem;
+}
+
+.demo-badge-pill {
+    background-color: var(--roamly-ochre);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px var(--roamly-ochre-glow);
+}
+
+/* Trip Quick Summary Strip */
+.trip-summary-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    background-color: var(--roamly-cream);
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-md);
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.trip-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.trip-meta-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--roamly-forest-dark);
+}
+
+.trip-meta-val {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+}
+
+/* Form Controls */
+.form-floating-custom {
+    margin-bottom: 1.25rem;
+}
+
+.form-floating-custom label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.form-floating-custom .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-leading-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--roamly-text-muted);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+.form-control-custom {
+    width: 100%;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    padding: 0.75rem 1rem 0.75rem 2.65rem;
+    font-size: 0.95rem;
+    color: var(--roamly-navy);
+    background-color: #ffffff;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-control-custom:focus {
+    border-color: var(--roamly-forest);
+    box-shadow: 0 0 0 3px var(--roamly-forest-glow);
+}
+
+.form-control-custom:focus + .input-leading-icon,
+.form-control-custom:focus ~ .input-leading-icon {
+    color: var(--roamly-forest);
+}
+
+.field-error-msg {
+    font-size: 0.8rem;
+    color: #ce294c;
+    margin-top: 0.35rem;
+    display: none;
+}
+
+/* Optional Add-Ons List */
+.addons-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 1rem;
+}
+
+.addon-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.15rem;
+    background-color: var(--roamly-cream-soft);
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.addon-card:hover {
+    border-color: var(--roamly-forest);
+    background-color: #ffffff;
+}
+
+.addon-card.selected {
+    background-color: var(--roamly-sage-light);
+    border-color: var(--roamly-forest);
+}
+
+.addon-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.addon-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--roamly-forest);
+}
+
+.addon-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+}
+
+.addon-desc {
+    font-size: 0.8rem;
+    color: var(--roamly-text-secondary);
+}
+
+.addon-price {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--roamly-forest-dark);
+}
+
+/* Payment Method Navigation Tabs */
+.payment-tabs-bar {
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--roamly-cream);
+    padding: 0.35rem;
+    border-radius: var(--roamly-radius-sm);
+    margin-bottom: 1.75rem;
+    border: 1px solid var(--roamly-border);
+    overflow-x: auto;
+}
+
+.payment-tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--roamly-radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--roamly-text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.payment-tab-btn:hover {
+    color: var(--roamly-navy);
+}
+
+.payment-tab-btn.active {
+    background-color: #ffffff;
+    color: var(--roamly-forest-dark);
+    box-shadow: var(--roamly-shadow-sm);
+    font-weight: 700;
+}
+
+.payment-tab-btn.active i {
+    color: var(--roamly-forest);
+}
+
+/* Payment Panels */
+.payment-panel {
+    display: none;
+}
+
+.payment-panel.active {
+    display: block;
+    animation: roamlyFadeUp 0.3s ease;
+}
+
+/* UPI Panel Details */
+.upi-qr-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--roamly-cream-soft);
+    border: 1px dashed var(--roamly-border);
+    border-radius: var(--roamly-radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.upi-qr-graphic {
+    width: 140px;
+    height: 140px;
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 4px 12px rgba(14, 27, 46, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.upi-qr-svg {
+    width: 110px;
+    height: 110px;
+}
+
+.upi-apps-icons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.upi-chip {
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upi-chip:hover {
+    border-color: var(--roamly-forest);
+    color: var(--roamly-forest);
+    transform: translateY(-1px);
+}
+
+/* Demo Card Fill Helpers */
+.demo-card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.demo-fill-btn {
+    background-color: var(--roamly-sage-light);
+    border: 1px solid rgba(36, 82, 53, 0.2);
+    color: var(--roamly-forest-dark);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
+
+.demo-fill-btn:hover {
+    background-color: var(--roamly-forest);
+    color: #ffffff;
+}
+
+.demo-fill-btn.fail-btn {
+    background-color: #fef2f2;
+    border-color: rgba(206, 41, 76, 0.2);
+    color: #b91c1c;
+}
+
+.demo-fill-btn.fail-btn:hover {
+    background-color: #ce294c;
+    color: #ffffff;
+}
+
+/* Net Banking Bank Selector */
+.banks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+.bank-choice-card {
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    padding: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.bank-choice-card:hover {
+    border-color: var(--roamly-forest);
+    transform: translateY(-2px);
+}
+
+.bank-choice-card.selected {
+    border-color: var(--roamly-forest);
+    background-color: var(--roamly-sage-light);
+    box-shadow: 0 0 0 2px var(--roamly-forest);
+}
+
+.bank-initial-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: var(--roamly-sand);
+    color: var(--roamly-navy);
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem auto;
+}
+
+.bank-name-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin: 0;
+}
+
+/* Wallets List */
+.wallets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.wallet-choice-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.15rem;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wallet-choice-item:hover {
+    border-color: var(--roamly-forest);
+}
+
+.wallet-choice-item.selected {
+    background-color: var(--roamly-sage-light);
+    border-color: var(--roamly-forest);
+}
+
+/* Sticky Price Summary Column (Right) */
+.checkout-summary-sticky {
+    position: sticky;
+    top: 6.5rem;
+}
+
+.summary-card {
+    background-color: #ffffff;
+    border: 1px solid var(--roamly-border-card);
+    border-radius: var(--roamly-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--roamly-shadow-md);
+}
+
+.summary-media-row {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--roamly-border);
+    background-color: var(--roamly-cream-soft);
+}
+
+.summary-img-thumb {
+    width: 100px;
+    height: 85px;
+    border-radius: var(--roamly-radius-sm);
+    object-fit: cover;
+    background-color: var(--roamly-sand);
+}
+
+.summary-details-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.summary-listing-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    line-height: 1.3;
+    margin-bottom: 0.35rem;
+}
+
+.summary-location-text {
+    font-size: 0.85rem;
+    color: var(--roamly-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.summary-location-text i {
+    color: var(--roamly-forest);
+}
+
+.summary-rating-pill {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--roamly-navy);
+}
+
+.summary-rating-pill i {
+    color: var(--roamly-ochre);
+}
+
+.summary-pricing-body {
+    padding: 1.75rem;
+}
+
+.price-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 0.95rem;
+}
+
+.price-item-row.highlight {
+    color: var(--roamly-forest);
+    font-weight: 600;
+}
+
+.price-divider-line {
+    height: 1px;
+    background-color: var(--roamly-border);
+    margin: 1.25rem 0;
+}
+
+.total-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 0.5rem;
+}
+
+.total-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--roamly-navy);
+}
+
+.total-amount-display {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--roamly-forest-dark);
+}
+
+/* Trust Badges in Summary */
+.summary-trust-bullets {
+    padding: 1.25rem 1.75rem;
+    background-color: var(--roamly-cream);
+    border-top: 1px solid var(--roamly-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    font-size: 0.82rem;
+    color: var(--roamly-text-secondary);
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.trust-item i {
+    color: var(--roamly-forest);
+}
+
+/* Simulated Processing Overlay */
+.processing-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(14, 27, 46, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.processing-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.processing-modal-card {
+    background-color: #ffffff;
+    border-radius: var(--roamly-radius-xl);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: var(--roamly-shadow-lg);
+    border: 1px solid var(--roamly-border);
+}
+
+.processing-spinner-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.75rem auto;
+}
+
+.processing-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid var(--roamly-sand);
+    border-top-color: var(--roamly-forest);
+    border-radius: 50%;
+    animation: spinRing 1s linear infinite;
+}
+
+.processing-ring-inner {
+    position: absolute;
+    inset: 12px;
+    border: 3px solid transparent;
+    border-top-color: var(--roamly-ochre);
+    border-radius: 50%;
+    animation: spinRing 0.7s linear infinite reverse;
+}
+
+@keyframes spinRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.processing-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin-bottom: 0.5rem;
+}
+
+.processing-subtext {
+    font-size: 0.9rem;
+    color: var(--roamly-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+/* Simulated Failure Card */
+.payment-failure-alert {
+    background: #fef2f2;
+    border: 1px solid #f87171;
+    border-radius: var(--roamly-radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.payment-failure-alert.show {
+    display: block;
+    animation: roamlyFadeUp 0.3s ease;
+}
+
+.failure-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.failure-icon {
+    font-size: 1.4rem;
+    color: #dc2626;
+    margin-top: 0.2rem;
+}
+
+/* Booking Confirmation Screen */
+.confirmation-success-card {
+    background-color: #ffffff;
+    border: 1px solid var(--roamly-border-card);
+    border-radius: var(--roamly-radius-xl);
+    padding: 3rem;
+    text-align: center;
+    box-shadow: var(--roamly-shadow-md);
+}
+
+.confirmation-badge-anim {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--roamly-forest) 0%, var(--roamly-forest-dark) 100%);
+    color: #ffffff;
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 10px 28px var(--roamly-forest-glow);
+    animation: bounceBadge 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceBadge {
+    0% { transform: scale(0.3); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.confirmation-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-subtitle {
+    font-size: 1.05rem;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 2rem;
+}
+
+.booking-id-pill-box {
+    background-color: var(--roamly-cream);
+    border: 1px dashed var(--roamly-forest);
+    border-radius: var(--roamly-radius-md);
+    padding: 1rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.booking-id-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--roamly-text-secondary);
+}
+
+.booking-id-code {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--roamly-navy);
+}
+
+/* My Bookings Page */
+.bookings-dashboard-header {
+    margin-bottom: 2.5rem;
+}
+
+.bookings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.booking-history-card {
+    background-color: #ffffff;
+    border: 1px solid var(--roamly-border-card);
+    border-radius: var(--roamly-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--roamly-shadow-sm);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-history-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--roamly-shadow-md);
+    border-color: var(--roamly-border-hover);
+}
+
+.booking-card-media {
+    position: relative;
+    height: 200px;
+    background-color: var(--roamly-sand);
+}
+
+.booking-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.booking-card-status-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--roamly-forest);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(14, 27, 46, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.booking-card-status-badge.upcoming {
+    background: linear-gradient(135deg, var(--roamly-forest) 0%, #1e452c 100%);
+    box-shadow: 0 4px 14px var(--roamly-forest-glow);
+}
+
+.booking-card-status-badge.past {
+    background: #64748b;
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);
+}
+
+.booking-card-status-badge.ongoing {
+    background: linear-gradient(135deg, var(--roamly-ochre) 0%, #b86719 100%);
+    box-shadow: 0 4px 14px var(--roamly-ochre-glow);
+}
+
+.booking-code-pill {
+    background-color: var(--roamly-cream) !important;
+    color: var(--roamly-navy) !important;
+    border: 1px solid var(--roamly-border) !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    font-family: monospace, ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stay-duration-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stay-duration-tag.tag-upcoming {
+    background-color: var(--roamly-sage-light);
+    color: var(--roamly-forest-dark);
+    border: 1px solid rgba(36, 82, 53, 0.2);
+}
+
+.stay-duration-tag.tag-past {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+/* Bookings Tabs & Section Styling */
+.bookings-filter-bar {
+    display: inline-flex;
+    gap: 0.5rem;
+    background: var(--roamly-cream);
+    padding: 0.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--roamly-border);
+    margin-bottom: 2rem;
+}
+
+.bookings-filter-btn {
+    border: none;
+    background: transparent;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--roamly-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bookings-filter-btn:hover {
+    color: var(--roamly-navy);
+}
+
+.bookings-filter-btn.active {
+    background: #ffffff;
+    color: var(--roamly-navy);
+    font-weight: 700;
+    box-shadow: var(--roamly-shadow-sm);
+}
+
+.bookings-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.bookings-section-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin-bottom: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.empty-section-card {
+    background: #ffffff;
+    border: 1px dashed var(--roamly-border);
+    border-radius: var(--roamly-radius-lg);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 2rem;
+}
+
+.booking-card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.booking-card-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    margin-bottom: 0.35rem;
+}
+
+.booking-card-location {
+    font-size: 0.85rem;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.booking-card-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.88rem;
+    color: var(--roamly-text-secondary);
+    padding: 0.9rem;
+    background-color: var(--roamly-cream);
+    border-radius: var(--roamly-radius-sm);
+    margin-bottom: 1.25rem;
+}
+
+.booking-card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: auto;
+}
+
+/* Voucher Printout Styles */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    .roamly-navbar,
+    .roamly-footer,
+    .no-print {
+        display: none !important;
+    }
+    .voucher-container {
+        box-shadow: none !important;
+        border: 1px solid #cccccc !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 2rem !important;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .checkout-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .checkout-summary-sticky {
+        position: static;
+    }
+    .bookings-grid {
+        grid-template-columns: 1fr;
+    }
+    .banks-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 575px) {
+    .checkout-stage-card {
+        padding: 1.5rem 1.25rem;
+    }
+    .trip-summary-strip {
+        grid-template-columns: 1fr;
+    }
+    .stepper-step span:not(.stepper-num) {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   ROAMLY — HOST MANAGEMENT & BOOKING TRACKER STYLES
+   ========================================================================== */
+
+/* Host Metric Cards */
+.host-metric-card {
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-md);
+    padding: 1.35rem 1.1rem;
+    text-align: center;
+    box-shadow: var(--roamly-shadow-sm);
+    transition: all 0.25s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.host-metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--roamly-shadow-md);
+    border-color: var(--roamly-forest);
+}
+
+.host-metric-card.card-revenue {
+    background: linear-gradient(145deg, #ffffff, #f7faf7);
+    border-color: #bbf7d0;
+}
+
+.metric-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+}
+
+.metric-icon-wrap.icon-forest {
+    background-color: rgba(36, 82, 53, 0.1);
+    color: var(--roamly-forest);
+}
+
+.metric-icon-wrap.icon-navy {
+    background-color: rgba(14, 27, 46, 0.08);
+    color: var(--roamly-navy);
+}
+
+.metric-icon-wrap.icon-ochre {
+    background-color: rgba(217, 130, 43, 0.12);
+    color: var(--roamly-ochre);
+}
+
+.metric-icon-wrap.icon-amber {
+    background-color: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+}
+
+.metric-icon-wrap.icon-green {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: #059669;
+}
+
+.metric-number {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--roamly-navy);
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--roamly-text-muted);
+}
+
+/* Host Panel Card */
+.host-panel-card {
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--roamly-shadow-sm);
+}
+
+/* Host Property Card */
+.host-property-card {
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.25s ease;
+    box-shadow: var(--roamly-shadow-sm);
+}
+
+.host-property-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--roamly-shadow-md);
+    border-color: var(--roamly-forest);
+}
+
+.host-property-media {
+    position: relative;
+    height: 190px;
+    overflow: hidden;
+    background-color: var(--roamly-sand);
+}
+
+.host-property-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.host-property-card:hover .host-property-media img {
+    transform: scale(1.04);
+}
+
+.property-rate-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(14, 27, 46, 0.88);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+}
+
+.host-property-body {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.host-property-title {
+    font-family: var(--roamly-font-serif);
+    font-size: 1.22rem;
+    font-weight: 600;
+    color: var(--roamly-navy);
+    line-height: 1.3;
+    margin-bottom: 0.35rem;
+}
+
+.host-property-location {
+    font-size: 0.84rem;
+    color: var(--roamly-text-secondary);
+    margin-bottom: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.host-property-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+}
+
+.stat-pill {
+    background: var(--roamly-cream);
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--roamly-navy);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Host Table */
+.host-table {
+    font-size: 0.88rem;
+}
+
+.host-table thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--roamly-text-muted);
+    background-color: #faf9f6;
+    border-bottom: 2px solid var(--roamly-border);
+    padding: 0.85rem 1rem;
+    white-space: nowrap;
+}
+
+.host-table tbody td {
+    padding: 0.95rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--roamly-border);
+}
+
+.host-table tbody tr:hover td {
+    background-color: #faf8f3;
+}
+
+/* Status Badges & Pills */
+.status-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.status-pill.status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.status-pill.status-confirmed {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.status-pill.status-cancelled {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.status-pill.status-completed {
+    background-color: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+/* Incoming Guests List */
+.upcoming-guests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.guest-arrival-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.8rem;
+    background: var(--roamly-cream);
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    transition: background 0.2s ease;
+}
+
+.guest-arrival-item:hover {
+    background: #f0eae1;
+}
+
+.arrival-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--roamly-forest);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.arrival-info {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Property Header Card (Booking Tracker) */
+.host-property-header-card {
+    background: #ffffff;
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-lg);
+    padding: 1.75rem;
+    box-shadow: var(--roamly-shadow-sm);
+}
+
+.property-header-thumb {
+    width: 85px;
+    height: 85px;
+    border-radius: var(--roamly-radius-md);
+    object-fit: cover;
+    border: 2px solid var(--roamly-sand);
+    flex-shrink: 0;
+}
+
+.header-stat-box {
+    background: var(--roamly-cream);
+    border: 1px solid var(--roamly-border);
+    border-radius: var(--roamly-radius-sm);
+    padding: 0.65rem 1.1rem;
+    text-align: center;
+    min-width: 115px;
+}
+
+.header-stat-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--roamly-text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+}
+
+.header-stat-val {
+    display: block;
+    font-family: var(--roamly-font-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--roamly-navy);
+}
+
+/* Tracker Filter Pills */
+.tracker-filter-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    background: var(--roamly-cream);
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid var(--roamly-border);
+}
+
+.tracker-filter-btn {
+    background: transparent;
+    border: none;
+    padding: 0.38rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--roamly-text-secondary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tracker-filter-btn:hover:not(.active) {
+    color: var(--roamly-navy);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.tracker-filter-btn.active {
+    background: var(--roamly-navy);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(14, 27, 46, 0.15);
+}

@@ -1,0 +1,219 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-editorial-page roamly-create-page anim-fade-up">
+    <!-- PAGE BREADCRUMB -->
+    <nav class="show-breadcrumb mb-3">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <a href="/listings" class="crumb-link">All Stays</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Share your stay</span>
+    </nav>
+
+    <div class="create-stay-wrapper">
+        <!-- FORM MAIN COLUMN -->
+        <main class="create-form-col">
+            <div class="form-header-wrap mb-4">
+                <span class="explore-eyebrow">HOST ON ROAMLY</span>
+                <h1 class="create-page-title">Share your stay</h1>
+                <p class="create-page-desc">
+                    Open your doors to thoughtful travelers. Share the architecture, quiet surroundings, and soul of your home.
+                </p>
+            </div>
+
+            <form action="/listings" method="POST" class="needs-validation editorial-host-form" novalidate enctype="multipart/form-data">
+                <!-- SECTION 1: TITLE & STORY -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">01</span>
+                        <div>
+                            <h3 class="form-section-title">Sanctuary Identity</h3>
+                            <p class="form-section-desc">Give your space a memorable name and evocative story.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="title" class="host-input-label">Sanctuary Title</label>
+                        <input 
+                            type="text" 
+                            id="title"
+                            name="listing[title]" 
+                            placeholder="e.g. Pine Woods Lakeside Villa, Royal Stone Haveli" 
+                            required 
+                            class="form-control host-input"
+                        >
+                        <div class="invalid-feedback">
+                            Please provide an inspiring title for your stay.
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description" class="host-input-label">The Story &amp; Space</label>
+                        <textarea 
+                            id="description"
+                            name="listing[description]" 
+                            rows="5" 
+                            placeholder="Describe what makes this retreat special: the morning light, materials, quiet corners, and local surroundings..." 
+                            required 
+                            class="form-control host-input"
+                        ></textarea>
+                        <div class="invalid-feedback">
+                            Please provide a description of your space.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: IMAGERY -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">02</span>
+                        <div>
+                            <h3 class="form-section-title">Sanctuary Imagery</h3>
+                            <p class="form-section-desc">High-resolution photography showing architectural lines and natural setting.</p>
+                        </div>
+                    </div>
+
+                    <div class="file-upload-dropzone">
+                        <i class="fa-solid fa-cloud-arrow-up upload-cloud-icon"></i>
+                        <label for="image" class="upload-dropzone-label">
+                            <span class="upload-btn-chip">Choose Image File</span>
+                            <span class="upload-help-text">JPG, PNG or WEBP &bull; Max 10MB</span>
+                        </label>
+                        <input 
+                            type="file" 
+                            id="image"
+                            name="listing[image]" 
+                            required 
+                            class="form-control host-file-input"
+                            onchange="const f = this.files[0]; if(f){ document.getElementById('fileNamePreview').textContent = f.name; }"
+                        >
+                        <div id="fileNamePreview" class="upload-selected-name mt-2 text-success font-bold"></div>
+                        <div class="invalid-feedback">
+                            Please upload a photo of your sanctuary.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: PRICING & LOCATION -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">03</span>
+                        <div>
+                            <h3 class="form-section-title">Pricing &amp; Location</h3>
+                            <p class="form-section-desc">Set transparent rates and specify where travelers can discover your home.</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-5">
+                            <label for="price" class="host-input-label">Nightly Rate (₹)</label>
+                            <div class="input-currency-wrap">
+                                <span class="currency-symbol">₹</span>
+                                <input 
+                                    type="number" 
+                                    id="price"
+                                    name="listing[price]" 
+                                    placeholder="4500" 
+                                    min="1"
+                                    required 
+                                    class="form-control host-input ps-4"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please set a valid nightly rate.
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <label for="country" class="host-input-label">Country</label>
+                            <input 
+                                type="text" 
+                                id="country"
+                                name="listing[country]" 
+                                placeholder="India" 
+                                required 
+                                class="form-control host-input"
+                            >
+                            <div class="invalid-feedback">
+                                Please specify the country.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="location" class="host-input-label">City / Region / Address</label>
+                        <div class="location-input-wrap">
+                            <i class="fa-solid fa-location-dot location-icon"></i>
+                            <input 
+                                type="text" 
+                                id="location"
+                                name="listing[location]" 
+                                placeholder="e.g. Udaipur, Rajasthan or Old Manali, Himachal Pradesh" 
+                                required 
+                                class="form-control host-input ps-4"
+                            >
+                        </div>
+                        <div class="invalid-feedback">
+                            Please specify the location.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTON -->
+                <div class="form-submit-row">
+                    <button type="submit" class="roamly-btn-primary create-submit-btn">
+                        <i class="fa-solid fa-plus me-2"></i>
+                        <span>Publish Sanctuary</span>
+                    </button>
+                    <a href="/listings" class="roamly-btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </main>
+
+        <!-- VISUAL / HOSTING TIPS SIDEBAR -->
+        <aside class="create-visual-col d-none d-lg-block">
+            <div class="create-sidebar-sticky">
+                <div class="host-visual-card">
+                    <img 
+                        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" 
+                        alt="Mindful home interior" 
+                        class="host-sidebar-img"
+                    >
+                    <div class="host-visual-overlay"></div>
+                    <div class="host-visual-badge">
+                        <i class="fa-solid fa-compass"></i> Roamly Host Philosophy
+                    </div>
+                </div>
+
+                <div class="host-tips-card">
+                    <h4 class="tips-title">Why host on Roamly?</h4>
+                    <ul class="host-tips-list">
+                        <li>
+                            <i class="fa-solid fa-check-circle tip-icon"></i>
+                            <div>
+                                <strong>Conscious Travelers</strong>
+                                <p>Our community values serenity, architectural craftsmanship, and respect for nature.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check-circle tip-icon"></i>
+                            <div>
+                                <strong>Direct Connection</strong>
+                                <p>Communicate directly with verified guests before confirming reservations.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-check-circle tip-icon"></i>
+                            <div>
+                                <strong>Transparent &amp; Fair</strong>
+                                <p>Zero hidden host commissions or algorithmic penalization.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

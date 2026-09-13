@@ -1,0 +1,431 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-editorial-page roamly-all-listings-page">
+    <!-- EDITORIAL HEADER -->
+    <header class="listings-explore-header reveal-init">
+        <div class="explore-eyebrow">
+            <span class="hero-dot"></span>
+            <span>CURATED SANCTUARIES</span>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+            <div>
+                <h1 class="explore-heading">Explore stays</h1>
+                <p class="explore-subheading">
+                    Discover architecturally distinct homes, serene lakeside retreats, and alpine cabins across iconic landscapes.
+                </p>
+            </div>
+            <div class="explore-count-pill">
+                <i class="fa-solid fa-compass me-2"></i>
+                <span id="visibleCount"><%= allListings.length %></span> sanctuaries available
+            </div>
+        </div>
+
+        <!-- ANIMATED SEARCH CONSOLE -->
+        <div class="explore-search-bar anim-fade-up">
+            <div class="search-input-wrap">
+                <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
+                <input 
+                    type="text" 
+                    id="listingsSearchInput" 
+                    class="explore-input" 
+                    placeholder="Search by city, title, or vibe (e.g. Udaipur, Cabin, Lake, Villa)..."
+                    autocomplete="off"
+                >
+            </div>
+            <button type="button" id="clearSearchBtn" class="search-clear-btn d-none" aria-label="Clear search">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- CUSTOM CATEGORY STRIP -->
+    <section class="roamly-categories-section reveal-init">
+        <div class="category-strip-wrapper">
+            <button class="category-pill active" data-category="all">
+                <i class="fa-solid fa-border-all cat-icon"></i>
+                <span>All Stays</span>
+            </button>
+            <button class="category-pill" data-category="trending">
+                <i class="fa-solid fa-arrow-trend-up cat-icon"></i>
+                <span>Trending</span>
+            </button>
+            <button class="category-pill" data-category="cabins">
+                <i class="fa-solid fa-house-chimney cat-icon"></i>
+                <span>Cabins</span>
+            </button>
+            <button class="category-pill" data-category="beachfront">
+                <i class="fa-solid fa-umbrella-beach cat-icon"></i>
+                <span>Beachfront</span>
+            </button>
+            <button class="category-pill" data-category="mountains">
+                <i class="fa-solid fa-mountain-sun cat-icon"></i>
+                <span>Mountains</span>
+            </button>
+            <button class="category-pill" data-category="countryside">
+                <i class="fa-solid fa-wheat-awn cat-icon"></i>
+                <span>Countryside</span>
+            </button>
+            <button class="category-pill" data-category="city">
+                <i class="fa-solid fa-city cat-icon"></i>
+                <span>City Stays</span>
+            </button>
+            <button class="category-pill" data-category="unique">
+                <i class="fa-solid fa-wand-magic-sparkles cat-icon"></i>
+                <span>Unique Homes</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- VARIED & ELEGANT LISTINGS GRID -->
+    <main class="explore-listings-section" id="listingsGridContainer">
+        <% 
+        const getImage = (item) => {
+            if (!item) return 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80';
+            if (item.imageUrl) return item.imageUrl;
+            if (item.image && typeof item.image.url === 'string' && item.image.url.trim() !== '') return item.image.url.trim();
+            if (typeof item.image === 'string' && item.image.trim() !== '') return item.image.trim();
+            if (typeof item.images === 'string' && item.images.trim() !== '') return item.images.trim();
+            if (Array.isArray(item.images) && item.images.length > 0) {
+                const first = item.images[0];
+                if (typeof first === 'string' && first.trim() !== '') return first.trim();
+                if (first && typeof first.url === 'string' && first.url.trim() !== '') return first.url.trim();
+            }
+            return 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80';
+        };
+        %>
+        <% if (allListings && allListings.length > 0) { %>
+            <div class="roamly-asymmetric-wrapper" id="exploreListings">
+                
+                <!-- Bento Showcase (Top 3 Listings: 1 Spotlight + 2 Stacked) -->
+                <% if (allListings.length >= 2) { %>
+                    <div class="bento-featured-row">
+                        <!-- Bento Spotlight Item -->
+                        <% const spotlight = allListings[0]; %>
+                        <div class="listing-item spotlight-item reveal-card" 
+                             data-title="<%= spotlight.title.toLowerCase() %>" 
+                             data-location="<%= (spotlight.location || "").toLowerCase() %>" 
+                             data-country="<%= (spotlight.country || "").toLowerCase() %>"
+                             data-description="<%= (spotlight.description || "").toLowerCase() %>">
+                            <a href="/listings/<%= spotlight._id %>" class="roamly-card-anchor">
+                                <div class="spotlight-card">
+                                    <div class="spotlight-media">
+                                        <img src="<%= getImage(spotlight) %>" 
+                                             alt="<%= spotlight.title %>" 
+                                             loading="lazy"
+                                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80';">
+                                        <div class="spotlight-overlay"></div>
+                                        <span class="spotlight-pill">
+                                            <i class="fa-solid fa-award"></i> Roamly Choice
+                                        </span>
+                                        <button type="button" class="bookmark-pill" aria-label="Save stay" onclick="event.preventDefault(); this.classList.toggle('active');">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    <div class="spotlight-info">
+                                        <div class="info-top">
+                                            <span class="stay-location">
+                                                <i class="fa-solid fa-location-dot"></i> 
+                                                <%= spotlight.location %>, <%= spotlight.country %>
+                                            </span>
+                                            <span class="stay-rating">
+                                                <i class="fa-solid fa-star"></i> 4.96
+                                            </span>
+                                        </div>
+                                        <h3 class="spotlight-title"><%= spotlight.title %></h3>
+                                        <p class="spotlight-desc">
+                                            <%= spotlight.description ? spotlight.description.substring(0, 140) + "..." : "A handcrafted retreat offering serene views, bespoke interiors, and unmatched peaceful surroundings." %>
+                                        </p>
+                                        <div class="spotlight-footer">
+                                            <div class="price-block">
+                                                <span class="price-val">₹ <%= spotlight.price ? spotlight.price.toLocaleString("en-IN") : "0" %></span>
+                                                <span class="price-term">/ night</span>
+                                            </div>
+                                            <span class="view-pill-btn">
+                                                View Sanctuary <i class="fa-solid fa-arrow-right ms-1"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Bento Stacked Pair (Listings #1 and #2) -->
+                        <div class="bento-stacked-col">
+                            <% for(let i = 1; i < Math.min(3, allListings.length); i++) { 
+                                const stay = allListings[i]; %>
+                                <div class="listing-item stacked-item reveal-card" 
+                                     data-title="<%= stay.title.toLowerCase() %>" 
+                                     data-location="<%= (stay.location || "").toLowerCase() %>" 
+                                     data-country="<%= (stay.country || "").toLowerCase() %>"
+                                     data-description="<%= (stay.description || "").toLowerCase() %>">
+                                    <a href="/listings/<%= stay._id %>" class="roamly-card-anchor">
+                                        <div class="stacked-card">
+                                            <div class="stacked-media">
+                                                <img src="<%= getImage(stay) %>" 
+                                                     alt="<%= stay.title %>" 
+                                                     loading="lazy"
+                                                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';">
+                                                <button type="button" class="bookmark-pill" aria-label="Save stay" onclick="event.preventDefault(); this.classList.toggle('active');">
+                                                    <i class="fa-regular fa-heart"></i>
+                                                </button>
+                                            </div>
+                                            <div class="stacked-info">
+                                                <div class="info-top">
+                                                    <span class="stay-location">
+                                                        <i class="fa-solid fa-location-dot"></i> 
+                                                        <%= stay.location %>, <%= stay.country %>
+                                                    </span>
+                                                    <span class="stay-rating">
+                                                        <i class="fa-solid fa-star"></i> 4.92
+                                                    </span>
+                                                </div>
+                                                <h4 class="stacked-title"><%= stay.title %></h4>
+                                                <div class="stacked-footer">
+                                                    <span class="price-val">₹ <%= stay.price ? stay.price.toLocaleString("en-IN") : "0" %></span>
+                                                    <span class="price-term">/ night</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+
+                <!-- Editorial Varied Grid for All Remaining Listings -->
+                <% const remainingStart = allListings.length >= 2 ? 3 : 0; %>
+                <div class="editorial-stays-grid">
+                    <% for(let i = remainingStart; i < allListings.length; i++) { 
+                        const stay = allListings[i];
+                        const variantClass = (i % 5 === 0) ? "card-variant-tall" : (i % 3 === 0 ? "card-variant-wide" : "");
+                    %>
+                        <div class="listing-item grid-item <%= variantClass %> reveal-card" 
+                             data-title="<%= stay.title.toLowerCase() %>" 
+                             data-location="<%= (stay.location || "").toLowerCase() %>" 
+                             data-country="<%= (stay.country || "").toLowerCase() %>"
+                             data-description="<%= (stay.description || "").toLowerCase() %>">
+                            <a href="/listings/<%= stay._id %>" class="roamly-card-anchor">
+                                <div class="editorial-stay-card">
+                                    <div class="card-media-wrap">
+                                        <img src="<%= getImage(stay) %>" 
+                                             alt="<%= stay.title %>" 
+                                             loading="lazy"
+                                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';">
+                                        <button type="button" class="bookmark-pill" aria-label="Save stay" onclick="event.preventDefault(); this.classList.toggle('active');">
+                                            <i class="fa-regular fa-heart"></i>
+                                        </button>
+                                        <span class="price-badge-floating">
+                                            ₹ <%= stay.price ? stay.price.toLocaleString("en-IN") : "0" %>
+                                            <small>/ night</small>
+                                        </span>
+                                    </div>
+                                    <div class="card-content-wrap">
+                                        <div class="info-top">
+                                            <span class="stay-location">
+                                                <i class="fa-solid fa-location-dot"></i> 
+                                                <%= stay.location %>, <%= stay.country %>
+                                            </span>
+                                            <span class="stay-rating">
+                                                <i class="fa-solid fa-star"></i> 4.9
+                                            </span>
+                                        </div>
+                                        <h4 class="card-stay-title"><%= stay.title %></h4>
+                                        <p class="card-stay-snippet">
+                                            <%= stay.description ? stay.description.substring(0, 75) + "..." : "A serene escape curated for restful stays." %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+
+            </div>
+        <% } else { %>
+            <div class="empty-stays-state">
+                <i class="fa-solid fa-compass empty-icon"></i>
+                <h3>No Stays Listed Yet</h3>
+                <p>Be the first host to share an inspiring sanctuary with the Roamly community.</p>
+                <a href="/listings/new" class="roamly-btn-primary mt-3">
+                    <i class="fa-solid fa-plus me-1"></i> Add the First Listing
+                </a>
+            </div>
+        <% } %>
+
+        <!-- Filter Empty State -->
+        <div id="noResultsNotice" class="no-results-state d-none">
+            <i class="fa-solid fa-magnifying-glass-location no-res-icon"></i>
+            <h3>No sanctuaries found</h3>
+            <p>We couldn't find any stays matching that criteria. Try another keyword or reset filters.</p>
+            <button type="button" id="resetExploreFiltersBtn" class="roamly-btn-secondary mt-2">
+                <i class="fa-solid fa-rotate-left me-1"></i> Show All Stays
+            </button>
+        </div>
+    </main>
+</div>
+
+<!-- CLIENT-SIDE FILTER & REVEAL SCRIPT -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Scroll reveal observer
+        const cards = document.querySelectorAll(".reveal-init, .reveal-card");
+        if ("IntersectionObserver" in window) {
+            const obs = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, idx) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add("revealed");
+                        }, (idx % 4) * 60);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: "0px 0px -40px 0px" });
+            cards.forEach(c => obs.observe(c));
+        } else {
+            cards.forEach(c => c.classList.add("revealed"));
+        }
+        // Safety timeout to ensure no elements remain hidden if observer is slow
+        setTimeout(() => {
+            cards.forEach(c => c.classList.add("revealed"));
+        }, 600);
+
+        // Live search & category filtering
+        const searchInput = document.getElementById("listingsSearchInput");
+        const clearBtn = document.getElementById("clearSearchBtn");
+        const categoryPills = document.querySelectorAll(".category-pill");
+        const listingItems = document.querySelectorAll(".listing-item");
+        const countDisplay = document.getElementById("visibleCount");
+        const noResultsNotice = document.getElementById("noResultsNotice");
+        const resetBtn = document.getElementById("resetExploreFiltersBtn");
+
+        let currentCategory = "all";
+        let currentQuery = "";
+
+        // Check URL parameters (e.g. ?search=... or ?category=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("search")) {
+            currentQuery = urlParams.get("search");
+            if (searchInput) searchInput.value = currentQuery;
+        }
+        if (urlParams.has("category")) {
+            currentCategory = urlParams.get("category");
+            categoryPills.forEach(p => {
+                if (p.getAttribute("data-category") === currentCategory) {
+                    p.classList.add("active");
+                } else {
+                    p.classList.remove("active");
+                }
+            });
+        }
+
+        function filterListings() {
+            let visibleCount = 0;
+            const q = currentQuery.trim().toLowerCase();
+
+            if (clearBtn) {
+                if (q.length > 0) {
+                    clearBtn.classList.remove("d-none");
+                } else {
+                    clearBtn.classList.add("d-none");
+                }
+            }
+
+            listingItems.forEach(item => {
+                const title = item.getAttribute("data-title") || "";
+                const location = item.getAttribute("data-location") || "";
+                const country = item.getAttribute("data-country") || "";
+                const description = item.getAttribute("data-description") || "";
+                const pool = `${title} ${location} ${country} ${description}`;
+
+                let matchSearch = true;
+                if (q.length > 0) {
+                    matchSearch = pool.includes(q);
+                }
+
+                let matchCategory = true;
+                if (currentCategory !== "all") {
+                    if (currentCategory === "cabins") {
+                        matchCategory = pool.includes("cabin") || pool.includes("retreat") || pool.includes("cottage") || pool.includes("wood") || pool.includes("chalet");
+                    } else if (currentCategory === "beachfront") {
+                        matchCategory = pool.includes("beach") || pool.includes("coast") || pool.includes("sea") || pool.includes("ocean") || pool.includes("lake") || pool.includes("water");
+                    } else if (currentCategory === "mountains") {
+                        matchCategory = pool.includes("mountain") || pool.includes("alpine") || pool.includes("hill") || pool.includes("aspen") || pool.includes("snow") || pool.includes("manali") || pool.includes("leh");
+                    } else if (currentCategory === "countryside") {
+                        matchCategory = pool.includes("farm") || pool.includes("villa") || pool.includes("country") || pool.includes("tuscany") || pool.includes("valley") || pool.includes("treehouse");
+                    } else if (currentCategory === "city") {
+                        matchCategory = pool.includes("city") || pool.includes("downtown") || pool.includes("loft") || pool.includes("apartment") || pool.includes("penthouse") || pool.includes("urban");
+                    } else if (currentCategory === "unique") {
+                        matchCategory = pool.includes("unique") || pool.includes("treehouse") || pool.includes("chalet") || pool.includes("castle") || pool.includes("palace");
+                    } else if (currentCategory === "trending") {
+                        matchCategory = true;
+                    }
+                }
+
+                if (matchSearch && matchCategory) {
+                    item.style.display = "";
+                    visibleCount++;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            if (countDisplay) countDisplay.textContent = visibleCount;
+            if (noResultsNotice) {
+                if (visibleCount === 0 && listingItems.length > 0) {
+                    noResultsNotice.classList.remove("d-none");
+                } else {
+                    noResultsNotice.classList.add("d-none");
+                }
+            }
+        }
+
+        if (searchInput) {
+            let debounce;
+            searchInput.addEventListener("input", () => {
+                clearTimeout(debounce);
+                debounce = setTimeout(() => {
+                    currentQuery = searchInput.value;
+                    filterListings();
+                }, 200);
+            });
+        }
+
+        if (clearBtn && searchInput) {
+            clearBtn.addEventListener("click", () => {
+                searchInput.value = "";
+                currentQuery = "";
+                filterListings();
+                searchInput.focus();
+            });
+        }
+
+        categoryPills.forEach(pill => {
+            pill.addEventListener("click", () => {
+                categoryPills.forEach(p => p.classList.remove("active"));
+                pill.classList.add("active");
+                currentCategory = pill.getAttribute("data-category") || "all";
+                filterListings();
+            });
+        });
+
+        if (resetBtn) {
+            resetBtn.addEventListener("click", () => {
+                if (searchInput) searchInput.value = "";
+                currentQuery = "";
+                currentCategory = "all";
+                categoryPills.forEach(p => {
+                    if (p.getAttribute("data-category") === "all") {
+                        p.classList.add("active");
+                    } else {
+                        p.classList.remove("active");
+                    }
+                });
+                filterListings();
+            });
+        }
+
+        // Run initial filter in case params were set
+        filterListings();
+    });
+</script>

@@ -1,0 +1,19 @@
+<% layout('layouts/boilerplate') %>  
+
+<div class="roamly-editorial-page text-center py-5 anim-fade-up">
+    <div class="empty-stays-state max-w-md mx-auto my-5 p-5">
+        <i class="fa-solid fa-compass empty-icon mb-3"></i>
+        <h2 class="section-title mb-2">Something Wandered Off</h2>
+        <p class="text-secondary mb-4">
+            <%= err.message || "The page or sanctuary you are looking for is currently unreachable." %>
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="/" class="roamly-btn-primary">
+                <i class="fa-solid fa-house me-2"></i> Return Home
+            </a>
+            <a href="/listings" class="roamly-btn-secondary">
+                <i class="fa-solid fa-compass me-2"></i> Explore Stays
+            </a>
+        </div>
+    </div>
+</div>

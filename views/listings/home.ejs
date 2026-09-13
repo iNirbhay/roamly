@@ -1,0 +1,1267 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-cinematic-home" id="cinematicExperience">
+
+    <!-- Top Ambient Scroll Progress Bar -->
+    <div class="scroll-progress-line" id="scrollProgressLine"></div>
+
+    <!-- ==========================================================================
+         HERO EXPERIENCE: Full-Screen Immersive Travel Scene
+         - Layered depth/parallax
+         - Logo reveal transforming into "Discover Stays That Feel Like Home"
+         - Floating leaves, clouds, birds & map-route lines
+         - Minimal floating search pill (Destination, Dates, Guests)
+         - Scroll to explore interaction & smooth zoom transition
+         ========================================================================== -->
+    <section class="cinematic-hero-stage" id="heroStage">
+        <!-- Parallax Background Landscape Layers -->
+        <div class="hero-layer hero-layer-back" id="heroLayerBack"></div>
+        <div class="hero-layer hero-layer-mid" id="heroLayerMid"></div>
+        <div class="hero-layer hero-layer-mist" id="heroLayerMist"></div>
+        <div class="hero-vignette-overlay"></div>
+
+        <!-- Floating Natural Atmospheric Elements -->
+        <div class="hero-floating-elements" aria-hidden="true">
+            <!-- Gliding Birds -->
+            <div class="ambient-bird bird-1">
+                <svg viewBox="0 0 48 24" fill="none" class="bird-svg">
+                    <path d="M2 18C10 8 18 10 24 16C30 10 38 8 46 18C38 12 30 14 24 20C18 14 10 12 2 18Z" fill="rgba(255,255,255,0.45)"/>
+                </svg>
+            </div>
+            <div class="ambient-bird bird-2">
+                <svg viewBox="0 0 48 24" fill="none" class="bird-svg">
+                    <path d="M2 18C10 8 18 10 24 16C30 10 38 8 46 18C38 12 30 14 24 20C18 14 10 12 2 18Z" fill="rgba(255,255,255,0.3)"/>
+                </svg>
+            </div>
+
+            <!-- Drifting Forest Leaves -->
+            <div class="ambient-leaf leaf-1">
+                <svg viewBox="0 0 32 32" fill="none" class="leaf-svg">
+                    <path d="M16 2C8 6 4 14 6 22C8 30 18 30 24 24C30 18 28 8 16 2Z" fill="rgba(62, 111, 74, 0.4)"/>
+                </svg>
+            </div>
+            <div class="ambient-leaf leaf-2">
+                <svg viewBox="0 0 32 32" fill="none" class="leaf-svg">
+                    <path d="M16 2C8 6 4 14 6 22C8 30 18 30 24 24C30 18 28 8 16 2Z" fill="rgba(229, 155, 56, 0.35)"/>
+                </svg>
+            </div>
+            <div class="ambient-leaf leaf-3">
+                <svg viewBox="0 0 32 32" fill="none" class="leaf-svg">
+                    <path d="M16 2C8 6 4 14 6 22C8 30 18 30 24 24C30 18 28 8 16 2Z" fill="rgba(62, 111, 74, 0.25)"/>
+                </svg>
+            </div>
+
+            <!-- Delicate Travel Map Route Lines -->
+            <svg class="ambient-map-route" viewBox="0 0 1600 600" fill="none">
+                <path d="M-100 450 C 300 250, 600 500, 1000 300 C 1200 200, 1400 320, 1600 280" stroke="rgba(250, 248, 245, 0.08)" stroke-width="2" stroke-dasharray="8 12" />
+                <circle cx="1000" cy="300" r="5" fill="rgba(229, 155, 56, 0.6)" class="route-node" />
+            </svg>
+        </div>
+
+        <!-- Hero Content Center Stage -->
+        <div class="hero-stage-container">
+            <!-- Brand Badge Reveal (Transforms on Load) -->
+            <div class="hero-brand-morph-wrap" id="heroBrandMorph">
+                <div class="hero-brand-logo-panel" id="heroLogoPanel">
+                    <div class="hero-logo-pill-badge">
+                        <img src="/images/roamly-logo-transparent.png" alt="Roamly" class="hero-morph-logo">
+                    </div>
+                    <span class="hero-morph-caption">Handcrafted Sanctuaries</span>
+                </div>
+
+                <div class="hero-headline-panel" id="heroHeadPanel">
+                    <div class="hero-eyebrow-chip">
+                        <span class="pulse-amber-dot"></span>
+                        <span>Mindful Architecture &bull; Untouched Horizons</span>
+                    </div>
+                    <h1 class="hero-cinematic-title">
+                        Discover Stays That<br>
+                        <span class="hero-title-italic">Feel Like Home</span>
+                    </h1>
+                    <p class="hero-cinematic-sub">
+                        Curated lakeside villas, secluded pine cabins, and heritage sanctuaries crafted for soulful travel.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Minimal Floating Search Pill (Destination, Dates, Guests) -->
+            <div class="hero-search-capsule-wrap" id="heroSearchCapsule">
+                <form action="/listings" method="GET" class="hero-search-capsule" id="cinematicSearchForm">
+                    <input type="hidden" name="checkIn" id="hiddenCheckIn" value="">
+                    <input type="hidden" name="checkOut" id="hiddenCheckOut" value="">
+                    <input type="hidden" name="guests" id="hiddenGuests" value="2">
+
+                    <!-- Segment 1: Destination -->
+                    <div class="search-seg search-seg-dest" id="segDestTrigger">
+                        <div class="seg-icon-wrap">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <div class="seg-inputs">
+                            <label for="searchDestinationInput" class="seg-label">Destination</label>
+                            <input 
+                                type="text" 
+                                id="searchDestinationInput" 
+                                name="search" 
+                                class="seg-field" 
+                                placeholder="Where would you like to wander?" 
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="search-seg-divider"></div>
+
+                    <!-- Segment 2: Dates -->
+                    <div class="search-seg search-seg-dates" id="segDatesTrigger">
+                        <div class="seg-icon-wrap">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <div class="seg-inputs">
+                            <span class="seg-label">Dates</span>
+                            <span class="seg-display-text" id="datesDisplayText">Add flexible dates</span>
+                        </div>
+                    </div>
+
+                    <div class="search-seg-divider"></div>
+
+                    <!-- Segment 3: Guests -->
+                    <div class="search-seg search-seg-guests" id="segGuestsTrigger">
+                        <div class="seg-icon-wrap">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                        <div class="seg-inputs">
+                            <span class="seg-label">Guests</span>
+                            <span class="seg-display-text" id="guestsDisplayText">2 conscious travelers</span>
+                        </div>
+                    </div>
+
+                    <!-- Search Trigger Button -->
+                    <button type="submit" class="capsule-search-action-btn" aria-label="Search stays">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span class="btn-text ms-1">Explore</span>
+                    </button>
+                </form>
+
+                <!-- POPOVER 1: Destination Suggestions -->
+                <div class="roamly-popover dest-popover d-none" id="destPopover">
+                    <div class="popover-header">
+                        <span class="popover-title"><i class="fa-solid fa-sparkles me-1"></i> Suggested Sanctuaries</span>
+                        <span class="text-muted small">Quick Pick</span>
+                    </div>
+                    <div class="dest-suggestions-list">
+                        <button type="button" class="dest-suggest-item" data-place="Udaipur">
+                            <div class="suggest-icon-box"><i class="fa-solid fa-water"></i></div>
+                            <div class="suggest-details">
+                                <span class="place-name">Udaipur, Rajasthan</span>
+                                <span class="place-tag">Lake Palaces &amp; Regal Courtyards</span>
+                            </div>
+                        </button>
+                        <button type="button" class="dest-suggest-item" data-place="Goa">
+                            <div class="suggest-icon-box"><i class="fa-solid fa-umbrella-beach"></i></div>
+                            <div class="suggest-details">
+                                <span class="place-name">Goa</span>
+                                <span class="place-tag">Coastal Sanctuaries &amp; Golden Shores</span>
+                            </div>
+                        </button>
+                        <button type="button" class="dest-suggest-item" data-place="Manali">
+                            <div class="suggest-icon-box"><i class="fa-solid fa-mountain-sun"></i></div>
+                            <div class="suggest-details">
+                                <span class="place-name">Manali, Himachal</span>
+                                <span class="place-tag">Cedar Chalets &amp; Pine Forests</span>
+                            </div>
+                        </button>
+                        <button type="button" class="dest-suggest-item" data-place="Leh">
+                            <div class="suggest-icon-box"><i class="fa-solid fa-mountain"></i></div>
+                            <div class="suggest-details">
+                                <span class="place-name">Leh, Ladakh</span>
+                                <span class="place-tag">Starlit Dark Skies &amp; Mountain Passes</span>
+                            </div>
+                        </button>
+                        <button type="button" class="dest-suggest-item" data-place="Munnar">
+                            <div class="suggest-icon-box"><i class="fa-solid fa-leaf"></i></div>
+                            <div class="suggest-details">
+                                <span class="place-name">Munnar, Kerala</span>
+                                <span class="place-tag">Emerald Tea Hills &amp; Mist</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- POPOVER 2: Interactive Calendar -->
+                <div class="roamly-popover calendar-popover d-none" id="calendarPopover">
+                    <div class="cal-header-bar">
+                        <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="Previous Month">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <span class="cal-month-title" id="calMonthTitle">October 2026</span>
+                        <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="Next Month">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="cal-weekdays">
+                        <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                    </div>
+                    <div class="cal-days-grid" id="calDaysGrid">
+                        <!-- Rendered dynamically -->
+                    </div>
+                    <div class="cal-shortcuts-row">
+                        <button type="button" class="cal-shortcut-pill" id="shortcutWeekend">This Weekend</button>
+                        <button type="button" class="cal-shortcut-pill" id="shortcutWeek">Next 7 Days</button>
+                        <button type="button" class="cal-shortcut-pill" id="shortcutReset">Reset</button>
+                    </div>
+                    <div class="cal-footer-bar">
+                        <span class="cal-summary-pill" id="calSummaryPill">Select check-in</span>
+                        <button type="button" class="cal-done-btn" id="calDoneBtn">Apply Dates</button>
+                    </div>
+                </div>
+
+                <!-- POPOVER 3: Guests Picker -->
+                <div class="roamly-popover guests-popover d-none" id="guestsPopover">
+                    <div class="popover-header">
+                        <span class="popover-title"><i class="fa-solid fa-users me-1"></i> Mindful Travelers</span>
+                    </div>
+                    <div class="guest-row">
+                        <div class="guest-meta">
+                            <span class="guest-type">Adults</span>
+                            <span class="guest-subtext">Ages 13 or above</span>
+                        </div>
+                        <div class="guest-counter">
+                            <button type="button" class="counter-btn" id="btnAdultDec" aria-label="Decrease adults"><i class="fa-solid fa-minus"></i></button>
+                            <span class="counter-num" id="valAdults">2</span>
+                            <button type="button" class="counter-btn" id="btnAdultInc" aria-label="Increase adults"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="guest-row">
+                        <div class="guest-meta">
+                            <span class="guest-type">Children</span>
+                            <span class="guest-subtext">Ages 2–12</span>
+                        </div>
+                        <div class="guest-counter">
+                            <button type="button" class="counter-btn" id="btnChildDec" aria-label="Decrease children"><i class="fa-solid fa-minus"></i></button>
+                            <span class="counter-num" id="valChildren">0</span>
+                            <button type="button" class="counter-btn" id="btnChildInc" aria-label="Increase children"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="guest-row">
+                        <div class="guest-meta">
+                            <span class="guest-type">Infants</span>
+                            <span class="guest-subtext">Under 2</span>
+                        </div>
+                        <div class="guest-counter">
+                            <button type="button" class="counter-btn" id="btnInfantDec" aria-label="Decrease infants"><i class="fa-solid fa-minus"></i></button>
+                            <span class="counter-num" id="valInfants">0</span>
+                            <button type="button" class="counter-btn" id="btnInfantInc" aria-label="Increase infants"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="guests-footer">
+                        <button type="button" class="cal-done-btn" id="guestsDoneBtn">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll to Explore Interaction Prompt -->
+        <a href="#categoriesSection" class="hero-scroll-prompt" id="heroScrollPrompt" aria-label="Scroll to explore sections below">
+            <span class="scroll-prompt-text">Scroll to explore</span>
+            <div class="scroll-mouse-icon">
+                <div class="scroll-wheel"></div>
+            </div>
+            <i class="fa-solid fa-chevron-down scroll-arrow-icon"></i>
+        </a>
+    </section>
+
+    <!-- Content Narrative Wrapper (Progressive Reveals) -->
+    <main class="cinematic-narrative-flow">
+
+        <!-- ==========================================================================
+             SECTION 1: TRAVEL CATEGORIES WITH CUSTOM ILLUSTRATED ICONS
+             ========================================================================== -->
+        <section class="cinematic-section categories-reveal-section" id="categoriesSection">
+            <div class="editorial-container">
+                <div class="section-editorial-header text-center reveal-item">
+                    <span class="editorial-tag"><i class="fa-solid fa-sparkles me-1"></i> Curated Landscapes</span>
+                    <h2 class="editorial-heading anim-text-split">
+                        <span class="word-reveal">Explore</span> 
+                        <span class="word-reveal">Stays</span> 
+                        <span class="word-reveal">by</span> 
+                        <span class="word-reveal text-accent-gradient">Spirit &amp; Setting</span>
+                    </h2>
+                    <p class="editorial-subheading anim-subheading-reveal">
+                        Whether you crave high-altitude alpine silence or rhythmic coastal tides, find stays that align with your pace.
+                    </p>
+                </div>
+
+                <!-- Custom Illustrated Category Grid with Staggered Cascades -->
+                <div class="illustrated-category-grid reveal-stagger-group">
+                    <!-- 1. Trending -->
+                    <a href="/listings?category=trending" class="category-curated-card anim-stagger-card" style="--stagger-idx: 0;">
+                        <div class="cat-icon-badge badge-trending">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <span class="cat-card-title">Trending</span>
+                        <span class="cat-card-desc">Most loved sanctuaries</span>
+                    </a>
+
+                    <!-- 2. Cabins -->
+                    <a href="/listings?category=cabins" class="category-curated-card anim-stagger-card" style="--stagger-idx: 1;">
+                        <div class="cat-icon-badge badge-cabins">
+                            <i class="fa-solid fa-house-chimney-window"></i>
+                        </div>
+                        <span class="cat-card-title">Cabins</span>
+                        <span class="cat-card-desc">Wood &amp; cedar retreats</span>
+                    </a>
+
+                    <!-- 3. Beachfront -->
+                    <a href="/listings?category=beachfront" class="category-curated-card anim-stagger-card" style="--stagger-idx: 2;">
+                        <div class="cat-icon-badge badge-beach">
+                            <i class="fa-solid fa-umbrella-beach"></i>
+                        </div>
+                        <span class="cat-card-title">Beachfront</span>
+                        <span class="cat-card-desc">Ocean horizons &amp; tides</span>
+                    </a>
+
+                    <!-- 4. Mountains -->
+                    <a href="/listings?category=mountains" class="category-curated-card anim-stagger-card" style="--stagger-idx: 3;">
+                        <div class="cat-icon-badge badge-mountains">
+                            <i class="fa-solid fa-mountain-sun"></i>
+                        </div>
+                        <span class="cat-card-title">Mountains</span>
+                        <span class="cat-card-desc">High altitude escapes</span>
+                    </a>
+
+                    <!-- 5. Countryside -->
+                    <a href="/listings?category=countryside" class="category-curated-card anim-stagger-card" style="--stagger-idx: 4;">
+                        <div class="cat-icon-badge badge-countryside">
+                            <i class="fa-solid fa-wheat-awn"></i>
+                        </div>
+                        <span class="cat-card-title">Countryside</span>
+                        <span class="cat-card-desc">Pastoral valleys &amp; farms</span>
+                    </a>
+
+                    <!-- 6. City Stays -->
+                    <a href="/listings?category=city" class="category-curated-card anim-stagger-card" style="--stagger-idx: 5;">
+                        <div class="cat-icon-badge badge-city">
+                            <i class="fa-solid fa-city"></i>
+                        </div>
+                        <span class="cat-card-title">City Stays</span>
+                        <span class="cat-card-desc">Architectural town lofts</span>
+                    </a>
+
+                    <!-- 7. Unique Homes -->
+                    <a href="/listings?category=unique" class="category-curated-card anim-stagger-card" style="--stagger-idx: 6;">
+                        <div class="cat-icon-badge badge-unique">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <span class="cat-card-title">Unique Homes</span>
+                        <span class="cat-card-desc">Treehouses &amp; stone forts</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SECTION 2: POPULAR DESTINATIONS SHOWCASE (Only 4-5 Curated Destinations)
+             ========================================================================== -->
+        <section class="cinematic-section destinations-showcase-section" id="destinationsSection">
+            <div class="editorial-container">
+                <div class="destinations-header-row reveal-item">
+                    <div>
+                        <span class="editorial-tag"><i class="fa-solid fa-compass me-1"></i> Iconic Escapes</span>
+                        <h2 class="editorial-heading anim-text-split">
+                            <span class="word-reveal">Popular</span> 
+                            <span class="word-reveal text-accent-gradient">Destinations</span>
+                        </h2>
+                        <p class="editorial-subheading anim-subheading-reveal">
+                            Five regional tapestries where heritage, landscape, and serene architecture converge.
+                        </p>
+                    </div>
+                    <div class="destinations-swipe-indicator d-none d-md-flex align-items-center gap-2">
+                        <span class="text-muted small">Explore regions</span>
+                        <i class="fa-solid fa-arrow-right-long text-muted"></i>
+                    </div>
+                </div>
+
+                <!-- 5 Curated Destinations Carousel / Grid with Staggered Waves & Parallax -->
+                <div class="destinations-showcase-track reveal-stagger-group">
+                    <!-- Dest 1: Udaipur -->
+                    <a href="/listings?search=Udaipur" class="dest-showcase-card anim-stagger-card" style="--stagger-idx: 0;">
+                        <div class="dest-card-media">
+                            <img 
+                                src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=85" 
+                                alt="Udaipur Lake Palaces" 
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';"
+                                class="parallax-media-img"
+                            >
+                            <div class="dest-card-gradient"></div>
+                            <span class="dest-region-pill">Rajasthan</span>
+                        </div>
+                        <div class="dest-card-info">
+                            <h3 class="dest-name">Udaipur</h3>
+                            <p class="dest-story">Marble courtyards mirrored in tranquil lake waters and regal silence.</p>
+                            <span class="dest-cta-link">
+                                Discover Udaipur <i class="fa-solid fa-arrow-right ms-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Dest 2: Goa -->
+                    <a href="/listings?search=Goa" class="dest-showcase-card anim-stagger-card" style="--stagger-idx: 1;">
+                        <div class="dest-card-media">
+                            <img 
+                                src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=85" 
+                                alt="Goa Coastal Sanctuaries" 
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80';"
+                                class="parallax-media-img"
+                            >
+                            <div class="dest-card-gradient"></div>
+                            <span class="dest-region-pill">Coastal Haven</span>
+                        </div>
+                        <div class="dest-card-info">
+                            <h3 class="dest-name">Goa</h3>
+                            <p class="dest-story">Palm-shaded Portuguese estates, golden shores, and unhurried afternoons.</p>
+                            <span class="dest-cta-link">
+                                Discover Goa <i class="fa-solid fa-arrow-right ms-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Dest 3: Manali -->
+                    <a href="/listings?search=Manali" class="dest-showcase-card anim-stagger-card" style="--stagger-idx: 2;">
+                        <div class="dest-card-media">
+                            <img 
+                                src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=85" 
+                                alt="Manali Alpine Cedar Forests" 
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80';"
+                                class="parallax-media-img"
+                            >
+                            <div class="dest-card-gradient"></div>
+                            <span class="dest-region-pill">Himachal</span>
+                        </div>
+                        <div class="dest-card-info">
+                            <h3 class="dest-name">Manali</h3>
+                            <p class="dest-story">Glacial rivers, cedar chalets, and crisp mountain breeze across the valley.</p>
+                            <span class="dest-cta-link">
+                                Discover Manali <i class="fa-solid fa-arrow-right ms-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Dest 4: Leh -->
+                    <a href="/listings?search=Leh" class="dest-showcase-card anim-stagger-card" style="--stagger-idx: 3;">
+                        <div class="dest-card-media">
+                            <img 
+                                src="https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=85" 
+                                alt="Leh Ladakh Valleys" 
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';"
+                                class="parallax-media-img"
+                            >
+                            <div class="dest-card-gradient"></div>
+                            <span class="dest-region-pill">Ladakh</span>
+                        </div>
+                        <div class="dest-card-info">
+                            <h3 class="dest-name">Leh</h3>
+                            <p class="dest-story">Monastic tranquility, starlit dark skies, and high-altitude mountain passes.</p>
+                            <span class="dest-cta-link">
+                                Discover Leh <i class="fa-solid fa-arrow-right ms-1"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Dest 5: Munnar -->
+                    <a href="/listings?search=Munnar" class="dest-showcase-card anim-stagger-card" style="--stagger-idx: 4;">
+                        <div class="dest-card-media">
+                            <img 
+                                src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=85" 
+                                alt="Munnar Tea Plantations" 
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';"
+                                class="parallax-media-img"
+                            >
+                            <div class="dest-card-gradient"></div>
+                            <span class="dest-region-pill">Kerala</span>
+                        </div>
+                        <div class="dest-card-info">
+                            <h3 class="dest-name">Munnar</h3>
+                            <p class="dest-story">Rolling emerald tea estates shrouded in mist and birdsong at daybreak.</p>
+                            <span class="dest-cta-link">
+                                Discover Munnar <i class="fa-solid fa-arrow-right ms-1"></i>
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SECTION 3: "WHY ROAMLY" SECTION (Trusted Stays, Meaningful Travel, Seamless Discovery)
+             ========================================================================== -->
+        <section class="cinematic-section why-roamly-section" id="whyRoamlySection">
+            <div class="editorial-container">
+                <div class="why-roamly-split-layout">
+                    <!-- Left Column: Editorial Statement -->
+                    <div class="why-statement-col reveal-item">
+                        <span class="editorial-tag"><i class="fa-solid fa-seedling me-1"></i> The Roamly Ethos</span>
+                        <h2 class="why-main-heading anim-text-split">
+                            <span class="word-reveal">We</span> 
+                            <span class="word-reveal">believe</span> 
+                            <span class="word-reveal">where</span> 
+                            <span class="word-reveal">you</span> 
+                            <span class="word-reveal">stay</span> 
+                            <span class="word-reveal text-accent-gradient">shapes</span> 
+                            <span class="word-reveal">how</span> 
+                            <span class="word-reveal">you</span> 
+                            <span class="word-reveal">remember</span> 
+                            <span class="word-reveal">the</span> 
+                            <span class="word-reveal text-accent-gradient">world.</span>
+                        </h2>
+                        <p class="why-body-paragraph anim-subheading-reveal">
+                            Roamly exists outside the realm of mass hotel chains and crowded tourist hubs. We hand-select architectural stays built with soul, local stone, and timeless hospitality.
+                        </p>
+                        <div class="why-signature-badge anim-pop-badge">
+                            <span class="badge-num">100%</span>
+                            <span class="badge-txt">Personally verified spaces for peace of mind</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: 3 Core Tenets with Vertical Timeline Spine -->
+                    <div class="why-tenets-col reveal-stagger-group">
+                        <div class="tenets-track-line"><div class="tenets-track-progress"></div></div>
+
+                        <!-- Tenet 1: Trusted Stays -->
+                        <div class="tenet-card anim-stagger-card" style="--stagger-idx: 0;">
+                            <div class="tenet-number">01</div>
+                            <div class="tenet-content">
+                                <h3 class="tenet-title">Trusted Stays</h3>
+                                <p class="tenet-description">
+                                    Every listing undergoes rigorous verification for authentic photography, structural hygiene, and genuine host hospitality before welcoming guests.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tenet 2: Meaningful Travel -->
+                        <div class="tenet-card anim-stagger-card" style="--stagger-idx: 1;">
+                            <div class="tenet-number">02</div>
+                            <div class="tenet-content">
+                                <h3 class="tenet-title">Meaningful Travel</h3>
+                                <p class="tenet-description">
+                                    Immerse yourself in quiet forest cabins, lakeside villas, and heritage stays that connect you to local culture, cuisine, and untouched nature.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Tenet 3: Seamless Discovery -->
+                        <div class="tenet-card anim-stagger-card" style="--stagger-idx: 2;">
+                            <div class="tenet-number">03</div>
+                            <div class="tenet-content">
+                                <h3 class="tenet-title">Seamless Discovery</h3>
+                                <p class="tenet-description">
+                                    Transparent pricing with zero hidden surcharges at checkout, flexible cancellations, and dedicated 24/7 concierge assistance throughout your journey.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SECTION 4: FEATURED STAYS SECTION (ONLY 3 Curated Listings + View All Button)
+             ========================================================================== -->
+        <section class="cinematic-section featured-stays-section" id="featuredStaysSection">
+            <div class="editorial-container">
+                <div class="featured-header-row reveal-item">
+                    <div>
+                        <span class="editorial-tag"><i class="fa-solid fa-award me-1"></i> Handpicked Sanctuaries</span>
+                        <h2 class="editorial-heading anim-text-split">
+                            <span class="word-reveal">Featured</span> 
+                            <span class="word-reveal text-accent-gradient">Stays</span>
+                        </h2>
+                        <p class="editorial-subheading anim-subheading-reveal">
+                            Three architectural havens capturing the essence of thoughtful, unhurried living.
+                        </p>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <a href="/listings" class="editorial-ghost-btn">
+                            <span>Browse all sanctuaries</span>
+                            <i class="fa-solid fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Top 3 Stays Grid with Staggered Cascades & Parallax Media -->
+                <div class="featured-triad-grid reveal-stagger-group">
+                    <% 
+                    const curatedThree = (allListings && allListings.length > 0) ? allListings.slice(0, 3) : [];
+                    if (curatedThree.length > 0) { 
+                        curatedThree.forEach((stay, idx) => { 
+                    %>
+                        <div class="featured-stay-card anim-stagger-card" style="--stagger-idx: <%= idx %>;">
+                            <a href="/listings/<%= stay._id %>" class="featured-stay-anchor">
+                                <div class="featured-card-media">
+                                    <img 
+                                        src="<%= typeof resolveListingImage === 'function' ? resolveListingImage(stay) : (stay.imageUrl || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80') %>" 
+                                        alt="<%= stay.title %>" 
+                                        loading="lazy"
+                                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';"
+                                        class="parallax-media-img"
+                                    >
+                                    <div class="card-media-gradient"></div>
+                                    <span class="curated-rank-pill">Choice 0<%= idx + 1 %></span>
+                                    <button 
+                                        type="button" 
+                                        class="stay-bookmark-btn" 
+                                        aria-label="Save stay" 
+                                        onclick="event.preventDefault(); this.classList.toggle('active');"
+                                    >
+                                        <i class="fa-regular fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div class="featured-card-body">
+                                    <div class="card-location-row">
+                                        <span class="stay-loc">
+                                            <i class="fa-solid fa-location-dot me-1"></i>
+                                            <%= stay.location %>, <%= stay.country %>
+                                        </span>
+                                        <span class="stay-rating">
+                                            <i class="fa-solid fa-star me-1"></i> 4.95
+                                        </span>
+                                    </div>
+                                    <h4 class="featured-stay-title"><%= stay.title %></h4>
+                                    <div class="card-price-row">
+                                        <div class="price-wrap">
+                                            <span class="price-amt">₹ <%= stay.price ? stay.price.toLocaleString("en-IN") : "0" %></span>
+                                            <span class="price-period">/ night</span>
+                                        </div>
+                                        <span class="stay-view-arrow">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    <% 
+                        }); 
+                    } else { 
+                    %>
+                        <div class="no-curated-stays">
+                            <p>Sanctuaries are being curated. Please check back shortly.</p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- View All Stays Action Row -->
+                <div class="text-center mt-5 reveal-item">
+                    <a href="/listings" class="editorial-primary-btn">
+                        <span>View All Stays (<%= allListings ? allListings.length : 0 %>)</span>
+                        <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             SECTION 5: "HOST YOUR STAY" CTA
+             ========================================================================== -->
+        <section class="cinematic-section host-cta-section" id="hostCtaSection">
+            <div class="editorial-container">
+                <div class="host-banner-card reveal-item">
+                    <!-- Background Forest Vignette -->
+                    <div class="host-banner-backdrop"></div>
+                    <div class="host-ambient-glow"></div>
+
+                    <div class="host-banner-content">
+                        <span class="host-tag-pill anim-pop-badge"><i class="fa-solid fa-feather me-1"></i> Share Your World</span>
+                        <h2 class="host-banner-heading anim-text-split">
+                            <span class="word-reveal">Open</span> 
+                            <span class="word-reveal">Your</span> 
+                            <span class="word-reveal">Doors</span> 
+                            <span class="word-reveal">to</span><br>
+                            <span class="word-reveal text-accent-gradient">Mindful</span> 
+                            <span class="word-reveal text-accent-gradient">Travelers</span>
+                        </h2>
+                        <p class="host-banner-subtext anim-subheading-reveal">
+                            Have an inspiring lakehouse, stone cottage, or architectural home? Join Roamly’s community of hosts and welcome guests who cherish authenticity, quiet mornings, and respectful exploration.
+                        </p>
+
+                        <div class="host-actions-wrap anim-pop-badge">
+                            <a href="/listings/new" class="host-primary-btn">
+                                <span>Host Your Stay</span>
+                                <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </a>
+                            <a href="/listings" class="host-secondary-btn">
+                                <span>Learn How It Works</span>
+                            </a>
+                        </div>
+
+                        <!-- Trust Perks Row -->
+                        <div class="host-perks-row">
+                            <div class="perk-item">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Verified Conscious Guests</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                                <span>Seamless, Timely Payouts</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fa-solid fa-headset"></i>
+                                <span>24/7 Dedicated Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<!-- ==========================================================================
+     CINEMATIC INTERACTION ENGINE (Parallax, Morph, Scroll Zoom, Reveals)
+     ========================================================================== -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const heroStage = document.getElementById("heroStage");
+        const heroBack = document.getElementById("heroLayerBack");
+        const heroMid = document.getElementById("heroLayerMid");
+        const heroMist = document.getElementById("heroLayerMist");
+        const heroBrandMorph = document.getElementById("heroBrandMorph");
+        const heroLogoPanel = document.getElementById("heroLogoPanel");
+        const heroHeadPanel = document.getElementById("heroHeadPanel");
+        const heroSearchCapsule = document.getElementById("heroSearchCapsule");
+        const heroScrollPrompt = document.getElementById("heroScrollPrompt");
+        const scrollProgressLine = document.getElementById("scrollProgressLine");
+        const parallaxImages = document.querySelectorAll(".parallax-media-img");
+
+        // 1. OPENING SEQUENCE: Logo reveal morphing into Headline
+        setTimeout(() => {
+            if (heroLogoPanel && heroHeadPanel) {
+                heroLogoPanel.classList.add("fade-out-morph");
+                setTimeout(() => {
+                    heroLogoPanel.style.display = "none";
+                    heroHeadPanel.classList.add("revealed-headline");
+                }, 850);
+            }
+        }, 2000);
+
+        // 2. SMOOTH SCROLL PROGRESS & PARALLAX ENGINE
+        let ticking = false;
+        const handleScroll = () => {
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const heroHeight = heroStage ? heroStage.offsetHeight : 800;
+
+            // Update Top Progress Bar
+            if (scrollProgressLine) {
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progressPct = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                scrollProgressLine.style.width = `${Math.min(100, Math.max(0, progressPct))}%`;
+            }
+
+            // Hero depth camera zoom
+            if (scrollY <= heroHeight * 1.5) {
+                const progress = Math.min(scrollY / heroHeight, 1);
+                
+                if (heroBack) {
+                    heroBack.style.transform = `scale(${1 + progress * 0.14}) translate3d(0, ${scrollY * 0.28}px, 0)`;
+                }
+                if (heroMid) {
+                    heroMid.style.transform = `scale(${1 + progress * 0.08}) translate3d(0, ${scrollY * 0.15}px, 0)`;
+                }
+                if (heroMist) {
+                    heroMist.style.opacity = `${Math.max(0, 1 - progress * 0.9)}`;
+                }
+                if (heroBrandMorph) {
+                    heroBrandMorph.style.transform = `translate3d(0, ${scrollY * 0.35}px, 0)`;
+                    heroBrandMorph.style.opacity = `${Math.max(0, 1 - progress * 1.35)}`;
+                }
+                if (heroSearchCapsule) {
+                    heroSearchCapsule.style.transform = `translate3d(0, ${scrollY * 0.18}px, 0)`;
+                    heroSearchCapsule.style.opacity = `${Math.max(0, 1 - progress * 1.5)}`;
+                }
+                if (heroScrollPrompt) {
+                    heroScrollPrompt.style.opacity = `${Math.max(0, 1 - progress * 3)}`;
+                }
+            }
+
+            // Continuous Card Media Parallax
+            const windowH = window.innerHeight;
+            parallaxImages.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                if (rect.top < windowH && rect.bottom > 0) {
+                    const centerOffset = (rect.top + rect.height / 2) - (windowH / 2);
+                    const translateY = (centerOffset * 0.07).toFixed(1);
+                    img.style.transform = `translate3d(0, ${translateY}px, 0) scale(1.08)`;
+                }
+            });
+
+            ticking = false;
+        };
+
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(handleScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // Initial call for scroll position
+        handleScroll();
+
+        // 3. PROGRESSIVE SECTION REVEALS & STAGGER GROUPS (IntersectionObserver)
+        const revealTargets = document.querySelectorAll(".reveal-item, .reveal-stagger-group");
+        if ("IntersectionObserver" in window) {
+            const observerOptions = {
+                root: null,
+                threshold: 0.08,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            revealTargets.forEach(item => revealObserver.observe(item));
+        } else {
+            revealTargets.forEach(item => item.classList.add("is-visible"));
+        }
+
+        // Safety fallback: reveal above-fold elements immediately
+        setTimeout(() => {
+            revealTargets.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 1.2) {
+                    item.classList.add("is-visible");
+                }
+            });
+        }, 500);
+
+        // 4. DESTINATION CARDS PERSPECTIVE 3D HOVER TILT
+        const destCards = document.querySelectorAll(".dest-showcase-card");
+        destCards.forEach(card => {
+            card.addEventListener("mousemove", (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+            });
+
+            card.addEventListener("mouseleave", () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+            });
+        });
+
+        // 5. CINEMATIC SEARCH PILL CONTROLLER (DESTINATION, CALENDAR, GUESTS)
+        const segDest = document.getElementById("segDestTrigger");
+        const segDates = document.getElementById("segDatesTrigger");
+        const segGuests = document.getElementById("segGuestsTrigger");
+
+        const destPopover = document.getElementById("destPopover");
+        const calendarPopover = document.getElementById("calendarPopover");
+        const guestsPopover = document.getElementById("guestsPopover");
+
+        const searchDestInput = document.getElementById("searchDestinationInput");
+        const datesDisplayText = document.getElementById("datesDisplayText");
+        const guestsDisplayText = document.getElementById("guestsDisplayText");
+        const hiddenCheckIn = document.getElementById("hiddenCheckIn");
+        const hiddenCheckOut = document.getElementById("hiddenCheckOut");
+        const hiddenGuests = document.getElementById("hiddenGuests");
+
+        const closeAllPopovers = () => {
+            if (destPopover) destPopover.classList.add("d-none");
+            if (calendarPopover) calendarPopover.classList.add("d-none");
+            if (guestsPopover) guestsPopover.classList.add("d-none");
+            if (segDest) segDest.classList.remove("active-seg");
+            if (segDates) segDates.classList.remove("active-seg");
+            if (segGuests) segGuests.classList.remove("active-seg");
+        };
+
+        const togglePopover = (popover, seg) => {
+            const isCurrentlyOpen = popover && !popover.classList.contains("d-none");
+            closeAllPopovers();
+            if (!isCurrentlyOpen && popover) {
+                popover.classList.remove("d-none");
+                if (seg) seg.classList.add("active-seg");
+            }
+        };
+
+        if (segDest) {
+            segDest.addEventListener("click", (e) => {
+                togglePopover(destPopover, segDest);
+                if (searchDestInput) searchDestInput.focus();
+            });
+        }
+
+        if (searchDestInput) {
+            searchDestInput.addEventListener("focus", () => {
+                if (destPopover) {
+                    closeAllPopovers();
+                    destPopover.classList.remove("d-none");
+                    if (segDest) segDest.classList.add("active-seg");
+                }
+            });
+            searchDestInput.addEventListener("click", (e) => {
+                e.stopPropagation();
+            });
+        }
+
+        if (segDates) {
+            segDates.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePopover(calendarPopover, segDates);
+            });
+        }
+
+        if (segGuests) {
+            segGuests.addEventListener("click", (e) => {
+                e.stopPropagation();
+                togglePopover(guestsPopover, segGuests);
+            });
+        }
+
+        // Suggested Destinations Click Handler
+        const destItems = document.querySelectorAll(".dest-suggest-item");
+        destItems.forEach(item => {
+            item.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const place = item.getAttribute("data-place");
+                if (searchDestInput && place) {
+                    searchDestInput.value = place;
+                }
+                closeAllPopovers();
+                // Open dates calendar next for seamless flow
+                if (calendarPopover && segDates) {
+                    setTimeout(() => togglePopover(calendarPopover, segDates), 150);
+                }
+            });
+        });
+
+        // Close on Click Outside
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest("#heroSearchCapsule")) {
+                closeAllPopovers();
+            }
+        });
+
+        // Interactive Calendar Engine
+        const calMonthTitle = document.getElementById("calMonthTitle");
+        const calDaysGrid = document.getElementById("calDaysGrid");
+        const calPrevBtn = document.getElementById("calPrevBtn");
+        const calNextBtn = document.getElementById("calNextBtn");
+        const calSummaryPill = document.getElementById("calSummaryPill");
+        const calDoneBtn = document.getElementById("calDoneBtn");
+
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let viewYear = today.getFullYear();
+        let viewMonth = today.getMonth();
+
+        let selectedStartDate = null;
+        let selectedEndDate = null;
+
+        const formatShortDate = (d) => {
+            const m = monthNames[d.getMonth()].slice(0, 3);
+            return `${m} ${d.getDate()}`;
+        };
+
+        const formatFullInputDate = (d) => {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const updateDateDisplays = () => {
+            if (selectedStartDate && selectedEndDate) {
+                const diffTime = Math.abs(selectedEndDate - selectedStartDate);
+                const nights = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
+                const text = `${formatShortDate(selectedStartDate)} – ${formatShortDate(selectedEndDate)} (${nights} night${nights > 1 ? 's' : ''})`;
+                if (datesDisplayText) datesDisplayText.textContent = text;
+                if (calSummaryPill) calSummaryPill.textContent = text;
+                if (hiddenCheckIn) hiddenCheckIn.value = formatFullInputDate(selectedStartDate);
+                if (hiddenCheckOut) hiddenCheckOut.value = formatFullInputDate(selectedEndDate);
+            } else if (selectedStartDate) {
+                const text = `From ${formatShortDate(selectedStartDate)}`;
+                if (datesDisplayText) datesDisplayText.textContent = text;
+                if (calSummaryPill) calSummaryPill.textContent = "Select checkout date";
+                if (hiddenCheckIn) hiddenCheckIn.value = formatFullInputDate(selectedStartDate);
+                if (hiddenCheckOut) hiddenCheckOut.value = "";
+            } else {
+                if (datesDisplayText) datesDisplayText.textContent = "Add flexible dates";
+                if (calSummaryPill) calSummaryPill.textContent = "Select check-in date";
+                if (hiddenCheckIn) hiddenCheckIn.value = "";
+                if (hiddenCheckOut) hiddenCheckOut.value = "";
+            }
+        };
+
+        const renderCalendar = () => {
+            if (!calDaysGrid || !calMonthTitle) return;
+            calMonthTitle.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+
+            if (calPrevBtn) {
+                const isPast = (viewYear < today.getFullYear()) || (viewYear === today.getFullYear() && viewMonth <= today.getMonth());
+                calPrevBtn.disabled = isPast;
+                calPrevBtn.style.opacity = isPast ? "0.3" : "1";
+                calPrevBtn.style.cursor = isPast ? "not-allowed" : "pointer";
+            }
+
+            calDaysGrid.innerHTML = "";
+
+            const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
+            const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement("div");
+                emptyCell.className = "cal-empty-cell";
+                calDaysGrid.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDate = new Date(viewYear, viewMonth, day);
+                dayDate.setHours(0, 0, 0, 0);
+
+                const cell = document.createElement("button");
+                cell.type = "button";
+                cell.className = "cal-day-cell";
+                cell.textContent = day;
+
+                const isPastDay = dayDate < today;
+                if (isPastDay) {
+                    cell.classList.add("disabled");
+                    cell.disabled = true;
+                } else {
+                    const time = dayDate.getTime();
+                    const startTime = selectedStartDate ? selectedStartDate.getTime() : null;
+                    const endTime = selectedEndDate ? selectedEndDate.getTime() : null;
+
+                    if (startTime && time === startTime) {
+                        cell.classList.add("selected-start");
+                    } else if (endTime && time === endTime) {
+                        cell.classList.add("selected-end");
+                    } else if (startTime && endTime && time > startTime && time < endTime) {
+                        cell.classList.add("in-range");
+                    }
+
+                    cell.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+                            selectedStartDate = new Date(dayDate);
+                            selectedEndDate = null;
+                        } else if (selectedStartDate && !selectedEndDate) {
+                            if (dayDate > selectedStartDate) {
+                                selectedEndDate = new Date(dayDate);
+                            } else {
+                                selectedStartDate = new Date(dayDate);
+                                selectedEndDate = null;
+                            }
+                        }
+                        updateDateDisplays();
+                        renderCalendar();
+                    });
+                }
+
+                calDaysGrid.appendChild(cell);
+            }
+        };
+
+        if (calPrevBtn) {
+            calPrevBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                viewMonth--;
+                if (viewMonth < 0) {
+                    viewMonth = 11;
+                    viewYear--;
+                }
+                renderCalendar();
+            });
+        }
+
+        if (calNextBtn) {
+            calNextBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                viewMonth++;
+                if (viewMonth > 11) {
+                    viewMonth = 0;
+                    viewYear++;
+                }
+                renderCalendar();
+            });
+        }
+
+        if (calDoneBtn) {
+            calDoneBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                closeAllPopovers();
+            });
+        }
+
+        // Quick date shortcuts
+        const shortcutWeekend = document.getElementById("shortcutWeekend");
+        const shortcutWeek = document.getElementById("shortcutWeek");
+        const shortcutReset = document.getElementById("shortcutReset");
+
+        if (shortcutWeekend) {
+            shortcutWeekend.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const now = new Date();
+                const dayOfWeek = now.getDay();
+                const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7;
+                const friday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilFriday);
+                const sunday = new Date(friday.getFullYear(), friday.getMonth(), friday.getDate() + 2);
+                selectedStartDate = friday;
+                selectedEndDate = sunday;
+                viewYear = friday.getFullYear();
+                viewMonth = friday.getMonth();
+                updateDateDisplays();
+                renderCalendar();
+            });
+        }
+
+        if (shortcutWeek) {
+            shortcutWeek.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const now = new Date();
+                const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 8);
+                selectedStartDate = start;
+                selectedEndDate = end;
+                viewYear = start.getFullYear();
+                viewMonth = start.getMonth();
+                updateDateDisplays();
+                renderCalendar();
+            });
+        }
+
+        if (shortcutReset) {
+            shortcutReset.addEventListener("click", (e) => {
+                e.stopPropagation();
+                selectedStartDate = null;
+                selectedEndDate = null;
+                updateDateDisplays();
+                renderCalendar();
+            });
+        }
+
+        // Initialize Calendar
+        renderCalendar();
+
+        // Guests Counter Engine
+        let adultsCount = 2;
+        let childrenCount = 0;
+        let infantsCount = 0;
+
+        const valAdults = document.getElementById("valAdults");
+        const valChildren = document.getElementById("valChildren");
+        const valInfants = document.getElementById("valInfants");
+
+        const btnAdultDec = document.getElementById("btnAdultDec");
+        const btnAdultInc = document.getElementById("btnAdultInc");
+        const btnChildDec = document.getElementById("btnChildDec");
+        const btnChildInc = document.getElementById("btnChildInc");
+        const btnInfantDec = document.getElementById("btnInfantDec");
+        const btnInfantInc = document.getElementById("btnInfantInc");
+        const guestsDoneBtn = document.getElementById("guestsDoneBtn");
+
+        const updateGuestsDisplay = () => {
+            if (valAdults) valAdults.textContent = adultsCount;
+            if (valChildren) valChildren.textContent = childrenCount;
+            if (valInfants) valInfants.textContent = infantsCount;
+
+            if (btnAdultDec) btnAdultDec.disabled = adultsCount <= 1;
+            if (btnChildDec) btnChildDec.disabled = childrenCount <= 0;
+            if (btnInfantDec) btnInfantDec.disabled = infantsCount <= 0;
+
+            const totalTravelers = adultsCount + childrenCount;
+            let text = `${totalTravelers} conscious traveler${totalTravelers > 1 ? 's' : ''}`;
+            if (infantsCount > 0) {
+                text += `, ${infantsCount} infant${infantsCount > 1 ? 's' : ''}`;
+            }
+
+            if (guestsDisplayText) guestsDisplayText.textContent = text;
+            if (hiddenGuests) hiddenGuests.value = totalTravelers;
+        };
+
+        if (btnAdultDec) {
+            btnAdultDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (adultsCount > 1) {
+                    adultsCount--;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (btnAdultInc) {
+            btnAdultInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (adultsCount < 16) {
+                    adultsCount++;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (btnChildDec) {
+            btnChildDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (childrenCount > 0) {
+                    childrenCount--;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (btnChildInc) {
+            btnChildInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (childrenCount < 10) {
+                    childrenCount++;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (btnInfantDec) {
+            btnInfantDec.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (infantsCount > 0) {
+                    infantsCount--;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (btnInfantInc) {
+            btnInfantInc.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (infantsCount < 5) {
+                    infantsCount++;
+                    updateGuestsDisplay();
+                }
+            });
+        }
+        if (guestsDoneBtn) {
+            guestsDoneBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                closeAllPopovers();
+            });
+        }
+
+        updateGuestsDisplay();
+    });
+</script>

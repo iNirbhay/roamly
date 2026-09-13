@@ -1,0 +1,119 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-auth-container anim-fade-up">
+    <div class="auth-split-card">
+        <!-- VISUAL TRAVEL STORY SIDE -->
+        <div class="auth-visual-side">
+            <div class="auth-visual-img-wrap">
+                <img 
+                    src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=85" 
+                    alt="Serene twilight lakeside sanctuary" 
+                    class="auth-ambient-img"
+                >
+                <div class="auth-visual-overlay"></div>
+            </div>
+            <div class="auth-visual-content">
+                <div class="auth-logo-badge">
+                    <img src="/images/roamly-logo-transparent.png" alt="Roamly" class="auth-logo-badge-img">
+                </div>
+                <blockquote class="auth-quote">
+                    “Find your rhythm in spaces that feel like home. Every journey begins with a doorway to peace.”
+                </blockquote>
+                <div class="auth-tagline">
+                    <span>DISCOVER</span> &bull; <span>STAY</span> &bull; <span>EXPLORE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM SIDE -->
+        <div class="auth-form-side">
+            <div class="auth-form-inner">
+                <div class="form-header-wrap">
+                    <span class="auth-eyebrow">WELCOME BACK</span>
+                    <h2 class="auth-title">Sign in to Roamly</h2>
+                    <p class="auth-subtitle">
+                        Return to your saved sanctuaries, upcoming journeys, and verified host conversations.
+                    </p>
+                </div>
+
+                <!-- GOOGLE & OAUTH ACTIONS -->
+                <div class="auth-oauth-stack mb-4">
+                    <a href="/auth/google" class="roamly-oauth-btn btn-google">
+                        <svg class="google-icon-svg" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </a>
+
+                    <% if (typeof isAuth0Configured !== 'undefined' && isAuth0Configured) { %>
+                    <a href="/auth/auth0" class="roamly-oauth-btn btn-auth0">
+                        <i class="fa-solid fa-shield-halved text-success"></i>
+                        <span>Continue with Auth0</span>
+                    </a>
+                    <% } %>
+                </div>
+
+                <div class="auth-divider mb-4">
+                    <span class="auth-divider-line"></span>
+                    <span class="auth-divider-text">or continue with username</span>
+                    <span class="auth-divider-line"></span>
+                </div>
+
+                <form action="/login" method="POST" class="needs-validation auth-form" novalidate>
+                    <div class="auth-field-group mb-3">
+                        <label for="username" class="auth-label">Username</label>
+                        <div class="auth-input-wrapper">
+                            <i class="fa-regular fa-user auth-field-icon"></i>
+                            <input 
+                                type="text" 
+                                id="username"
+                                name="username" 
+                                placeholder="Your username" 
+                                required 
+                                class="form-control auth-input"
+                                autocomplete="username"
+                            >
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide your username.
+                        </div>
+                    </div>
+
+                    <div class="auth-field-group mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="password" class="auth-label mb-0">Password</label>
+                        </div>
+                        <div class="auth-input-wrapper">
+                            <i class="fa-solid fa-lock auth-field-icon"></i>
+                            <input 
+                                type="password" 
+                                id="password"
+                                name="password" 
+                                placeholder="Your password" 
+                                required 
+                                class="form-control auth-input"
+                                autocomplete="current-password"
+                            >
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide your password.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="roamly-auth-submit-btn">
+                        <span>Sign In</span>
+                        <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+                </form>
+
+                <div class="auth-footer-note">
+                    New to Roamly? 
+                    <a href="/signup" class="auth-switch-link">Start your journey</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,316 @@
+<% layout("layouts/boilerplate") %>
+
+<!-- External Map Styles & Scripts -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="/stylesheets/explore_india.css">
+
+<!-- City Metadata Dictionary for Curated Subtitles & States -->
+<%
+  const CITY_META = {
+    "Jaipur": { state: "Rajasthan", subtitle: "Royal Havelis & Pink City Heritage", tag: "Heritage" },
+    "Udaipur": { state: "Rajasthan", subtitle: "Romantic Lake Palaces & Aravalli Views", tag: "Lakeside" },
+    "Jodhpur": { state: "Rajasthan", subtitle: "Blue City Courtyards & Fort Vistas", tag: "Historic" },
+    "Jaisalmer": { state: "Rajasthan", subtitle: "Golden Sand Dunes & Desert Forts", tag: "Desert" },
+    "Goa": { state: "Goa", subtitle: "Sun-Drenched Beaches & Portuguese Villas", tag: "Coastal" },
+    "Panjim": { state: "Goa", subtitle: "Fontainhas Latin Quarter Charm", tag: "Colonial" },
+    "Mumbai": { state: "Maharashtra", subtitle: "Seafront Promenades & High-Energy Living", tag: "Urban Luxury" },
+    "Delhi": { state: "Delhi NCR", subtitle: "Centuries of Heritage & Imperial Grandeur", tag: "Capital Heritage" },
+    "Gurgaon": { state: "Haryana", subtitle: "Contemporary Urban Lofts & Retreats", tag: "Modern Stay" },
+    "Bengaluru": { state: "Karnataka", subtitle: "Garden City Serenity & Tech Comforts", tag: "Garden Stay" },
+    "Manali": { state: "Himachal Pradesh", subtitle: "Snow-Capped Peaks & Pine Valleys", tag: "Mountain" },
+    "Shimla": { state: "Himachal Pradesh", subtitle: "Colonial Ridge Walks & Mountain Air", tag: "Hills" },
+    "Rishikesh": { state: "Uttarakhand", subtitle: "Holy River Ganga & Peaceful Yoga Retreats", tag: "Spiritual" },
+    "Kochi": { state: "Kerala", subtitle: "Spice Coast Waters & Heritage Streets", tag: "Backwaters" },
+    "Alleppey": { state: "Kerala", subtitle: "Tranquil Backwater Canals & Houseboats", tag: "Canals" },
+    "Munnar": { state: "Kerala", subtitle: "Rolling Green Tea Estates & Mist", tag: "Plantation" },
+    "Varanasi": { state: "Uttar Pradesh", subtitle: "Sacred Ghats & Timeless Rituals", tag: "Ancient" },
+    "Agra": { state: "Uttar Pradesh", subtitle: "Taj Mahal Splendor & Mughal Elegance", tag: "Mughal Art" },
+    "Darjeeling": { state: "West Bengal", subtitle: "Himalayan Sunrise & Tea Gardens", tag: "Himalayas" },
+    "Kolkata": { state: "West Bengal", subtitle: "City of Joy Culture & Classic Mansions", tag: "Cultural" },
+    "Pondicherry": { state: "Puducherry", subtitle: "French Colonial Boulevards & Quiet Seas", tag: "Bohemian" },
+    "Pushkar": { state: "Rajasthan", subtitle: "Sacred Lakes & Desert Encampments", tag: "Sacred Oasis" },
+    "Hampi": { state: "Karnataka", subtitle: "Ancient Vijayanagara Ruins & Boulders", tag: "UNESCO Ruins" }
+  };
+
+  // Group real listings by location (city)
+  const destinationMap = {};
+  allListings.forEach(item => {
+    const city = item.location ? item.location.trim() : "India";
+    if (!destinationMap[city]) {
+      const meta = CITY_META[city] || { state: item.country === "India" ? "India" : (item.location || "India"), subtitle: "Curated Indian Sanctuaries", tag: "Explore" };
+      const resolvedImg = typeof resolveListingImage === 'function' ? resolveListingImage(item) : (item.imageUrl || (item.image && item.image.url) || (Array.isArray(item.images) ? item.images[0] : item.images) || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80");
+      destinationMap[city] = {
+        city: city,
+        state: meta.state,
+        subtitle: meta.subtitle,
+        tag: meta.tag,
+        count: 0,
+        sampleImage: resolvedImg,
+        listingId: item._id
+      };
+    }
+    destinationMap[city].count++;
+  });
+
+  const destinationsList = Object.values(destinationMap).sort((a, b) => b.count - a.count || a.city.localeCompare(b.city));
+
+  const sanitizedData = allListings.map(item => ({
+    _id: item._id,
+    title: item.title,
+    description: item.description,
+    price: item.price,
+    location: item.location,
+    country: item.country,
+    imageUrl: typeof resolveListingImage === 'function' ? resolveListingImage(item) : (item.imageUrl || (item.image && item.image.url) || (Array.isArray(item.images) ? item.images[0] : item.images) || "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80"),
+    reviews: (item.reviews || []).map(r => ({ rating: r.rating }))
+  }));
+%>
+
+<div class="explore-page-root">
+  <!-- 1. IMMERSIVE HERO SECTION -->
+  <section class="explore-hero-section">
+    <div class="explore-hero-container">
+      <div class="explore-eyebrow">
+        <span class="explore-eyebrow-pill">
+          <i class="fa-solid fa-compass me-1"></i> EXPLORE INDIA
+        </span>
+      </div>
+
+      <h1 class="explore-hero-heading">Find your next escape.</h1>
+      <p class="explore-hero-subheading">
+        Explore stays, retreats and hidden gems across India — all in one interactive map.
+      </p>
+
+      <!-- Search Console -->
+      <div class="explore-search-console">
+        <div class="search-input-shell">
+          <i class="fa-solid fa-magnifying-glass search-leading-icon"></i>
+          <input 
+            type="text" 
+            id="mapSearchInput" 
+            class="search-text-field" 
+            placeholder="Search a destination, city or region..." 
+            autocomplete="off"
+            aria-label="Search destination"
+          >
+          <button type="button" id="clearSearchBtn" class="search-clear-btn d-none" aria-label="Clear destination search">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div id="searchDropdown" class="search-suggestions-dropdown"></div>
+        </div>
+      </div>
+
+      <!-- Modern Travel Category Filter Chips -->
+      <div class="explore-chips-bar" role="tablist" aria-label="Stay Categories">
+        <button type="button" class="travel-chip active" data-filter="all" role="tab" aria-selected="true">
+          <i class="fa-solid fa-border-all chip-icon"></i>
+          <span>All Stays</span>
+        </button>
+        <button type="button" class="travel-chip" data-filter="hotels" role="tab" aria-selected="false">
+          <i class="fa-solid fa-hotel chip-icon"></i>
+          <span>Hotels & Havelis</span>
+        </button>
+        <button type="button" class="travel-chip" data-filter="resorts" role="tab" aria-selected="false">
+          <i class="fa-solid fa-spa chip-icon"></i>
+          <span>Resorts & Retreats</span>
+        </button>
+        <button type="button" class="travel-chip" data-filter="homestays" role="tab" aria-selected="false">
+          <i class="fa-solid fa-house-chimney-window chip-icon"></i>
+          <span>Homestays</span>
+        </button>
+        <button type="button" class="travel-chip" data-filter="villas" role="tab" aria-selected="false">
+          <i class="fa-solid fa-gem chip-icon"></i>
+          <span>Luxury Villas</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. FRAMED INTERACTIVE MAP CENTERPIECE -->
+  <section class="explore-stage-section" id="mapStageSection">
+    <div class="explore-stage-frame" id="mapCanvasContainer">
+      <!-- Live Status Badge (Top-Left) -->
+      <div class="map-status-pill">
+        <span class="status-pulse-dot"></span>
+        <span class="status-pill-text">Verified Sanctuaries (<span id="topBarTotalCount"><%= allListings.length %></span>)</span>
+      </div>
+
+      <!-- Floating Legend (Top-Right) -->
+      <div class="map-floating-legend d-none d-sm-flex">
+        <div class="legend-header">
+          <i class="fa-solid fa-map-pin me-1"></i> Roamly Map
+        </div>
+        <div class="legend-items">
+          <span class="legend-chip"><span class="legend-dot dot-green"></span> Stays</span>
+          <span class="legend-chip"><span class="legend-dot dot-gold"></span> Havelis</span>
+          <span class="legend-chip"><span class="legend-dot dot-navy"></span> Hubs</span>
+        </div>
+      </div>
+
+      <!-- Leaflet Map Canvas -->
+      <div id="indiaMap"></div>
+
+      <!-- "✨ Surprise Me" Discovery Card (Floating Lower-Left) -->
+      <div class="map-surprise-card" id="surpriseMeCard">
+        <div class="surprise-card-content">
+          <div class="surprise-badge">
+            <i class="fa-solid fa-sparkles me-1 text-gold"></i> Not sure where to go?
+          </div>
+          <p class="surprise-desc">Let Roamly show you somewhere worth discovering.</p>
+          <button type="button" id="surpriseMeBtn" class="btn-surprise-me">
+            <i class="fa-solid fa-wand-magic-sparkles me-1"></i>
+            <span>✨ Surprise Me</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Roamly Branded Map Controls (Floating Bottom-Right) -->
+      <div class="map-custom-controls">
+        <div class="map-zoom-group">
+          <button type="button" id="mapZoomInBtn" class="map-ctrl-btn" title="Zoom In" aria-label="Zoom in">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <div class="map-ctrl-divider"></div>
+          <button type="button" id="mapZoomOutBtn" class="map-ctrl-btn" title="Zoom Out" aria-label="Zoom out">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+        </div>
+        <button type="button" id="mapRecenterBtn" class="map-recenter-btn" title="Recenter All India" aria-label="Recenter map">
+          <i class="fa-solid fa-location-crosshairs me-1"></i>
+          <span>Recenter India</span>
+        </button>
+      </div>
+
+      <!-- Floating Side Exploration Panel (Right) -->
+      <aside class="explore-side-panel" id="exploreSidePanel">
+        <div class="panel-drag-handle d-md-none"></div>
+
+        <!-- Panel Header -->
+        <div class="panel-header-block">
+          <div class="panel-headline-row">
+            <h2 class="panel-title">Explore destinations</h2>
+            <span class="panel-total-badge" id="panelTotalCount"><%= allListings.length %> stays</span>
+          </div>
+          <p class="panel-subtitle">Select a destination or browse individual stays</p>
+
+          <!-- Active City Filter Indicator -->
+          <div class="panel-context-filter" id="activeContextFilter">
+            <span class="context-filter-text">
+              <i class="fa-solid fa-location-dot me-1 text-forest"></i> Stays in <strong id="contextCityName"></strong>
+            </span>
+            <button type="button" id="clearCityFilterBtn" class="context-clear-btn" title="View all destinations across India">
+              View All India
+            </button>
+          </div>
+
+          <!-- Panel Switcher Tabs -->
+          <div class="panel-tab-controls" role="tablist">
+            <button type="button" class="panel-tab-btn active" id="tabBtnCities" role="tab" aria-selected="true">
+              <i class="fa-solid fa-city"></i> Popular Cities
+            </button>
+            <button type="button" class="panel-tab-btn" id="tabBtnStays" role="tab" aria-selected="false">
+              <i class="fa-solid fa-house-chimney"></i> Available Stays
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Cards Feed -->
+        <div class="panel-scroll-content">
+          <!-- View 1: Popular Cities -->
+          <div id="citiesViewTab">
+            <div class="cities-list-group" id="citiesListContainer">
+              <!-- Dynamically rendered via explore_india.js -->
+            </div>
+          </div>
+
+          <!-- View 2: Available Stays -->
+          <div id="staysViewTab" class="d-none">
+            <div class="stays-list-group" id="staysListContainer">
+              <!-- Dynamically rendered via explore_india.js -->
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Mobile Drawer Toggle Button -->
+    <button type="button" class="mobile-panel-toggle d-md-none" id="mobilePanelToggle">
+      <i class="fa-solid fa-list-ul me-1"></i> Explore Destinations
+    </button>
+  </section>
+
+  <!-- 3. CURATED "EXPLORE BY DESTINATION" GRID SECTION (BELOW MAP) -->
+  <section class="explore-destinations-section">
+    <div class="explore-destinations-container">
+      <div class="section-header-row">
+        <div class="section-title-wrap">
+          <span class="section-eyebrow">SIGNATURE REGIONS</span>
+          <h2 class="section-main-heading">Explore by destination</h2>
+          <p class="section-subtext">Discover curated sanctuaries, royal havelis, and coastal retreats across India's most iconic regions.</p>
+        </div>
+        <div class="section-action-wrap">
+          <button type="button" id="browseAllOnMapBtn" class="btn-scroll-to-map">
+            <i class="fa-solid fa-map me-1"></i> Interactive Map
+          </button>
+        </div>
+      </div>
+
+      <!-- Destination Cards Grid (2 rows initial, with Show More) -->
+      <div class="destinations-grid" id="destinationsGrid">
+        <% destinationsList.forEach((dest, index) => { %>
+          <div class="destination-card <%= index >= 8 ? 'dest-card-collapsed d-none' : '' %>" data-city="<%= dest.city %>">
+            <div class="destination-card-media">
+              <img 
+                src="<%= dest.sampleImage %>" 
+                alt="<%= dest.city %>" 
+                loading="lazy" 
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';"
+              >
+              <div class="destination-tag-badge"><%= dest.tag %></div>
+              <div class="destination-count-pill">
+                <i class="fa-solid fa-house me-1"></i> <%= dest.count %> <%= dest.count === 1 ? 'stay' : 'stays' %>
+              </div>
+            </div>
+            <div class="destination-card-body">
+              <div class="dest-location-row">
+                <i class="fa-solid fa-location-dot"></i>
+                <span><%= dest.state %></span>
+              </div>
+              <h3 class="dest-city-title"><%= dest.city %></h3>
+              <p class="dest-subtitle"><%= dest.subtitle %></p>
+              <div class="dest-footer-row">
+                <span class="dest-cta-text">
+                  Explore Stays <i class="fa-solid fa-arrow-right ms-1"></i>
+                </span>
+                <a href="/listings?search=<%= encodeURIComponent(dest.city) %>" class="dest-quick-link" title="Open full listings in <%= dest.city %>" onclick="event.stopPropagation();">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <% if (destinationsList.length > 8) { %>
+        <div class="destinations-show-more-wrap">
+          <button type="button" id="toggleDestinationsBtn" class="btn-show-more-dest" data-expanded="false">
+            <span class="btn-show-more-txt">Show More Destinations (<%= destinationsList.length - 8 %> more)</span>
+            <i class="fa-solid fa-chevron-down ms-2 btn-show-more-icon"></i>
+          </button>
+        </div>
+      <% } %>
+    </div>
+  </section>
+</div>
+
+<!-- Serialized Real MongoDB Listings Data -->
+<script id="raw-listings-data" type="application/json">
+  <%- JSON.stringify(sanitizedData) %>
+</script>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="/js/explore_india.js"></script>

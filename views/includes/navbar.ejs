@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand-md roamly-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/" aria-label="Roamly home">
+      <img src="/images/roamly-logo-transparent.png" alt="Roamly" class="navbar-logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-md-4">
+        <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/') ? 'active' : '' %>" href="/">Home</a>
+        <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/listings') ? 'active' : '' %>" href="/listings">All Listings</a>
+        <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/explore-india') ? 'active' : '' %>" href="/explore-india">
+          <i class="fa-solid fa-map-location-dot me-1"></i> Explore India
+        </a>
+
+        <% const isStaffOrHost = currUser && (currUser.role === 'host' || currUser.role === 'admin' || (currUser.username && currUser.username.toLowerCase() === 'admin')); %>
+        <% if (isStaffOrHost) { %>
+          <!-- HOST / ADMIN NAVIGATION -->
+          <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/host/dashboard') ? 'active' : '' %>" href="/host/dashboard">
+            <i class="fa-solid fa-chart-pie me-1"></i> Host Dashboard
+          </a>
+          <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/host/properties') ? 'active' : '' %>" href="/host/properties">
+            <i class="fa-solid fa-hotel me-1"></i> My Properties
+          </a>
+        <% } else { %>
+          <!-- TRAVELER NAVIGATION -->
+          <a class="nav-link roamly-nav-link <%= (typeof currentPath !== 'undefined' && currentPath === '/bookings') ? 'active' : '' %>" href="/bookings">
+            <i class="fa-solid fa-suitcase-rolling me-1"></i> My Bookings
+          </a>
+        <% } %>
+
+        <a class="nav-link roamly-nav-link nav-host-link <%= (typeof currentPath !== 'undefined' && currentPath === '/listings/new') ? 'active' : '' %>" href="/listings/new">
+          <i class="fa-solid fa-plus-circle me-1"></i> Host a Stay
+        </a>
+      </div>
+      <div class="navbar-nav ms-auto align-items-md-center gap-md-2 mt-2 mt-md-0">
+        <% if(!currUser) { %>
+        <a class="nav-link roamly-nav-link" href="/login">Sign In</a>
+        <a class="nav-link nav-signup-pill" href="/signup">Start Journey</a>
+        <% } %>
+        <% if(currUser) { %>
+        <% const effectiveRole = (currUser.username && currUser.username.toLowerCase() === 'admin') ? 'admin' : (currUser.role || 'user'); %>
+        <span class="nav-user-greeting d-none d-lg-inline-flex align-items-center gap-1">
+          <i class="fa-regular fa-user me-1"></i> <%= currUser.username %>
+          <span class="badge <%= effectiveRole === 'admin' ? 'bg-primary' : (effectiveRole === 'host' ? 'bg-forest' : 'bg-secondary') %> text-white" style="font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;"><%= effectiveRole %></span>
+        </span>
+        <a class="nav-link nav-logout-link" href="/logout">Log Out</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

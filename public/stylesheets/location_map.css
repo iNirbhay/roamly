@@ -1,0 +1,520 @@
+/* ==========================================================================
+   ROAMLY — LOCATION & NEARBY SECTION STYLES
+   ========================================================================== */
+
+.show-location-section {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--roamly-cream-border, #e6dfd3);
+  position: relative;
+}
+
+.location-header-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.75rem;
+}
+
+.location-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--roamly-forest, #2e5a44);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.location-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--roamly-charcoal, #1c2520);
+  margin: 0 0 0.3rem 0;
+  line-height: 1.25;
+}
+
+.location-subheading {
+  font-size: 0.95rem;
+  color: var(--roamly-muted, #64746b);
+  margin: 0;
+}
+
+/* Two-Column Split Grid */
+.location-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.75rem;
+  align-items: stretch;
+}
+
+/* Map Canvas Column */
+.location-map-card {
+  background: #ffffff;
+  border: 1.5px solid var(--roamly-cream-border, #e6dfd3);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(27, 56, 41, 0.06);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 460px;
+}
+
+.location-map-container {
+  flex: 1;
+  width: 100%;
+  min-height: 460px;
+  z-index: 1;
+  background-color: #f7f4ed;
+}
+
+/* Floating Clean Controls on Map */
+.location-map-top-bar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.location-badge-pill {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--roamly-cream-border, #e6dfd3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--roamly-charcoal, #1c2520);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  pointer-events: auto;
+}
+
+.location-badge-pill i {
+  color: var(--roamly-forest, #2e5a44);
+}
+
+.get-directions-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 10;
+  background: var(--roamly-forest, #2e5a44);
+  color: #ffffff !important;
+  border: none;
+  box-shadow: 0 8px 20px rgba(46, 90, 68, 0.3);
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.get-directions-btn:hover {
+  background: #1b3829;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(46, 90, 68, 0.4);
+  color: #ffffff;
+}
+
+/* Reset Bounds Action on Map */
+.map-recenter-btn {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 10;
+  background: #ffffff;
+  color: var(--roamly-charcoal, #1c2520);
+  border: 1px solid var(--roamly-cream-border, #e6dfd3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.map-recenter-btn:hover {
+  background: #f4efe6;
+  color: var(--roamly-forest, #2e5a44);
+}
+
+/* Nearby Attractions Side Card */
+.nearby-attractions-panel {
+  background: #ffffff;
+  border: 1.5px solid var(--roamly-cream-border, #e6dfd3);
+  border-radius: 20px;
+  padding: 1.4rem;
+  box-shadow: 0 8px 24px rgba(27, 56, 41, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nearby-panel-header {
+  margin-bottom: 1.1rem;
+}
+
+.nearby-panel-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--roamly-charcoal, #1c2520);
+  margin: 0 0 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.nearby-panel-subtitle {
+  font-size: 0.8rem;
+  color: var(--roamly-muted, #64746b);
+  margin: 0;
+}
+
+/* Attractions List */
+.nearby-attractions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.attraction-card-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--roamly-cream-soft, #faf7f2);
+  border: 1.5px solid transparent;
+  padding: 0.75rem 0.95rem;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  color: inherit;
+}
+
+.attraction-card-item:hover, .attraction-card-item.active {
+  background: #ffffff;
+  border-color: var(--roamly-forest, #2e5a44);
+  box-shadow: 0 6px 18px rgba(46, 90, 68, 0.1);
+  transform: translateX(3px);
+}
+
+.attraction-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.attraction-icon-badge {
+  width: 38px;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid var(--roamly-cream-border, #e6dfd3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.attraction-card-item:hover .attraction-icon-badge, .attraction-card-item.active .attraction-icon-badge {
+  background: var(--roamly-forest, #2e5a44);
+  border-color: var(--roamly-forest, #2e5a44);
+  color: #ffffff;
+}
+
+.attraction-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--roamly-charcoal, #1c2520);
+  margin: 0 0 0.15rem 0;
+  line-height: 1.25;
+}
+
+.attraction-category {
+  font-size: 0.72rem;
+  color: var(--roamly-muted, #64746b);
+  margin: 0;
+}
+
+.attraction-distance-badge {
+  background: rgba(46, 90, 68, 0.08);
+  color: var(--roamly-forest, #2e5a44);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.nearby-panel-footer {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--roamly-cream-border, #e6dfd3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nearby-transit-note {
+  font-size: 0.75rem;
+  color: var(--roamly-muted, #64746b);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+/* ==========================================================================
+   CUSTOM LEAFLET MARKERS (PROPERTY & ATTRACTIONS)
+   ========================================================================== */
+
+/* 1. Roamly Listing Property Marker (Prominent) */
+.property-marker-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 500 !important;
+}
+
+.property-marker-wrap:hover {
+  transform: scale(1.18) translateY(-4px);
+  z-index: 999 !important;
+}
+
+.property-pin-bubble {
+  width: 40px;
+  height: 40px;
+  background: var(--roamly-forest, #2e5a44);
+  border: 3px solid #ffffff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(27, 56, 41, 0.4);
+}
+
+.property-pin-bubble i {
+  transform: rotate(45deg);
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.property-pulse-ring {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(46, 90, 68, 0.25);
+  pointer-events: none;
+  z-index: -1;
+  animation: propertyAuraPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes propertyAuraPulse {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  50% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(0.85); opacity: 0; }
+}
+
+/* 2. Tourist Attraction Marker (Secondary & Distinct) */
+.attraction-marker-wrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.attraction-marker-wrap:hover, .attraction-marker-wrap.active {
+  transform: scale(1.25) translateY(-3px);
+  z-index: 800 !important;
+}
+
+.attraction-pin-circle {
+  width: 30px;
+  height: 30px;
+  background: #ffffff;
+  border: 2px solid #d97736;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(217, 119, 54, 0.3);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.attraction-marker-wrap:hover .attraction-pin-circle, .attraction-marker-wrap.active .attraction-pin-circle {
+  background: #d97736;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   MAP POPUPS (PROPERTY & ATTRACTION)
+   ========================================================================== */
+
+.location-popup-property {
+  padding: 0;
+  width: 250px;
+}
+
+.location-popup-property .prop-thumb-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+.location-popup-property .prop-body {
+  padding: 0.75rem 0.9rem;
+}
+
+.location-popup-property .prop-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--roamly-forest, #2e5a44);
+  margin-bottom: 0.2rem;
+}
+
+.location-popup-property .prop-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--roamly-charcoal, #1c2520);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.location-popup-property .prop-city {
+  font-size: 0.75rem;
+  color: var(--roamly-muted, #64746b);
+  margin: 0;
+}
+
+/* Attraction Popup */
+.location-popup-attraction {
+  padding: 0.85rem 1rem;
+  width: 230px;
+}
+
+.location-popup-attraction .attr-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.location-popup-attraction .attr-icon {
+  font-size: 1.1rem;
+}
+
+.location-popup-attraction .attr-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--roamly-charcoal, #1c2520);
+  margin: 0;
+}
+
+.location-popup-attraction .attr-category {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--roamly-forest, #2e5a44);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.location-popup-attraction .attr-distance {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #d97736;
+  background: rgba(217, 119, 54, 0.1);
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLET & MOBILE)
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .location-content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .location-map-card {
+    min-height: 400px;
+  }
+
+  .location-map-container {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 576px) {
+  .show-location-section {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+  }
+
+  .location-title {
+    font-size: 1.4rem;
+  }
+
+  .location-map-card {
+    min-height: 350px;
+  }
+
+  .location-map-container {
+    min-height: 350px;
+  }
+
+  .get-directions-btn {
+    bottom: 12px;
+    right: 12px;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.9rem;
+  }
+}

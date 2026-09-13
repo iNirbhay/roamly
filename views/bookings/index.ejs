@@ -1,0 +1,485 @@
+<% layout("layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/stylesheets/checkout.css">
+
+<div class="roamly-editorial-page py-4">
+    <!-- PAGE HEADER -->
+    <header class="bookings-dashboard-header">
+        <div class="explore-eyebrow mb-2">
+            <span class="hero-dot"></span>
+            <span>YOUR SANCTUARY RESERVATIONS</span>
+        </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+            <div>
+                <h1 class="explore-heading mb-2">My Bookings</h1>
+                <p class="explore-subheading mb-0">
+                    Review your confirmed upcoming sanctuaries, manage check-in dates, and revisit your travel history.
+                </p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="/listings" class="roamly-btn-secondary">
+                    <i class="fa-solid fa-plus me-1"></i> Book Another Sanctuary
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SERVER-SIDE EMBEDDED BOOKINGS DATA -->
+    <script id="serverBookingsData" type="application/json">
+        <%- JSON.stringify(dbBookings || []) %>
+    </script>
+
+    <!-- FILTER TABS BAR -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div class="bookings-filter-bar" role="tablist">
+            <button type="button" class="bookings-filter-btn active" id="tabFilterAll" data-filter="all">
+                <i class="fa-solid fa-layer-group"></i> All Stays
+                <span class="badge bg-cream text-navy rounded-pill px-2 border" id="countAll">0</span>
+            </button>
+            <button type="button" class="bookings-filter-btn" id="tabFilterUpcoming" data-filter="upcoming">
+                <i class="fa-solid fa-plane-departure text-forest"></i> Upcoming
+                <span class="badge bg-forest text-white rounded-pill px-2" id="countUpcoming">0</span>
+            </button>
+            <button type="button" class="bookings-filter-btn" id="tabFilterPast" data-filter="past">
+                <i class="fa-solid fa-clock-rotate-left text-muted"></i> Previous
+                <span class="badge bg-secondary text-white rounded-pill px-2" id="countPast">0</span>
+            </button>
+        </div>
+
+        <div class="text-muted small">
+            <i class="fa-solid fa-shield-check text-forest me-1"></i> Demo Sandbox Bookings
+        </div>
+    </div>
+
+    <!-- 1. UPCOMING BOOKINGS SECTION -->
+    <section class="booking-section-wrapper mb-5" id="upcomingSection">
+        <div class="bookings-section-header">
+            <div>
+                <h2 class="bookings-section-title">
+                    <i class="fa-solid fa-plane-departure text-forest"></i>
+                    Upcoming Bookings
+                    <span class="badge bg-forest text-white rounded-pill fs-6 px-3 py-1 ms-2" id="upcomingHeaderBadge">0</span>
+                </h2>
+                <p class="text-muted small mb-0">Upcoming confirmed retreats waiting for your arrival</p>
+            </div>
+        </div>
+
+        <div id="upcomingGrid" class="bookings-grid">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <div id="emptyUpcomingNotice" class="empty-section-card d-none">
+            <i class="fa-solid fa-calendar-xmark fs-2 text-muted mb-2 d-block"></i>
+            <h5 class="fw-bold text-navy mb-1">No Upcoming Stays Planned</h5>
+            <p class="text-muted small mb-3">You don’t have any active or upcoming sanctuary reservations right now.</p>
+            <a href="/listings" class="roamly-btn-primary px-3 py-2 text-decoration-none">
+                <i class="fa-solid fa-compass me-1"></i> Explore Sanctuaries Across India
+            </a>
+        </div>
+    </section>
+
+    <!-- 2. PREVIOUS BOOKINGS SECTION -->
+    <section class="booking-section-wrapper" id="pastSection">
+        <div class="bookings-section-header pt-4 border-top">
+            <div>
+                <h2 class="bookings-section-title">
+                    <i class="fa-solid fa-clock-rotate-left text-muted"></i>
+                    Previous Bookings
+                    <span class="badge bg-secondary text-white rounded-pill fs-6 px-3 py-1 ms-2" id="pastHeaderBadge">0</span>
+                </h2>
+                <p class="text-muted small mb-0">Past stays and completed journeys recorded on Roamly</p>
+            </div>
+        </div>
+
+        <div id="pastGrid" class="bookings-grid">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <div id="emptyPastNotice" class="empty-section-card d-none">
+            <i class="fa-solid fa-landmark-dome fs-2 text-muted mb-2 d-block"></i>
+            <h5 class="fw-bold text-navy mb-1">No Previous Stays Recorded</h5>
+            <p class="text-muted small mb-0">Your completed sanctuary trips will be archived here for easy rebooking.</p>
+        </div>
+    </section>
+
+    <!-- GLOBAL EMPTY STATE (Shown only if user has 0 bookings total) -->
+    <div id="globalEmptyState" class="text-center py-5 px-3 d-none">
+        <div class="confirmation-badge-anim mb-4" style="background: var(--roamly-sand); color: var(--roamly-navy); box-shadow: none;">
+            <i class="fa-solid fa-suitcase-rolling"></i>
+        </div>
+        <h3 class="stage-title mb-2">No bookings yet</h3>
+        <p class="stage-subtitle mx-auto mb-4" style="max-width: 480px;">
+            Start exploring Roamly and find your next stay.
+        </p>
+        <a href="/listings" class="roamly-btn-primary px-4 py-3">
+            <i class="fa-solid fa-compass me-2"></i> Explore Properties
+        </a>
+    </div>
+</div>
+
+<!-- AUTHENTICATED USER ID METADATA -->
+<meta id="authenticatedUserMeta" data-user-id="<%= currUser ? (currUser._id ? currUser._id.toString() : currUser.toString()) : '' %>">
+
+<!-- BOOKING DETAILS MODAL -->
+<div class="modal fade" id="bookingDetailModal" tabindex="-1" aria-labelledby="bookingDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom px-4 py-3" style="background-color: var(--roamly-cream);">
+                <div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle mb-1" id="modalStatusPill">
+                        <i class="fa-solid fa-circle-check me-1"></i> CONFIRMED &bull; DEMO
+                    </span>
+                    <h5 class="modal-title font-serif text-navy fw-bold" id="modalListingTitle">Sanctuary Details</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="modalBookingBody">
+                <!-- Populated dynamically via JS -->
+            </div>
+            <div class="modal-footer border-top px-4 py-3 bg-light">
+                <a href="#" id="modalPrintVoucherLink" target="_blank" class="roamly-btn-primary">
+                    <i class="fa-solid fa-print me-2"></i> Print Official Voucher
+                </a>
+                <button type="button" class="roamly-btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 0. Purge legacy global key to prevent cross-account contamination
+    try {
+        localStorage.removeItem("roamly_bookings");
+    } catch (e) {}
+
+    const authMeta = document.getElementById("authenticatedUserMeta");
+    const currentUserId = authMeta ? authMeta.getAttribute("data-user-id") : "";
+
+    // 1. Load Server Bookings (Pre-filtered by controllers/bookings.js to travelerId: req.user._id)
+    const serverBookingsRaw = document.getElementById("serverBookingsData")?.textContent || "[]";
+    let serverBookings = [];
+    try {
+        serverBookings = JSON.parse(serverBookingsRaw);
+    } catch (e) {
+        serverBookings = [];
+    }
+
+    // Defensive check: Ensure any loaded booking strictly matches currentUserId
+    if (currentUserId) {
+        serverBookings = serverBookings.filter(b => {
+            const bUserId = b.travelerId ? (b.travelerId._id || b.travelerId) : (b.user ? (b.user._id || b.user) : null);
+            return !bUserId || String(bUserId) === String(currentUserId);
+        });
+    }
+
+    // 2. Load User-Scoped Local Bookings (Only from roamly_bookings_<userId>)
+    let localBookings = [];
+    if (currentUserId) {
+        try {
+            const scopedData = localStorage.getItem(`roamly_bookings_${currentUserId}`);
+            if (scopedData) {
+                const parsed = JSON.parse(scopedData);
+                localBookings = parsed.filter(b => {
+                    const bUserId = b.travelerId || b.userId || b.user;
+                    return String(bUserId) === String(currentUserId);
+                });
+            }
+        } catch (e) {
+            localBookings = [];
+        }
+    }
+
+    // Merge by unique bookingId
+    const bookingMap = new Map();
+    localBookings.forEach(b => {
+        if (b && b.bookingId) bookingMap.set(b.bookingId, b);
+    });
+    serverBookings.forEach(b => {
+        if (b && b.bookingId) bookingMap.set(b.bookingId, b);
+    });
+
+    const allBookings = Array.from(bookingMap.values());
+
+    // 2. Classify into Upcoming vs Previous
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcomingBookings = [];
+    const pastBookings = [];
+
+    allBookings.forEach(b => {
+        const checkOutDate = b.checkOut ? new Date(b.checkOut) : null;
+        if (!checkOutDate || isNaN(checkOutDate.getTime())) {
+            upcomingBookings.push(b);
+            return;
+        }
+
+        // Include checkout day until 23:59:59 as upcoming/active
+        const eodCheckout = new Date(checkOutDate);
+        eodCheckout.setHours(23, 59, 59, 999);
+
+        if (eodCheckout >= today) {
+            upcomingBookings.push(b);
+        } else {
+            pastBookings.push(b);
+        }
+    });
+
+    // Sort upcoming: soonest check-in first
+    upcomingBookings.sort((a, b) => new Date(a.checkIn || 0) - new Date(b.checkIn || 0));
+
+    // Sort past: most recent past stay first
+    pastBookings.sort((a, b) => new Date(b.checkOut || 0) - new Date(a.checkOut || 0));
+
+    // Update Counts
+    const countAll = document.getElementById("countAll");
+    const countUpcoming = document.getElementById("countUpcoming");
+    const countPast = document.getElementById("countPast");
+    const upcomingHeaderBadge = document.getElementById("upcomingHeaderBadge");
+    const pastHeaderBadge = document.getElementById("pastHeaderBadge");
+
+    if (countAll) countAll.textContent = allBookings.length;
+    if (countUpcoming) countUpcoming.textContent = upcomingBookings.length;
+    if (countPast) countPast.textContent = pastBookings.length;
+    if (upcomingHeaderBadge) upcomingHeaderBadge.textContent = upcomingBookings.length;
+    if (pastHeaderBadge) pastHeaderBadge.textContent = pastBookings.length;
+
+    // Elements
+    const upcomingSection = document.getElementById("upcomingSection");
+    const pastSection = document.getElementById("pastSection");
+    const upcomingGrid = document.getElementById("upcomingGrid");
+    const pastGrid = document.getElementById("pastGrid");
+    const emptyUpcomingNotice = document.getElementById("emptyUpcomingNotice");
+    const emptyPastNotice = document.getElementById("emptyPastNotice");
+    const globalEmptyState = document.getElementById("globalEmptyState");
+
+    if (allBookings.length === 0) {
+        if (upcomingSection) upcomingSection.classList.add("d-none");
+        if (pastSection) pastSection.classList.add("d-none");
+        if (globalEmptyState) globalEmptyState.classList.remove("d-none");
+        return;
+    }
+
+    // Helper: generate card HTML
+    function createBookingCardHtml(booking, isPast, globalIndex) {
+        const listing = booking.listing || {};
+        const title = listing.title || "Curated Roamly Sanctuary";
+        const location = listing.location ? (listing.location + (listing.country ? `, ${listing.country}` : '')) : "India";
+        const listingId = listing._id || (typeof listing === "string" ? listing : "");
+
+        let img = "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80";
+        if (typeof listing.image === "string") img = listing.image;
+        else if (listing.image && listing.image.url) img = listing.image.url;
+        else if (listing.imageUrl) img = listing.imageUrl;
+
+        const checkInDate = booking.checkIn ? new Date(booking.checkIn) : new Date();
+        const checkOutDate = booking.checkOut ? new Date(booking.checkOut) : new Date();
+
+        const checkInStr = checkInDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+        const checkOutStr = checkOutDate.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+        const totalPaid = booking.pricing ? (booking.pricing.totalAmount || 0).toLocaleString("en-IN") : "0";
+        const nights = booking.nights || 1;
+        const guestsCount = booking.guests ? (booking.guests.total || (booking.guests.adults || 1)) : 1;
+        const paymentMethod = (booking.payment && booking.payment.method) ? booking.payment.method : "Demo Gateway";
+        const bookingCode = booking.bookingId || "ROAM-DEMO";
+
+        // Timing indicator
+        let timingBadge = "";
+        if (!isPast) {
+            const diffDays = Math.ceil((checkInDate - today) / (1000 * 60 * 60 * 24));
+            if (diffDays <= 0 && checkOutDate >= today) {
+                timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-bell me-1"></i> Check-in Today</span>';
+            } else if (diffDays === 1) {
+                timingBadge = '<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-clock me-1"></i> Check-in Tomorrow</span>';
+            } else if (diffDays > 1) {
+                timingBadge = `<span class="stay-duration-tag tag-upcoming text-forest"><i class="fa-solid fa-calendar-day me-1"></i> In ${diffDays} days</span>`;
+            }
+        } else {
+            timingBadge = '<span class="stay-duration-tag tag-past"><i class="fa-solid fa-check-double me-1"></i> Completed Stay</span>';
+        }
+
+        const voucherUrl = `/bookings/${bookingCode}/voucher?name=${encodeURIComponent(booking.guestDetails?.fullName || 'Traveler')}&total=${booking.pricing?.totalAmount || 0}&listingTitle=${encodeURIComponent(title)}&location=${encodeURIComponent(location)}`;
+
+        return `
+            <article class="booking-history-card">
+                <div class="booking-card-media">
+                    <img src="${img}" alt="${title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                    <span class="booking-card-status-badge ${isPast ? 'past' : 'upcoming'}">
+                        <i class="fa-solid ${isPast ? 'fa-circle-check' : 'fa-plane-departure'}"></i>
+                        ${isPast ? 'COMPLETED • DEMO' : 'UPCOMING • DEMO'}
+                    </span>
+                </div>
+                <div class="booking-card-content">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="booking-code-pill">
+                            <i class="fa-solid fa-hashtag text-forest"></i> ${bookingCode}
+                        </span>
+                        ${timingBadge}
+                    </div>
+
+                    <h3 class="booking-card-title">${title}</h3>
+                    <div class="booking-card-location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>${location}</span>
+                    </div>
+
+                    <div class="booking-card-meta-list">
+                        <div class="d-flex justify-content-between">
+                            <span><i class="fa-regular fa-calendar me-2 text-forest"></i> Dates:</span>
+                            <strong class="text-navy">${checkInStr} &rarr; ${checkOutStr}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span><i class="fa-solid fa-user-group me-2 text-forest"></i> Guests:</span>
+                            <strong>${guestsCount} guest${guestsCount > 1 ? 's' : ''} &bull; ${nights} night${nights > 1 ? 's' : ''}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span><i class="fa-solid fa-credit-card me-2 text-forest"></i> Total Paid:</span>
+                            <strong class="text-forest">₹ ${totalPaid} <span class="fw-normal text-muted small">(${paymentMethod})</span></strong>
+                        </div>
+                    </div>
+
+                    <div class="booking-card-actions">
+                        <button type="button" class="roamly-btn-secondary flex-grow-1 view-booking-details-btn" data-code="${bookingCode}">
+                            <i class="fa-regular fa-eye me-1"></i> Details
+                        </button>
+                        <a href="${voucherUrl}" target="_blank" class="roamly-btn-primary flex-grow-1">
+                            <i class="fa-solid fa-print me-1"></i> Voucher
+                        </a>
+                        ${(isPast && listingId) ? `
+                            <a href="/listings/${listingId}" class="btn btn-sm btn-outline-secondary rounded-pill px-3" title="Book this sanctuary again">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+
+    // Render Upcoming Grid
+    if (upcomingBookings.length > 0) {
+        upcomingGrid.innerHTML = upcomingBookings.map((b, idx) => createBookingCardHtml(b, false, idx)).join("");
+    } else {
+        if (upcomingGrid) upcomingGrid.innerHTML = "";
+        if (emptyUpcomingNotice) emptyUpcomingNotice.classList.remove("d-none");
+    }
+
+    // Render Past Grid
+    if (pastBookings.length > 0) {
+        pastGrid.innerHTML = pastBookings.map((b, idx) => createBookingCardHtml(b, true, idx)).join("");
+    } else {
+        if (pastGrid) pastGrid.innerHTML = "";
+        if (emptyPastNotice) emptyPastNotice.classList.remove("d-none");
+    }
+
+    // 3. Tab Filter Switching
+    const filterBtns = document.querySelectorAll(".bookings-filter-btn");
+    filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.dataset.filter;
+            if (filter === "all") {
+                if (upcomingSection) upcomingSection.style.display = "block";
+                if (pastSection) pastSection.style.display = "block";
+            } else if (filter === "upcoming") {
+                if (upcomingSection) upcomingSection.style.display = "block";
+                if (pastSection) pastSection.style.display = "none";
+            } else if (filter === "past") {
+                if (upcomingSection) upcomingSection.style.display = "none";
+                if (pastSection) pastSection.style.display = "block";
+            }
+        });
+    });
+
+    // 4. Booking Details Modal Handler
+    const modalEl = document.getElementById("bookingDetailModal");
+    const modal = new bootstrap.Modal(modalEl);
+    const modalTitle = document.getElementById("modalListingTitle");
+    const modalBody = document.getElementById("modalBookingBody");
+    const modalPrintVoucherLink = document.getElementById("modalPrintVoucherLink");
+    const modalStatusPill = document.getElementById("modalStatusPill");
+
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".view-booking-details-btn");
+        if (!btn) return;
+
+        const code = btn.dataset.code;
+        const b = allBookings.find(item => item.bookingId === code);
+        if (!b) return;
+
+        const listing = b.listing || {};
+        modalTitle.textContent = listing.title || "Sanctuary Details";
+
+        const checkIn = b.checkIn ? new Date(b.checkIn).toLocaleDateString("en-IN", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) : "-";
+        const checkOut = b.checkOut ? new Date(b.checkOut).toLocaleDateString("en-IN", { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) : "-";
+
+        let addonsHtml = "";
+        if (b.addOns && b.addOns.length > 0) {
+            addonsHtml = `
+                <div class="mt-3">
+                    <h6 class="fw-bold text-navy mb-2">Curated Add-ons:</h6>
+                    <ul class="list-unstyled mb-0">
+                        ${b.addOns.map(a => `<li class="d-flex justify-content-between text-muted small py-1 border-bottom"><span>${a.name} (${a.details || ''})</span> <strong>₹ ${(a.price || 0).toLocaleString("en-IN")}</strong></li>`).join("")}
+                    </ul>
+                </div>
+            `;
+        }
+
+        modalBody.innerHTML = `
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label class="text-muted small d-block">Confirmation Code</label>
+                    <strong class="text-navy fs-5 font-monospace">${b.bookingId}</strong>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                    <label class="text-muted small d-block">Status</label>
+                    <span class="badge bg-success text-white py-2 px-3">PAID &bull; CONFIRMED (DEMO)</span>
+                </div>
+            </div>
+
+            <div class="p-3 rounded-3 mb-3" style="background-color: var(--roamly-cream); border: 1px solid var(--roamly-border);">
+                <div class="row g-2 text-navy">
+                    <div class="col-sm-6">
+                        <span class="text-muted small d-block">Check-in</span>
+                        <strong>${checkIn}</strong> (from 2:00 PM)
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="text-muted small d-block">Check-out</span>
+                        <strong>${checkOut}</strong> (until 11:00 AM)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <h6 class="fw-bold text-navy mb-1">Guest Information</h6>
+                    <div class="text-muted small">${b.guestDetails?.fullName || 'Traveler'}</div>
+                    <div class="text-muted small">${b.guestDetails?.email || '-'}</div>
+                    <div class="text-muted small">${b.guestDetails?.phone || '-'}</div>
+                </div>
+                <div class="col-sm-6">
+                    <h6 class="fw-bold text-navy mb-1">Payment Method</h6>
+                    <div class="text-muted small">${b.payment?.method || 'Demo Gateway'}</div>
+                    <div class="text-muted small">Txn ID: <code>${b.payment?.transactionId || 'TXN-DEMO'}</code></div>
+                </div>
+            </div>
+
+            ${addonsHtml}
+
+            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-baseline">
+                <span class="fs-6 fw-bold text-navy">Total Paid (Demo):</span>
+                <span class="fs-4 fw-bold text-forest">₹ ${(b.pricing?.totalAmount || 0).toLocaleString("en-IN")}</span>
+            </div>
+        `;
+
+        const location = listing.location ? (listing.location + (listing.country ? `, ${listing.country}` : '')) : "India";
+        const voucherUrl = `/bookings/${b.bookingId}/voucher?name=${encodeURIComponent(b.guestDetails?.fullName || 'Traveler')}&total=${b.pricing?.totalAmount || 0}&listingTitle=${encodeURIComponent(listing.title || 'Sanctuary')}&location=${encodeURIComponent(location)}`;
+        modalPrintVoucherLink.href = voucherUrl;
+
+        modal.show();
+    });
+});
+</script>

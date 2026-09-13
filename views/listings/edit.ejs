@@ -1,0 +1,206 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="roamly-editorial-page roamly-create-page anim-fade-up">
+    <!-- PAGE BREADCRUMB -->
+    <nav class="show-breadcrumb mb-3">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <a href="/listings" class="crumb-link">All Stays</a>
+        <span class="crumb-sep">/</span>
+        <a href="/listings/<%= listing._id %>" class="crumb-link"><%= listing.title %></a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">Edit sanctuary</span>
+    </nav>
+
+    <div class="create-stay-wrapper">
+        <!-- FORM MAIN COLUMN -->
+        <main class="create-form-col">
+            <div class="form-header-wrap mb-4">
+                <span class="explore-eyebrow">UPDATE RETREAT</span>
+                <h1 class="create-page-title">Refine your sanctuary</h1>
+                <p class="create-page-desc">
+                    Keep your rates, imagery, and description up to date for travelers planning upcoming journeys.
+                </p>
+            </div>
+
+            <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation editorial-host-form" novalidate enctype="multipart/form-data">
+                <!-- SECTION 1: TITLE & STORY -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">01</span>
+                        <div>
+                            <h3 class="form-section-title">Sanctuary Identity</h3>
+                            <p class="form-section-desc">Fine-tune the name and description of your space.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="title" class="host-input-label">Sanctuary Title</label>
+                        <input 
+                            type="text" 
+                            id="title"
+                            name="listing[title]" 
+                            value="<%= listing.title %>"
+                            required 
+                            class="form-control host-input"
+                        >
+                        <div class="invalid-feedback">
+                            Please provide a valid title.
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description" class="host-input-label">The Story &amp; Space</label>
+                        <textarea 
+                            id="description"
+                            name="listing[description]" 
+                            rows="5" 
+                            required 
+                            class="form-control host-input"
+                        ><%= listing.description %></textarea>
+                        <div class="invalid-feedback">
+                            Please provide a valid description.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: IMAGERY -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">02</span>
+                        <div>
+                            <h3 class="form-section-title">Sanctuary Photography</h3>
+                            <p class="form-section-desc">Review your current visual or upload a refreshed image.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 current-img-box">
+                        <span class="field-label mb-2 d-block">CURRENT IMAGE PREVIEW:</span>
+                        <div class="current-img-frame">
+                            <img src="<%= originalImageUrl %>" alt="<%= listing.title %>" class="rounded-3 shadow-sm" style="max-height: 180px; width: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80';">
+                        </div>
+                    </div>
+
+                    <div class="file-upload-dropzone">
+                        <i class="fa-solid fa-cloud-arrow-up upload-cloud-icon"></i>
+                        <label for="image" class="upload-dropzone-label">
+                            <span class="upload-btn-chip">Upload New Image (Optional)</span>
+                            <span class="upload-help-text">Leave empty to keep existing visual</span>
+                        </label>
+                        <input 
+                            type="file" 
+                            id="image"
+                            name="listing[image]" 
+                            class="form-control host-file-input"
+                            onchange="const f = this.files[0]; if(f){ document.getElementById('fileNamePreview').textContent = f.name; }"
+                        >
+                        <div id="fileNamePreview" class="upload-selected-name mt-2 text-success font-bold"></div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: PRICING & LOCATION -->
+                <div class="form-card-editorial">
+                    <div class="form-section-header">
+                        <span class="section-step-num">03</span>
+                        <div>
+                            <h3 class="form-section-title">Pricing &amp; Location</h3>
+                            <p class="form-section-desc">Adjust nightly pricing and confirm the regional location.</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-5">
+                            <label for="price" class="host-input-label">Nightly Rate (₹)</label>
+                            <div class="input-currency-wrap">
+                                <span class="currency-symbol">₹</span>
+                                <input 
+                                    type="number" 
+                                    id="price"
+                                    name="listing[price]" 
+                                    value="<%= listing.price %>"
+                                    min="1"
+                                    required 
+                                    class="form-control host-input ps-4"
+                                >
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid price.
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <label for="country" class="host-input-label">Country</label>
+                            <input 
+                                type="text" 
+                                id="country"
+                                name="listing[country]" 
+                                value="<%= listing.country %>"
+                                required 
+                                class="form-control host-input"
+                            >
+                            <div class="invalid-feedback">
+                                Please specify the country.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="location" class="host-input-label">City / Region / Address</label>
+                        <div class="location-input-wrap">
+                            <i class="fa-solid fa-location-dot location-icon"></i>
+                            <input 
+                                type="text" 
+                                id="location"
+                                name="listing[location]" 
+                                value="<%= listing.location %>"
+                                required 
+                                class="form-control host-input ps-4"
+                            >
+                        </div>
+                        <div class="invalid-feedback">
+                            Please specify the location.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTON -->
+                <div class="form-submit-row">
+                    <button type="submit" class="roamly-btn-primary create-submit-btn">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+                        <span>Save Updates</span>
+                    </button>
+                    <a href="/listings/<%= listing._id %>" class="roamly-btn-secondary">
+                        Discard Changes
+                    </a>
+                </div>
+            </form>
+        </main>
+
+        <!-- VISUAL SIDEBAR -->
+        <aside class="create-visual-col d-none d-lg-block">
+            <div class="create-sidebar-sticky">
+                <div class="host-visual-card">
+                    <img 
+                        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80" 
+                        alt="Serene villa exterior" 
+                        class="host-sidebar-img"
+                    >
+                    <div class="host-visual-overlay"></div>
+                    <div class="host-visual-badge">
+                        <i class="fa-solid fa-pen-nib"></i> Sanctuary Maintenance
+                    </div>
+                </div>
+
+                <div class="host-tips-card">
+                    <h4 class="tips-title">Hosting Excellence</h4>
+                    <p class="text-secondary small mb-2">
+                        Sanctuaries with updated high-resolution images and clear seasonal rates receive 40% more mindful reservation inquiries.
+                    </p>
+                    <div class="text-muted small">
+                        Questions about your listing? Our host concierge is available 24/7.
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
