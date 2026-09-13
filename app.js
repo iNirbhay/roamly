@@ -166,6 +166,10 @@ app.all("/{*splat}", (req, res, next) => {
 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
+    res.locals.currUser = res.locals.currUser || null;
+    res.locals.success = res.locals.success || [];
+    res.locals.error = res.locals.error || [];
+    res.locals.currentPath = res.locals.currentPath || req.path || "";
     res.status(statusCode).render("error.ejs", { err });
 });
 
