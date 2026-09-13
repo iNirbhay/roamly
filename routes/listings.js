@@ -1,6 +1,6 @@
 const express = require("express");
 const wrapAsync = require("../utils/wrapAsync");
-const { isLoggedIn, validateListing, validateImageUpload } = require("../middleware");
+const { isLoggedIn, validateListing, validateImageUpload } = require("../middlewares");
 const listings = require("../controllers/listings");
 const router = express.Router();
 const multer  = require('multer')

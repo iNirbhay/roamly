@@ -5,7 +5,7 @@ const User = require("../models/users");
 const Listing = require("../models/listing");
 const Booking = require("../models/booking");
 const bookingsController = require("../controllers/bookings");
-const { isLoggedIn, isHost } = require("../middleware");
+const { isLoggedIn, isHost } = require("../middlewares");
 
 // ==========================================
 // 1. AUTHENTICATION REST API

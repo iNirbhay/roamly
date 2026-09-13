@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
-const { isLoggedIn } = require("../middleware");
+const { isLoggedIn } = require("../middlewares");
 const bookings = require("../controllers/bookings");
 
 // Checkout page for a listing - requires authentication

@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
 const wrapAsync = require("../utils/wrapAsync");
-const { saveRedirectUrl } = require("../middleware");
+const { saveRedirectUrl } = require("../middlewares");
 const users = require("../controllers/users");
 const { isGoogleConfigured, isAuth0Configured } = require("../config/passport");
 

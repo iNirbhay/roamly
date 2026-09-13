@@ -1,7 +1,7 @@
-const Review = require("./models/review");
-const { listingSchema, reviewSchema } = require("./schema");
-const ExpressError = require("./utils/ExpressError");
-const wrapAsync = require("./utils/wrapAsync");
+const Review = require("../models/review");
+const { listingSchema, reviewSchema } = require("../schema");
+const ExpressError = require("../utils/ExpressError");
+const wrapAsync = require("../utils/wrapAsync");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -80,7 +80,7 @@ module.exports.isHost = (req, res, next) => {
 
 module.exports.isListingOwner = wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const Listing = require("./models/listing");
+    const Listing = require("../models/listing");
     const listing = await Listing.findById(id);
 
     if (!listing) {

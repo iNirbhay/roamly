@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
-const { isLoggedIn, isHost, isListingOwner } = require("../middleware");
+const { isLoggedIn, isHost, isListingOwner } = require("../middlewares");
 const hostController = require("../controllers/host");
 
 // Protect all host routes with login and host role check
