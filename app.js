@@ -147,7 +147,25 @@ app.use(async (req, res, next) => {
 
 app.get("/", wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("listings/home.ejs", { allListings });
+
+    const topFeaturedTitles = [
+        "Wayanad Forest Hideaway",
+        "Kasol Riverside Cabin",
+        "Kumarakom Lakefront Villa"
+    ];
+
+    const prioritized = [];
+    for (const title of topFeaturedTitles) {
+        const found = allListings.find(l => l.title && l.title.trim().toLowerCase() === title.toLowerCase());
+        if (found) {
+            prioritized.push(found);
+        }
+    }
+
+    const remaining = allListings.filter(l => !prioritized.some(p => p._id.toString() === l._id.toString()));
+    const orderedListings = [...prioritized, ...remaining];
+
+    res.render("listings/home.ejs", { allListings: orderedListings });
 }));
 
 app.get("/explore-india", wrapAsync(async (req, res) => {

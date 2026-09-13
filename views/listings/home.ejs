@@ -595,7 +595,28 @@
                 <!-- Top 3 Stays Grid with Staggered Cascades & Parallax Media -->
                 <div class="featured-triad-grid reveal-stagger-group">
                     <% 
-                    const curatedThree = (allListings && allListings.length > 0) ? allListings.slice(0, 3) : [];
+                    const targetFeaturedTitles = [
+                        "Wayanad Forest Hideaway",
+                        "Kasol Riverside Cabin",
+                        "Kumarakom Lakefront Villa"
+                    ];
+                    let curatedThree = [];
+                    if (allListings && allListings.length > 0) {
+                        for (const title of targetFeaturedTitles) {
+                            const found = allListings.find(l => l.title && l.title.trim().toLowerCase() === title.toLowerCase());
+                            if (found) {
+                                curatedThree.push(found);
+                            }
+                        }
+                        if (curatedThree.length < 3) {
+                            for (const l of allListings) {
+                                if (!curatedThree.some(c => (c._id && l._id && c._id.toString() === l._id.toString()) || c.title === l.title)) {
+                                    curatedThree.push(l);
+                                    if (curatedThree.length >= 3) break;
+                                }
+                            }
+                        }
+                    }
                     if (curatedThree.length > 0) { 
                         curatedThree.forEach((stay, idx) => { 
                     %>
