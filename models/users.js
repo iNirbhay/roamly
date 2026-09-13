@@ -56,6 +56,9 @@ userSchema.virtual('fullName').get(function () {
     return this.name || this.displayName || this.username || 'Traveler';
 });
 
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, {
+    usernameCaseInsensitive: true,
+    usernameQueryFields: ["username", "email"]
+});
 
 module.exports = mongoose.model("User", userSchema);

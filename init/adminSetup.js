@@ -35,23 +35,30 @@ async function adminSetup() {
                     u.displayName = "Admin";
                     changed = true;
                 }
+                // Guarantee admin user has password 'admin'
+                try {
+                    await u.setPassword("admin");
+                    changed = true;
+                } catch (e) {
+                    console.error("Error setting admin password:", e);
+                }
                 if (changed) {
                     await u.save();
-                    console.log(`[AdminSetup] Promoted user '${u.username}' (${u._id}) to role: admin.`);
+                    console.log(`[AdminSetup] Promoted user '${u.username}' (${u._id}) to role: admin with password 'admin'.`);
                 }
             }
-            // If the user signed in with 'Admin', use that as primaryAdmin
-            primaryAdmin = adminUsers.find(u => u.username === "Admin") || adminUsers[0];
+            // If the user signed in with 'Admin' or 'admin', use that as primaryAdmin
+            primaryAdmin = adminUsers.find(u => u.username && u.username.toLowerCase() === "admin") || adminUsers[0];
         } else {
             const newAdmin = new User({
-                username: "Admin",
+                username: "admin",
                 email: "admin@roamly.travel",
                 name: "Admin",
                 displayName: "Admin",
                 role: "admin"
             });
-            primaryAdmin = await User.register(newAdmin, "admin123");
-            console.log(`[AdminSetup] Created primary Admin user: ${primaryAdmin.username} (${primaryAdmin._id})`);
+            primaryAdmin = await User.register(newAdmin, "admin");
+            console.log(`[AdminSetup] Created primary Admin user: ${primaryAdmin.username} (${primaryAdmin._id}) with password 'admin'`);
         }
 
         const adminUser = primaryAdmin;
