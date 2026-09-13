@@ -29,17 +29,38 @@ const { configurePassport, isGoogleConfigured, isAuth0Configured } = require("./
 
 const app = express();
 
-const dbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wanderlust';
+const dbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || process.env.MONGODB_URI || (process.env.VERCEL ? null : 'mongodb://127.0.0.1:27017/wanderlust');
 
-main()
-    .then(async () => {
-        console.log("Connected to MongoDB");
-        await adminSetup();
-    })
-    .catch((err) => console.error("Error connecting to MongoDB", err));
+let dbPromise = null;
 
-async function main() {
-    await mongoose.connect(dbUrl);
+async function connectDB() {
+    if (mongoose.connection.readyState === 1) {
+        return;
+    }
+    if (!dbUrl) {
+        throw new ExpressError("Database connection string missing! Please add ATLASDB_URL or MONGO_URL in your Vercel Environment Variables.", 500);
+    }
+    if (!dbPromise) {
+        dbPromise = mongoose.connect(dbUrl, {
+            serverSelectionTimeoutMS: 5000,
+        }).then(async () => {
+            console.log("Connected to MongoDB");
+            try {
+                await adminSetup();
+            } catch (e) {
+                console.error("Admin setup notice:", e.message);
+            }
+        }).catch((err) => {
+            dbPromise = null;
+            throw err;
+        });
+    }
+    await dbPromise;
+}
+
+// Connect immediately on startup if running locally
+if (!process.env.VERCEL) {
+    connectDB().catch((err) => console.error("Error connecting to MongoDB:", err));
 }
 
 app.engine('ejs', ejsMate);
@@ -62,6 +83,15 @@ const sessionOptions = {
         httpOnly: true,
     },
 };
+
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
 
 app.use(session(sessionOptions));
 app.use(flash());
