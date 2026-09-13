@@ -56,12 +56,25 @@ async function adminSetup() {
 
         const adminUser = primaryAdmin;
 
-        // 2. Guarantee all existing properties belong to Admin's actual _id
-        const updateResult = await Listing.updateMany(
-            {},
-            { $set: { owner: adminUser._id } }
-        );
-        console.log(`[AdminSetup] Ensured all properties belong to Admin (${adminUser._id}). Modified: ${updateResult.modifiedCount}`);
+        // 2. Check if database is empty and auto-seed if needed
+        const listingCount = await Listing.countDocuments({});
+        if (listingCount === 0) {
+            console.log("[AdminSetup] Database is empty. Seeding 58 curated Indian listings...");
+            const indianListings = require("./indian_listings.json");
+            const docs = indianListings.map(item => ({
+                ...item,
+                owner: adminUser._id
+            }));
+            await Listing.insertMany(docs);
+            console.log("[AdminSetup] Successfully seeded 58 listings into database!");
+        } else {
+            // Guarantee all existing properties belong to Admin's actual _id
+            const updateResult = await Listing.updateMany(
+                {},
+                { $set: { owner: adminUser._id } }
+            );
+            console.log(`[AdminSetup] Ensured all properties belong to Admin (${adminUser._id}). Modified: ${updateResult.modifiedCount}`);
+        }
 
         // Guarantee all existing bookings have hostId set to Admin as well
         await Booking.updateMany(

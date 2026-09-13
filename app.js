@@ -37,12 +37,14 @@ async function connectDB() {
     if (mongoose.connection.readyState === 1) {
         return;
     }
-    if (!dbUrl) {
-        throw new ExpressError("Database connection string missing! Please add ATLASDB_URL or MONGO_URL in your Vercel Environment Variables.", 500);
+    const currentDbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || process.env.MONGODB_URI || (process.env.VERCEL ? null : 'mongodb://127.0.0.1:27017/wanderlust');
+    if (!currentDbUrl) {
+        throw new ExpressError("Database connection string missing! Please connect your MongoDB database to the roamly project.", 500);
     }
     if (!dbPromise) {
-        dbPromise = mongoose.connect(dbUrl, {
-            serverSelectionTimeoutMS: 5000,
+        dbPromise = mongoose.connect(currentDbUrl, {
+            dbName: "wanderlust",
+            serverSelectionTimeoutMS: 8000,
         }).then(async () => {
             console.log("Connected to MongoDB");
             try {
