@@ -29,6 +29,8 @@ const { configurePassport, isGoogleConfigured, isAuth0Configured } = require("./
 
 const app = express();
 
+const dbUrl = process.env.ATLASDB_URL || process.env.MONGO_URL || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wanderlust';
+
 main()
     .then(async () => {
         console.log("Connected to MongoDB");
@@ -37,7 +39,7 @@ main()
     .catch((err) => console.error("Error connecting to MongoDB", err));
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    await mongoose.connect(dbUrl);
 }
 
 app.engine('ejs', ejsMate);
@@ -137,6 +139,11 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { err });
 });
 
-app.listen(8080, () => {
-    console.log("Server is running on port 8080");
-});
+const PORT = process.env.PORT || 8080;
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+module.exports = app;

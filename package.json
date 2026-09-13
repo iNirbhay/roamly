@@ -14,7 +14,7 @@
   "type": "commonjs",
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "cloudinary": "^2.11.0",
+    "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
